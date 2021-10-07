@@ -9,7 +9,7 @@
 - [Dependencies](#dependencies)
 
 ## Overview
-<Include project description?
+For our project we would like to use a mix of AI and embedded systems. A brief summary of our idea is a smart chessboard (physical) that highlights your possible moves using LEDs, allows you to receive an AI recommended computer move (the most optimal move for that turn), flashes red when making an illegal move, and allows you to play against AI of various difficulties. We need to make sure our chess engine is accurate to ensure the user is making the moves they want to make. Speed is also a constraint to ensure the moves do not take long to make.
 
 ## Team
 <a href="https://github.com/shaheriar" target="_blank"><img src="https://avatars.githubusercontent.com/u/49822364?v=4" align="left" height="30px">Shaheriar Malik</a>
