@@ -12,7 +12,15 @@
 <Include project description?
 
 ## Team
-<a href="https://github.com/msalloum" target="_blank"><img src="https://avatars3.githubusercontent.com/u/1790819?s=400&v=4" align="left" height="30px">Mariam Salloum </a>
+<a href="https://github.com/shaheriar" target="_blank"><img src="https://avatars.githubusercontent.com/u/49822364?v=4" align="left" height="30px">Shaheriar Malik</a>
+
+<a href="https://github.com/rgiron1" target="_blank"><img src="https://avatars.githubusercontent.com/u/36999776?v=4" align="left" height="30px">Ryan Giron</a>
+
+<a href="https://github.com/JShweiri" target="_blank"><img src="https://avatars.githubusercontent.com/u/31330210?v=4" align="left" height="30px">Jason Shweiri</a>
+
+<a href="https://github.com/simrajsingh" target="_blank"><img src="https://avatars.githubusercontent.com/u/25336991?v=4" align="left" height="30px">Simraj Singh</a>
+
+
 
 ## Usage
 Demo: <Link to youtube video>
