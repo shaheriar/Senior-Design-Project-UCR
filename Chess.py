@@ -36,7 +36,11 @@ def start():
     board = chess.Board()
     while (not board.is_checkmate() or not board.is_stalemate()):
         print('\n')
+        print('-----------')
+        print('Smart Chess')
+        print('-----------')
         print(board)
+        print('-----------')
         if (not turn):
             print('\nWHITE\'S TURN\n')
         else:
