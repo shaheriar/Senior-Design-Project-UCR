@@ -3,15 +3,18 @@ import chess.svg
 
 def menu():
     x = 0
+    
+    print('------------------------------')
     print('Smart Chess by The Segfaults')
-    print('Menu Options')
-    print('1. Play')
+    print('------------------------------')    
+    print('\nMenu Options')
+    print('\n1. Play\n')
     x = int(input('Menu option: '))
     while (x != 1):
         print('Please enter a valid value')
         x = input('Menu option: ')
-    print('Menu Options')
-    print('1. vs Human')
+    print('\nMenu Options')
+    print('\n1. vs Human\n')
     x = int(input('Menu option: '))
     while (x != 1):
         print('Please enter a valid value')
@@ -54,7 +57,6 @@ def start():
             except:
                 print('INVALID MOVE\n')
                 move = input('DESIRED MOVE: ')
-        print(board)
         turn = not turn
         
 
