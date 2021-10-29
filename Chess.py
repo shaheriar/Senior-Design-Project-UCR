@@ -27,11 +27,6 @@ def menu():
     #while (x != 1 or x != 2):
     #    print('Please enter a valid value')
     #    x = input('Menu option: ')
-    
-    
-    
-
-
 
 def start():
     turn = False #WHITE IS 0, BLACK IS 1
@@ -61,10 +56,6 @@ def start():
                 print('INVALID MOVE\n')
                 move = input('DESIRED MOVE: ')
         turn = not turn
-        
-
-
-
 
 def main():
     menu()
