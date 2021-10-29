@@ -50,6 +50,9 @@ def start():
             print('\nBLACK\'S TURN\n')
         print(board.legal_moves)
         move = input('DESIRED MOVE: ')
+        if (move == 'quit'):
+            print('GAME ENDED')
+            return
         while(1):
             try:
                 board.push_san(move)
