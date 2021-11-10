@@ -1,1 +1,0 @@
-# Piece class with also all the different pieces (rook, pawn, knight, bishop, king, queen)

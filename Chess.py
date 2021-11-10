@@ -1,16 +1,20 @@
 import chess
 import chess.svg
+import Player
 from cairosvg import svg2png
 import os
 from datetime import datetime
 
-arr = ['\nWHITE\'S TURN\n','\nBLACK\'S TURN\n']
+arr = ['\nWHITE\'S TURN\n', '\nBLACK\'S TURN\n']
+player1 = None
+player2 = None
+
 
 def menu():
-    x = 0    
+    x = 0
     print('------------------------------')
     print('Smart Chess by The Segfaults')
-    print('------------------------------')    
+    print('------------------------------')
     print('\nMenu Options')
     print('\n1. Play\n')
     x = int(input('Menu option: '))
@@ -23,17 +27,22 @@ def menu():
     while (x != 1):
         print('Please enter a valid value')
         x = int(input('Menu option: '))
+    tempName = input("Please enter Player 1's name: ")
+    player1 = Player(0, tempName, False)
+    tempName = input("Please enter Player 2's name: ")
+    player2 = Player(0, tempName, False)
     return
-    #print('Assists')
+    # print('Assists')
     #print('1. Recommended Moves (Y/N)')
     #print('2. vs AI')
     #x = input('Menu option: ')
-    #while (x != 1 or x != 2):
+    # while (x != 1 or x != 2):
     #    print('Please enter a valid value')
     #    x = input('Menu option: ')
 
+
 def start():
-    turn = False #WHITE IS 0, BLACK IS 1
+    turn = False  # WHITE IS 0, BLACK IS 1
     move = ''
     x = 0
     svg = ''
@@ -52,7 +61,7 @@ def start():
         except:
             svg = chess.svg.board(board=board)
         abspath = path+'\\'+str(x)+'.png'
-        svg2png(svg, write_to=abspath,scale=2)
+        svg2png(svg, write_to=abspath, scale=2)
         print('\n')
         print('-----------')
         print('Smart Chess')
@@ -64,7 +73,7 @@ def start():
         if (board.is_checkmate()):
             print('GAME ENDED BY CHECKMATE')
             break
-        
+
         elif (board.is_stalemate()):
             print('GAME ENDED BY STALEMATE')
             break
@@ -90,17 +99,17 @@ def start():
             except:
                 print('INVALID MOVE\n')
                 move = input('DESIRED MOVE: ')
-                
+
         with open(path+'\\'+'log.txt', 'a') as f:
             f.write(board.fen()+'\n')
         turn = not turn
         x += 1
 
-    
 
 def main():
     menu()
     start()
+
 
 if __name__ == "__main__":
     main()
