@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'homepage.dart';
+import 'Color.dart';
+import 'winsplash.dart';
 
 class game extends StatefulWidget {
   game({Key? key, required this.title}) : super(key: key);
@@ -67,10 +69,17 @@ class _gameState extends State<game> {
                       style: TextButton.styleFrom(
                         fixedSize: Size(200, 60),
                         primary: Colors.white,
-                        backgroundColor: Color(0xFF312e2b),
+                        backgroundColor: darkbrown,
                       ),
                       onPressed: () {
-                        Navigator.popUntil(context, (route) => route.isFirst);
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (context, animation1, animation2) =>
+                                WinSplash(title: 'title', win: false),
+                          ),
+                        );
                       },
                       child: Text(
                         'Resign',
@@ -144,11 +153,11 @@ Widget Chessboard() {
 Color getcolor(int x) {
   switch (((x + x/8) % 2).floor()) {
     case 0:
-      return Color(0xFFb48866);
+      return lightbrown;
     case 1:
-      return Color(0xFFf0d9b7);
+      return darkbrown;
     default:
-      return Color(0xFF747474);
+      return darkbrown;
   }
 }
 
