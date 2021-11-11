@@ -91,6 +91,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       child: Icon(Icons.menu_book),
                     ),
+                    Expanded(child: Container()),
+                    Text('By: The Segfaults', style: TextStyle(fontSize: 20, color: Colors.white),),
+                    SizedBox(width: 20,)
                   ],
                 )
               ],
