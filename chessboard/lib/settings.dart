@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'vsMenu.dart';
 import 'settings.dart';
 import 'history.dart';
+import 'Color.dart';
 
 class settings extends StatefulWidget {
   settings({Key? key, required this.title}) : super(key: key);
@@ -30,7 +31,7 @@ class _settingsState extends State<settings> {
           Row(
             children: [
               FloatingActionButton(
-                backgroundColor: Color(0xFFf67a7a),
+                backgroundColor: darkbrown,
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -43,7 +44,7 @@ class _settingsState extends State<settings> {
               style: TextButton.styleFrom(
                 fixedSize: Size(300, 60),
                 primary: Colors.white,
-                backgroundColor: Color(0xFFf67a7a),
+                backgroundColor: darkbrown,
               ),
               onPressed: () {
               },
@@ -62,11 +63,11 @@ class _settingsState extends State<settings> {
 Color getcolor(int x) {
   switch (x % 2) {
     case 0:
-      return Color(0xFF672727);
+      return primary;
     case 1:
-      return Color(0xFF747474);
+      return secondary;
     default:
-      return Color(0xFF747474);
+      return secondary;
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'difficulty.dart';
 import 'assistmenu.dart';
+import 'Color.dart';
 
 class vsMenu extends StatefulWidget {
   vsMenu({Key? key, required this.title}) : super(key: key);
@@ -31,7 +32,7 @@ class _vsMenuState extends State<vsMenu> {
           Row(
             children: [
               FloatingActionButton(
-                backgroundColor: Color(0xFFf67a7a),
+                backgroundColor: darkbrown,
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -62,7 +63,7 @@ Widget MyButton(BuildContext context, String text, Widget widget) {
     style: TextButton.styleFrom(
       fixedSize: Size(200, 60),
       primary: Colors.white,
-      backgroundColor: Color(0xFFf67a7a),
+      backgroundColor: darkbrown,
     ),
     onPressed: () {
       Navigator.push(
@@ -83,13 +84,13 @@ Widget MyButton(BuildContext context, String text, Widget widget) {
 Color getcolor(int x) {
   switch (x % 2) {
     case 0:
-      return Color(0xFF672727);
+      return primary;
       break;
     case 1:
-      return Color(0xFF747474);
+      return secondary;
       break;
     default:
-      return Color(0xFF747474);
+      return secondary;
   }
 }
 

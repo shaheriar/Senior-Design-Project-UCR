@@ -29,7 +29,7 @@ class _gameState extends State<game> {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBodyBehindAppBar: true,
-        backgroundColor: Color(0xFFf67a7a),
+        backgroundColor: Color(0xFF312e2b),
         body: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -81,7 +81,7 @@ class _gameState extends State<game> {
                       style: TextButton.styleFrom(
                         fixedSize: Size(200, 60),
                         primary: Colors.white,
-                        backgroundColor: Color(0xFFf67a7a),
+                        backgroundColor: Color(0xFF312e2b),
                       ),
                       onPressed: () {
                         Navigator.popUntil(context, (route) => route.isFirst);
@@ -158,9 +158,9 @@ Widget Chessboard() {
 Color getcolor(int x) {
   switch (((x + x/8) % 2).floor()) {
     case 0:
-      return Color(0xFF672727);
+      return Color(0xFFb48866);
     case 1:
-      return Color(0xFF747474);
+      return Color(0xFFf0d9b7);
     default:
       return Color(0xFF747474);
   }

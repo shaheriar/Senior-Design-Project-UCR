@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'vsMenu.dart';
 import 'settings.dart';
 import 'history.dart';
+import 'Color.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -16,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: Color(0xFF747474),
+      backgroundColor: secondary,
       body: Stack(
         children: [
           GridView.builder(
@@ -44,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextButton.styleFrom(
                     fixedSize: Size(200, 60),
                     primary: Colors.white,
-                    backgroundColor: Color(0xFFf67a7a),
+                    backgroundColor: darkbrown,
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   children: [
                     FloatingActionButton(
-                      backgroundColor: Color(0xFFf67a7a),
+                      backgroundColor: darkbrown,
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -78,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     SizedBox(width: 10,),
                     FloatingActionButton(
-                      backgroundColor: Color(0xFFf67a7a),
+                      backgroundColor: darkbrown,
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -104,11 +105,11 @@ class _MyHomePageState extends State<MyHomePage> {
 Color getcolor(int x) {
   switch (x % 2) {
     case 0:
-      return Color(0xFF672727);
+      return primary;
     case 1:
-      return Color(0xFF747474);
+      return secondary;
     default:
-      return Color(0xFF747474);
+      return secondary;
   }
 }
 
