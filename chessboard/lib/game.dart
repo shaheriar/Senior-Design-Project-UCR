@@ -2,20 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 
-List<String> moves = [
-  'Na6',
-  'a3',
-  'O-O',
-  'e6',
-  'Qc4',
-  'Bh6',
-  'a3',
-  'O-O',
-  'e6',
-  'Qc4',
-  'Bh6',
-];
-
 class game extends StatefulWidget {
   game({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -165,6 +151,20 @@ Color getcolor(int x) {
       return Color(0xFF747474);
   }
 }
+
+List<String> moves = [
+  'Na6',
+  'a3',
+  'O-O',
+  'e6',
+  'Qc4',
+  'Bh6',
+  'a3',
+  'O-O',
+  'e6',
+  'Qc4',
+  'Bh6',
+];
 
 List<String> board =
 ['r','.','b','q','k','b','.','r',
