@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 11,
             ),
-            itemBuilder: _buildGridItems,
+            itemBuilder: buildGridItems,
             itemCount: 77,
           ),
           Center(
@@ -113,7 +113,7 @@ Color getcolor(int x) {
   }
 }
 
-Widget _buildGridItems(BuildContext context, int index) {
+Widget buildGridItems(BuildContext context, int index) {
   return GridTile(
     child: Container(
       width: 50,

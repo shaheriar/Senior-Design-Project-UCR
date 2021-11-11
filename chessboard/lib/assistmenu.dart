@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'game.dart';
 import 'Color.dart';
+import 'homepage.dart';
 
 class assists extends StatefulWidget {
   assists({Key? key, required this.title}) : super(key: key);
@@ -28,7 +29,7 @@ class _assistsState extends State<assists> {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 11,
             ),
-            itemBuilder: _buildGridItems,
+            itemBuilder: buildGridItems,
             itemCount: 77,
           ),
           Row(
@@ -181,29 +182,6 @@ Widget MyButton(BuildContext context, String text, Widget widget) {
     child: Text(
       text,
       style: TextStyle(fontSize: 35),
-    ),
-  );
-}
-
-Color getcolor(int x) {
-  switch (x % 2) {
-    case 0:
-      return primary;
-      break;
-    case 1:
-      return secondary;
-      break;
-    default:
-      return secondary;
-  }
-}
-
-Widget _buildGridItems(BuildContext context, int index) {
-  return GridTile(
-    child: Container(
-      width: 50,
-      height: 50,
-      color: getcolor(index),
     ),
   );
 }

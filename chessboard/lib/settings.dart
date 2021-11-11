@@ -4,6 +4,7 @@ import 'vsMenu.dart';
 import 'settings.dart';
 import 'history.dart';
 import 'Color.dart';
+import 'homepage.dart';
 
 class settings extends StatefulWidget {
   settings({Key? key, required this.title}) : super(key: key);
@@ -25,7 +26,7 @@ class _settingsState extends State<settings> {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 11,
             ),
-            itemBuilder: _buildGridItems,
+            itemBuilder: buildGridItems,
             itemCount: 77,
           ),
           Row(
@@ -58,25 +59,4 @@ class _settingsState extends State<settings> {
       ),
     );
   }
-}
-
-Color getcolor(int x) {
-  switch (x % 2) {
-    case 0:
-      return primary;
-    case 1:
-      return secondary;
-    default:
-      return secondary;
-  }
-}
-
-Widget _buildGridItems(BuildContext context, int index) {
-  return GridTile(
-    child: Container(
-      width: 50,
-      height: 50,
-      color: getcolor(index),
-    ),
-  );
 }

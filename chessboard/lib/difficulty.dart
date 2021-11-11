@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'assistmenu.dart';
 import 'Color.dart';
+import 'homepage.dart';
 
 class difficulty extends StatefulWidget {
   difficulty({Key? key, required this.title}) : super(key: key);
@@ -25,7 +26,7 @@ class _difficultyState extends State<difficulty> {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 11,
             ),
-            itemBuilder: _buildGridItems,
+            itemBuilder: buildGridItems,
             itemCount: 77,
           ),
           Row(
@@ -59,50 +60,4 @@ class _difficultyState extends State<difficulty> {
       ),
     );
   }
-}
-
-Widget MyButton(BuildContext context, String text, Widget widget) {
-  return TextButton(
-    style: TextButton.styleFrom(
-      fixedSize: Size(200, 60),
-      primary: Colors.white,
-      backgroundColor: darkbrown,
-    ),
-    onPressed: () {
-      Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) =>
-          widget,
-        ),
-      );
-    },
-    child: Text(
-      text,
-      style: TextStyle(fontSize: 35),
-    ),
-  );
-}
-
-Color getcolor(int x) {
-  switch (x % 2) {
-    case 0:
-      return primary;
-      break;
-    case 1:
-      return secondary;
-      break;
-    default:
-      return secondary;
-  }
-}
-
-Widget _buildGridItems(BuildContext context, int index) {
-  return GridTile(
-    child: Container(
-      width: 50,
-      height: 50,
-      color: getcolor(index),
-    ),
-  );
 }

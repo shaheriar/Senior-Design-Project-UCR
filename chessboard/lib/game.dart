@@ -141,17 +141,6 @@ Widget Chessboard() {
   );
 }
 
-Color getcolor(int x) {
-  switch (((x + x/8) % 2).floor()) {
-    case 0:
-      return Color(0xFFb48866);
-    case 1:
-      return Color(0xFFf0d9b7);
-    default:
-      return Color(0xFF747474);
-  }
-}
-
 List<String> moves = [
   'Na6',
   'a3',
