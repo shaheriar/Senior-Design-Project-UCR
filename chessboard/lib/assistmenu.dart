@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'game.dart';
-import 'Color.dart';
+import 'Classes/Color.dart';
 import 'homepage.dart';
+import 'Classes/Assists.dart';
 
 class assists extends StatefulWidget {
   assists({Key? key, required this.title}) : super(key: key);
@@ -77,13 +78,19 @@ class _assistsState extends State<assists> {
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
-                  Checkbox(
-                    value: recommended,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        recommended = value!;
-                      });
-                    },
+                  SizedBox(width: 20,),
+                  Transform.scale(
+                    scale: 2,
+                    child: Checkbox(
+
+                      activeColor: darkbrown,
+                      value: recommended,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          recommended = value!;
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -109,13 +116,18 @@ class _assistsState extends State<assists> {
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
-                  Checkbox(
-                    value: available,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        available = value!;
-                      });
-                    },
+                  SizedBox(width: 20,),
+                  Transform.scale(
+                    scale: 2,
+                    child: Checkbox(
+                      activeColor: darkbrown,
+                      value: available,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          available = value!;
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -141,20 +153,25 @@ class _assistsState extends State<assists> {
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
-                  Checkbox(
-                    value: illegal,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        illegal = value!;
-                      });
-                    },
+                  SizedBox(width: 20,),
+                  Transform.scale(
+                    scale: 2,
+                    child: Checkbox(
+                      activeColor: darkbrown,
+                      value: illegal,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          illegal = value!;
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
               SizedBox(
                 height: 50,
               ),
-              MyButton(context, 'Play', game(title: '',)),
+              MyButton(context, 'Play', game(title: '',assists: Assists(available,recommended,illegal),)),
             ],
           ),
         ],

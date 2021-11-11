@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'difficulty.dart';
 import 'assistmenu.dart';
-import 'Color.dart';
+import 'Classes/Color.dart';
 import 'homepage.dart';
 
 class vsMenu extends StatefulWidget {

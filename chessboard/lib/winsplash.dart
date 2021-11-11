@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'homepage.dart';
-import 'Color.dart';
-
+import 'Classes/Color.dart';
 
 class WinSplash extends StatefulWidget {
   WinSplash({Key? key, required this.title, required this.win}) : super(key: key);
@@ -31,6 +30,7 @@ splash(BuildContext context, bool win) {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               win ? StyledText('Black Won!') : StyledText('White Won!'),
+              SizedBox(height: 20,),
               TextButton(
                 style: TextButton.styleFrom(
                   fixedSize: Size(200, 60),

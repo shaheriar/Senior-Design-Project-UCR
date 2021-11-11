@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'homepage.dart';
-import 'Color.dart';
+import 'Classes/Color.dart';
 import 'winsplash.dart';
+import 'Classes/Assists.dart';
 
 class game extends StatefulWidget {
-  game({Key? key, required this.title}) : super(key: key);
+  game({Key? key, required this.title, required this.assists}) : super(key: key);
   final String title;
+  Assists assists;
 
   @override
   _gameState createState() => _gameState();
@@ -17,7 +19,7 @@ class _gameState extends State<game> {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBodyBehindAppBar: true,
-        backgroundColor: Color(0xFF312e2b),
+        backgroundColor: primary,
         body: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

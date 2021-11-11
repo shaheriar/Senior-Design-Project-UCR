@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'vsMenu.dart';
 import 'settings.dart';
 import 'history.dart';
-import 'Color.dart';
+import 'Classes/Color.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);

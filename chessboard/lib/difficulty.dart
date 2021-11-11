@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'assistmenu.dart';
-import 'Color.dart';
+import 'Classes/Color.dart';
 import 'homepage.dart';
 
 class difficulty extends StatefulWidget {
