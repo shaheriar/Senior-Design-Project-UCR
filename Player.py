@@ -31,8 +31,8 @@ class Player:
                         actualMove.to_square).piece_type]
                     otherPlayer.points -= piecePoints[board.piece_at(
                         actualMove.to_square).piece_type]
-                history.append(board.fen())
                 board.push_san(move)
+                history.append(board.fen())
                 break
             except:
                 print('INVALID MOVE\n')
