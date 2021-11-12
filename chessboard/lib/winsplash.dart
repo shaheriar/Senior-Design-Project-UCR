@@ -4,8 +4,7 @@ import 'homepage.dart';
 import 'Classes/Color.dart';
 
 class WinSplash extends StatefulWidget {
-  WinSplash({Key? key, required this.title, required this.win}) : super(key: key);
-  final String title;
+  WinSplash({Key? key, required this.win}) : super(key: key);
   bool win;
 
   @override
@@ -22,9 +21,9 @@ class _WinSplashState extends State<WinSplash> {
 }
 
 splash(BuildContext context, bool win) {
-  return Material(
-    color: Colors.black87,
-    child: Center(
+  return Scaffold(
+    backgroundColor: Colors.black87,
+    body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

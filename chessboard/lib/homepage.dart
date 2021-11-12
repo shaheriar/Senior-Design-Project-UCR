@@ -5,8 +5,7 @@ import 'history.dart';
 import 'Classes/Color.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -18,17 +17,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: secondary,
-      body: Stack(
-        children: [
-          GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 11,
-            ),
-            itemBuilder: buildGridItems,
-            itemCount: 77,
-          ),
-          Center(
-            child: Column(
+      body: Center(
+        child: Stack(
+          children: [
+            background(),
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Expanded(child: Container()),
@@ -71,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           context,
                           PageRouteBuilder(
                             pageBuilder: (context, animation1, animation2) =>
-                                settings(title: 'title'),
+                                settings(),
                           ),
                         );
                       },
@@ -85,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           context,
                           PageRouteBuilder(
                             pageBuilder: (context, animation1, animation2) =>
-                                settings(title: 'title'),
+                                history(),
                           ),
                         );
                       },
@@ -98,11 +91,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+}
+
+Widget background() {
+  return GridView.builder(
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 11,
+    ),
+    itemBuilder: buildGridItems,
+    itemCount: 77,
+  );
 }
 
 Color getcolor(int x) {

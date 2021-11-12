@@ -6,8 +6,7 @@ import 'homepage.dart';
 import 'Classes/Assists.dart';
 
 class assists extends StatefulWidget {
-  assists({Key? key, required this.title}) : super(key: key);
-  final String title;
+  assists({Key? key}) : super(key: key);
 
   @override
   _assistsState createState() => _assistsState();
@@ -22,28 +21,11 @@ class _assistsState extends State<assists> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFF747474),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+      floatingActionButton: FloatingActionButton(backgroundColor: darkbrown, onPressed: () => Navigator.pop(context), child: Icon(CupertinoIcons.back),),
       body: Stack(
         children: [
-          GridView.builder(
-            primary: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 11,
-            ),
-            itemBuilder: buildGridItems,
-            itemCount: 77,
-          ),
-          Row(
-            children: [
-              FloatingActionButton(
-                backgroundColor: darkbrown,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(CupertinoIcons.back),
-              )
-            ],
-          ),
+          background(),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -171,7 +153,7 @@ class _assistsState extends State<assists> {
               SizedBox(
                 height: 50,
               ),
-              MyButton(context, 'Play', game(title: '',assists: Assists(available,recommended,illegal),)),
+              MyButton(context, 'Play', game(assists: Assists(available,recommended,illegal),)),
             ],
           ),
         ],

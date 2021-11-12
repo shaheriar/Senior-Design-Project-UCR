@@ -5,8 +5,7 @@ import 'Classes/Color.dart';
 import 'homepage.dart';
 
 class difficulty extends StatefulWidget {
-  difficulty({Key? key, required this.title}) : super(key: key);
-  final String title;
+  difficulty({Key? key}) : super(key: key);
 
   @override
   _difficultyState createState() => _difficultyState();
@@ -18,41 +17,24 @@ class _difficultyState extends State<difficulty> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFF747474),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+      floatingActionButton: FloatingActionButton(backgroundColor: darkbrown, onPressed: () => Navigator.pop(context), child: Icon(CupertinoIcons.back),),
       body: Stack(
         children: [
-          GridView.builder(
-            primary: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 11,
-            ),
-            itemBuilder: buildGridItems,
-            itemCount: 77,
-          ),
-          Row(
-            children: [
-              FloatingActionButton(
-                backgroundColor: darkbrown,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(CupertinoIcons.back),
-              )
-            ],
-          ),
+          background(),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                MyButton(context, 'Easy', assists(title: '')),
+                MyButton(context, 'Easy', assists()),
                 SizedBox(
                   height: 20,
                 ),
-                MyButton(context, 'Medium', assists(title: '')),
+                MyButton(context, 'Medium', assists()),
                 SizedBox(
                   height: 20,
                 ),
-                MyButton(context, 'Hard', assists(title: '',))
+                MyButton(context, 'Hard', assists())
               ],
             ),
           ),

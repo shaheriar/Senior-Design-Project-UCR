@@ -19,37 +19,20 @@ class _vsMenuState extends State<vsMenu> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFF747474),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+      floatingActionButton: FloatingActionButton(backgroundColor: darkbrown, onPressed: () => Navigator.pop(context), child: Icon(CupertinoIcons.back),),
       body: Stack(
         children: [
-          GridView.builder(
-            primary: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 11,
-            ),
-            itemBuilder: buildGridItems,
-            itemCount: 77,
-          ),
-          Row(
-            children: [
-              FloatingActionButton(
-                backgroundColor: darkbrown,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(CupertinoIcons.back),
-              )
-            ],
-          ),
+          background(),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                MyButton(context, 'vs Human', assists(title: '')),
+                MyButton(context, 'vs Human', assists()),
                 SizedBox(
                   height: 20,
                 ),
-                MyButton(context, 'vs AI', difficulty(title: 'title'))
+                MyButton(context, 'vs AI', difficulty())
               ],
             ),
           ),

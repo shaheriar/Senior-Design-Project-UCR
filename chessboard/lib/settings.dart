@@ -7,8 +7,7 @@ import 'Classes/Color.dart';
 import 'homepage.dart';
 
 class settings extends StatefulWidget {
-  settings({Key? key, required this.title}) : super(key: key);
-  final String title;
+  settings({Key? key}) : super(key: key);
 
   @override
   _settingsState createState() => _settingsState();
@@ -18,28 +17,13 @@ class _settingsState extends State<settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
+      floatingActionButton: FloatingActionButton(backgroundColor: darkbrown, onPressed: () => Navigator.pop(context), child: Icon(CupertinoIcons.back),),
       extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFF747474),
       body: Stack(
         children: [
-          GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 11,
-            ),
-            itemBuilder: buildGridItems,
-            itemCount: 77,
-          ),
-          Row(
-            children: [
-              FloatingActionButton(
-                backgroundColor: darkbrown,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(CupertinoIcons.back),
-              )
-            ],
-          ),
+          background(),
           Center(
             child: TextButton(
               style: TextButton.styleFrom(
