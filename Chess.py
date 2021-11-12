@@ -1,9 +1,10 @@
 import chess
 import chess.svg
-import Player
+from Player import Player
 from cairosvg import svg2png
 import os
 from datetime import datetime
+from Points import piecePoints
 
 arr = ['\nWHITE\'S TURN\n', '\nBLACK\'S TURN\n']
 player1 = None
@@ -11,6 +12,8 @@ player2 = None
 
 
 def menu():
+    global player1
+    global player2
     x = 0
     print('------------------------------')
     print('Smart Chess by The Segfaults')
@@ -49,29 +52,33 @@ def start():
     board = chess.Board()
     now = datetime.now()
     history = []
-    try:
-        os.mkdir('SaveGames')
-    except:
-        print()
-    path = 'SaveGames\\'+now.strftime("%m_%d_%Y__%H_%M_%S")
-    os.mkdir(path)
+    # try:
+    # os.mkdir('SaveGames')
+    # except:
+    # print()
+    #path = 'SaveGames\\'+now.strftime("%m_%d_%Y__%H_%M_%S")
+    # os.mkdir(path)
     while (not board.is_checkmate() or not board.is_stalemate()):
-        try:
-            svg = chess.svg.board(board=board, lastmove=board.peek())
-        except:
-            svg = chess.svg.board(board=board)
-        abspath = path+'\\'+str(x)+'.png'
-        svg2png(svg, write_to=abspath, scale=2)
+        # try:
+        #svg = chess.svg.board(board=board, lastmove=board.peek())
+        # except:
+        #svg = chess.svg.board(board=board)
+        #abspath = path+'\\'+str(x)+'.png'
+        #svg2png(svg, write_to=abspath, scale=2)
         print('\n')
         print('-----------')
         print('Smart Chess')
         print('-----------')
         print(board)
-        fd = os.popen(abspath)
+        #fd = os.popen(abspath)
         print('-----------')
         print(arr[turn])
         if (board.is_checkmate()):
             print('GAME ENDED BY CHECKMATE')
+            if turn == 0:
+                print("White Wins")
+            else:
+                print("Black Wins")
             break
 
         elif (board.is_stalemate()):
@@ -91,17 +98,16 @@ def start():
                 continue
             else:
                 return
-        while(1):
-            try:
-                board.push_san(move)
-                history.append(board.fen())
-                break
-            except:
-                print('INVALID MOVE\n')
-                move = input('DESIRED MOVE: ')
 
-        with open(path+'\\'+'log.txt', 'a') as f:
-            f.write(board.fen()+'\n')
+        if turn == 0:
+            player1.makeMove(board, move, history, player2)
+            print('PLAYER 1 SCORE: ', player1.points)
+        else:
+            player2.makeMove(board, move, history, player1)
+            print('PLAYER 2 SCORE: ', player2.points)
+
+        # with open(path+'\\'+'log.txt', 'a') as f:
+        #    f.write(board.fen()+'\n')
         turn = not turn
         x += 1
 

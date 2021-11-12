@@ -1,7 +1,9 @@
 import chess
+from cairosvg import svg2png
+from Points import piecePoints
 
 
-class player:
+class Player:
     # parameters
     points = 0
     name = ""
@@ -16,16 +18,20 @@ class player:
         # miniMax algo
         pass
 
-    def makeMove(self, board, move):
-        if(self.recommendMoves == True):
-            self.Recommend(board)
+    def makeMove(self, board, move, history, otherPlayer):
+        # if(self.recommendMoves == True):
+        #     self.Recommend(board)
 
-        move = input('DESIRED MOVE: ')
-        if (move == 'quit'):
-            print('GAME ENDED')
-            return
         while(1):
             try:
+                actualMove = board.parse_san(move)
+                print(board.is_capture(actualMove))
+                if(board.is_capture(actualMove)):
+                    self.points += piecePoints[board.piece_at(
+                        actualMove.to_square).piece_type]
+                    otherPlayer.points -= piecePoints[board.piece_at(
+                        actualMove.to_square).piece_type]
+                history.append(board.fen())
                 board.push_san(move)
                 break
             except:
