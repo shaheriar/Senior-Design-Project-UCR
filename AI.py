@@ -13,7 +13,7 @@ class AI(Player):
     def __init__(self, recommendMoves, difficulty):
         super().__init__( recommendMoves)
         self.difficulty = difficulty
-
+    
     def minimax(self, board, depth, turn, alpha, beta):
         boardCopy = copy.deepcopy(board)
         if depth == 0 or board.is_checkmate() or board.is_stalemate():
@@ -24,15 +24,17 @@ class AI(Player):
         if(not turn): 
             maxValue = MoveEval("", -math.inf)
             for i in board.legal_moves:
-                boardCopy = copy.deepcopy(board)
+                #boardCopy = copy.deepcopy(board)
                 # print(boardCopy)
                 # print('\n')
-                boardCopy.push_san(i.uci())
-                value = self.minimax(boardCopy, depth - 1, True, alpha, beta)
+                board.push(i)
+                value = self.minimax(board, depth - 1, True, alpha, beta)
+                board.pop()
                 # print(value)
                 if(value.evaluation >= maxValue.evaluation):
                     maxValue = value
                     maxValue.move = i.uci()
+                
                 if (maxValue.evaluation >= alpha.evaluation):
                     alpha = maxValue
                 if (beta.evaluation <= alpha.evaluation):
@@ -41,11 +43,12 @@ class AI(Player):
         else:
             minValue = MoveEval("", math.inf)
             for i in board.legal_moves:
-                boardCopy = copy.deepcopy(board)
+                #boardCopy = copy.deepcopy(board)
                 # print(boardCopy)
                 # print('\n')
-                boardCopy.push_san(i.uci())
-                value = self.minimax(boardCopy, depth - 1, False, alpha, beta)
+                board.push(i)
+                value = self.minimax(board, depth - 1, False, alpha, beta)
+                board.pop()
                 # print(value)
                 if(value.evaluation <= minValue.evaluation):
                     minValue = value
