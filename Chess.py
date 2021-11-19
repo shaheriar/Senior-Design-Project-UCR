@@ -7,6 +7,9 @@ import os
 from datetime import datetime
 from Points import piecePoints
 
+def symbolprint(board):
+    print(board.unicode(invert_color=True))
+
 arr = ['\nWHITE\'S TURN\n', '\nBLACK\'S TURN\n']
 # player1 = None
 # player2 = None
@@ -44,7 +47,7 @@ class chessGame:
             return 1
         elif x == 2:
             player1 = Player(False)
-            #AI = AI(False, 0)
+            AI = AI(False, 0)
             return 2
         return
         # print('Assists')
@@ -83,13 +86,13 @@ class chessGame:
             print('-----------')
 
 
-            print(board)
+            symbolprint(board)
             #fd = os.popen(abspath)
             print('-----------')
             print(arr[turn])
             if (board.is_checkmate()):
                 print('GAME ENDED BY CHECKMATE')
-                if turn == 0:
+                if turn == 1:
                     print("White Wins")
                 else:
                     print("Black Wins")
@@ -99,35 +102,31 @@ class chessGame:
                 print('GAME ENDED BY STALEMATE')
                 break
             print(board.legal_moves)
-            move = input('DESIRED MOVE: ')
-            if (move == 'quit'):
-                print('GAME ENDED')
-                if (turn == 1):
-                    print('WHITE WON BY FORFEIT')
-                else:
-                    print('BLACK WON BY FORFEIT')
-                choice = input('RESTART? (Y/N): ')
-                if (choice == 'Y' or choice == 'y'):
-                    board = chess.Board()
-                    continue
-                else:
-                    return
+            # if (move == 'quit'):
+            #     print('GAME ENDED')
+            #     if (turn == 1):
+            #         print('WHITE WON BY FORFEIT')
+            #     else:
+            #         print('BLACK WON BY FORFEIT')
+            #     choice = input('RESTART? (Y/N): ')
+            #     if (choice == 'Y' or choice == 'y'):
+            #         board = chess.Board()
+            #         continue
+            #     else:
+            #         return
             if(gameMode == 1):
                 if turn == 0:
-                    tuple = player1.makeMove(board, move, Points, turn)
-                    board = tuple[0]
-                    Points = tuple[1]
-                    print('GAME SCORE: ', Points)
+                    board = player1.makeMove(board, 5, turn)
                 else:
-                    tuple = player2.makeMove(board, move, Points, turn)
-                    board = tuple[0]
-                    Points = tuple[1]
-                    print('GAME SCORE: ', Points)
+                    board = player2.makeMove(board, 5, turn)
             elif(gameMode == 2):
-                tuple = player1.makeMove(board, move, Points, turn)
-                board = tuple[0]
-                Points = tuple[1]
-                AI.AImakeMove()
+                if turn == 0:
+                    board = player1.makeMove(board, 5, turn)
+                else: 
+                    if(x < 2):
+                        board = AI.makeFirstMove(board)
+                    else:
+                        board = AI.makeMove(board, 4, turn)
 
             # with open(path+'\\'+'log.txt', 'a') as f:
             #    f.write(board.fen()+'\n')

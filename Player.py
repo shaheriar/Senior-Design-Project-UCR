@@ -1,6 +1,9 @@
 import chess
 from cairosvg import svg2png
 from Points import piecePoints
+import Points
+from MoveEval import MoveEval
+import math
 
 
 class Player:
@@ -10,30 +13,51 @@ class Player:
     def __init__(self, recommendMoves):
         self.recommendMoves = recommendMoves
 
-    def Recommend(board):
-        # miniMax algo
-        pass
+    def Recommend(self, board, depth, turn):
+        boardCopy = board
+        if depth == 0 or board.board.is_checkmate() or board.is_stalemate():
+            Points.heuristic(board)
+            endEval = MoveEval("empty", eval)
+            return endEval
 
-    def makeMove(self, board, move, points, turn):
-        # if(self.recommendMoves == True):
-        #     self.Recommend(board)
+        if(turn) : 
+            maxValue = -math.inf
+            moveStr = ""
+            for i in board.legal_moves:
+                boardCopy = board
+                boardCopy.push_san(i.uci())
+                value = int(self.minimax(boardCopy, depth - 1, False).evaluation)
+                if(value >= maxValue):
+                    maxValue = value
+                    moveStr = i.uci()
+                else: 
+                    continue
+            moveToMake = MoveEval(moveStr, maxValue)
+            return moveToMake
+        else:
+            minValue = math.inf
+            moveStr = ""
+            for i in board.legal_moves:
+                boardCopy = board
+                boardCopy.push_san(i.uci())
+                value = int(self.minimax(boardCopy, depth - 1, True).evaluation)
+                if(value <= minValue):
+                    minValue = value
+                    moveStr = i.uci()
+                else: 
+                    continue
+            moveToMake = MoveEval(moveStr, minValue)
+            return moveToMake
 
-        while(1):
+    def makeMove(self, board, depth, turn):
+        if(self.recommendMoves == True):
+            print(self.Recommend(board, depth, turn).move)
+        while(1):    
+            move = input('DESIRED MOVE: ')
             try:
-                actualMove = board.parse_san(move)
-                # print(board.is_capture(actualMove))
-                if(board.is_capture(actualMove)):
-                    if(turn == 0):
-                        points += piecePoints[board.piece_at(
-                            actualMove.to_square).piece_type]
-                    else:
-                        points -= piecePoints[board.piece_at(
-                            actualMove.to_square).piece_type]
                 board.push_san(move)
-                return (board,points)
+                return (board)
                 # history.append(board.fen())
-                break
             except:
                 print('INVALID MOVE\n')
-                move = input('DESIRED MOVE: ')
             
