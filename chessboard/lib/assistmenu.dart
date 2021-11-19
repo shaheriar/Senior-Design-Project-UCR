@@ -13,9 +13,8 @@ class assists extends StatefulWidget {
 }
 
 class _assistsState extends State<assists> {
-  bool recommended = false;
-  bool available = false;
-  bool illegal = false;
+  bool b = false;
+  bool w = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,9 +50,6 @@ class _assistsState extends State<assists> {
                       backgroundColor: darkbrown,
                     ),
                     onPressed: () {
-                      setState(() {
-                        recommended = !recommended;
-                      });
                     },
                     child: Text(
                       'Recommended Moves',
@@ -61,99 +57,50 @@ class _assistsState extends State<assists> {
                     ),
                   ),
                   SizedBox(width: 20,),
-                  Transform.scale(
-                    scale: 2,
-                    child: Checkbox(
+                  Column(
+                    children: [
+                      Text('Player 1',style: TextStyle(color: Colors.white),),
+                      SizedBox(height: 5,),
+                      Transform.scale(
+                        scale: 2,
+                        child: Checkbox(
 
-                      activeColor: darkbrown,
-                      value: recommended,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          recommended = value!;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      fixedSize: Size(350, 60),
-                      primary: Colors.white,
-                      backgroundColor: darkbrown,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        available = !available;
-                      });
-                    },
-                    child: Text(
-                      'Available Moves',
-                      style: TextStyle(fontSize: 35),
-                    ),
+                          activeColor: darkbrown,
+                          value: w,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              w = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(width: 20,),
-                  Transform.scale(
-                    scale: 2,
-                    child: Checkbox(
-                      activeColor: darkbrown,
-                      value: available,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          available = value!;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      fixedSize: Size(350, 60),
-                      primary: Colors.white,
-                      backgroundColor: darkbrown,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        illegal = !illegal;
-                      });
-                    },
-                    child: Text(
-                      'Show Illegal Moves',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                  SizedBox(width: 20,),
-                  Transform.scale(
-                    scale: 2,
-                    child: Checkbox(
-                      activeColor: darkbrown,
-                      value: illegal,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          illegal = value!;
-                        });
-                      },
-                    ),
+                  Column(
+                    children: [
+                      Text('Player 2',style: TextStyle(color: Colors.white),),
+                      SizedBox(height: 5,),
+                      Transform.scale(
+                        scale: 2,
+                        child: Checkbox(
+                          activeColor: darkbrown,
+                          value: b,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              b = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
               SizedBox(
                 height: 50,
               ),
-              MyButton(context, 'Play', game(assists: Assists(available,recommended,illegal),)),
+              MyButton(context, 'Play', game(assists: Assists(w,b),)),
             ],
           ),
         ],
