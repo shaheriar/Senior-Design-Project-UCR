@@ -5,35 +5,35 @@ from Points import piecePoints
 
 class Player:
     # parameters
-    points = 0
-    name = ""
     recommendMoves = False
 
-    def __init__(self, points, name, recommendMoves):
-        self.points = points
-        self.name = name
+    def __init__(self, recommendMoves):
         self.recommendMoves = recommendMoves
 
     def Recommend(board):
         # miniMax algo
         pass
 
-    def makeMove(self, board, move, history, otherPlayer):
+    def makeMove(self, board, move, points, turn):
         # if(self.recommendMoves == True):
         #     self.Recommend(board)
 
         while(1):
             try:
                 actualMove = board.parse_san(move)
-                print(board.is_capture(actualMove))
+                # print(board.is_capture(actualMove))
                 if(board.is_capture(actualMove)):
-                    self.points += piecePoints[board.piece_at(
-                        actualMove.to_square).piece_type]
-                    otherPlayer.points -= piecePoints[board.piece_at(
-                        actualMove.to_square).piece_type]
+                    if(turn == 0):
+                        points += piecePoints[board.piece_at(
+                            actualMove.to_square).piece_type]
+                    else:
+                        points -= piecePoints[board.piece_at(
+                            actualMove.to_square).piece_type]
                 board.push_san(move)
-                history.append(board.fen())
+                return (board,points)
+                # history.append(board.fen())
                 break
             except:
                 print('INVALID MOVE\n')
                 move = input('DESIRED MOVE: ')
+            
