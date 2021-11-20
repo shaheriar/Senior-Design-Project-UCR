@@ -33,22 +33,27 @@ class chessGame:
         x = int(input('Menu option: '))
         while (x != 1):
             print('Please enter a valid value')
-            x = input('Menu option: ')
+            x = int(input('Menu option: '))
         print('\nMenu Options')
-        print('\n1. vs Human\n')
+        print('\n1. vs Human')
         print('\n2. vs AI')
+        print('\n3. AI vs AI')
         x = int(input('Menu option: '))
-        while (x != 1 and x != 2):
+        while (x < 1 or x > 3):
             print('Please enter a valid value')
             x = int(input('Menu option: '))
         if x == 1:
             player1 = Player(False)
-            player2 = Player( False)
+            player2 = Player(False)
             return 1
         elif x == 2:
             player1 = Player(False)
             AI = AI(False, 0)
             return 2
+        elif x == 3:
+            player1 = AI(False,0)
+            AI = AI(False,0)
+            return 3
         return
         # print('Assists')
         #print('1. Recommended Moves (Y/N)')
@@ -73,7 +78,7 @@ class chessGame:
         # print()
         #path = 'SaveGames\\'+now.strftime("%m_%d_%Y__%H_%M_%S")
         # os.mkdir(path)
-        while (not board.is_checkmate() or not board.is_stalemate()):
+        while (not board.is_checkmate() or not board.is_stalemate() or not board.is_fivefold_repetition()):
             # try:
             #svg = chess.svg.board(board=board, lastmove=board.peek())
             # except:
@@ -101,6 +106,9 @@ class chessGame:
             elif (board.is_stalemate()):
                 print('GAME ENDED BY STALEMATE')
                 break
+            elif (board.is_fivefold_repetition()):
+                print('GAME ENDED BY FIVEFOLD REPETITION')
+                break
             print(board.legal_moves)
             # if (move == 'quit'):
             #     print('GAME ENDED')
@@ -126,7 +134,19 @@ class chessGame:
                     if(x < 2):
                         board = AI.makeFirstMove(board)
                     else:
+                        board = AI.makeMove(board, 3, turn)
+            elif(gameMode == 3):
+                if turn == 0:
+                    if(x < 2):
+                        board = player1.makeFirstMove(board)
+                    else:
+                        board = player1.makeMove(board, 1, turn)
+                else: 
+                    if(x < 2):
+                        board = AI.makeFirstMove(board)
+                    else:
                         board = AI.makeMove(board, 4, turn)
+            
 
             # with open(path+'\\'+'log.txt', 'a') as f:
             #    f.write(board.fen()+'\n')
