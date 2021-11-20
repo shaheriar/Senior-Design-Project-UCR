@@ -1,11 +1,11 @@
 from AI import AI
 import chess
-import chess.svg
+# import chess.svg
 from Player import Player
-from cairosvg import svg2png
-import os
+# from cairosvg import svg2png
+# import os
 from datetime import datetime
-from Points import piecePoints
+from Points import heuristic, piecePoints
 
 def symbolprint(board):
     print(board.unicode(invert_color=True))
@@ -145,7 +145,8 @@ class chessGame:
                     if(x < 2):
                         board = player2.makeFirstMove(board)
                     else:
-                        board = player2.makeMove(board, 3, turn)
+                        board = player2.makeMove(board, 2, turn)
+                print('SCORE: ',heuristic(board))
             
 
             # with open(path+'\\'+'log.txt', 'a') as f:

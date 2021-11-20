@@ -3,7 +3,7 @@ import chess
 from Player import Player
 import Points
 import random
-import math
+from math import inf
 import copy
 
 
@@ -22,7 +22,7 @@ class AI(Player):
             return endEval
 
         if(not turn): 
-            maxValue = MoveEval("", -math.inf)
+            maxValue = MoveEval("", -inf)
             for i in board.legal_moves:
                 #boardCopy = copy.deepcopy(board)
                 # print(boardCopy)
@@ -40,7 +40,7 @@ class AI(Player):
                     return maxValue
             return maxValue
         else:
-            minValue = MoveEval("", math.inf)
+            minValue = MoveEval("", inf)
             for i in board.legal_moves:
                 #boardCopy = copy.deepcopy(board)
                 # print(boardCopy)
@@ -61,7 +61,7 @@ class AI(Player):
 
     def makeMove(self, board, depth, turn):
         print('\n'+'\U0001F914'+"...Thinking..."+'\U0001F914'+'\n')
-        tuple = self.minimax(board, depth, turn, MoveEval("",-math.inf),MoveEval("",math.inf))
+        tuple = self.minimax(board, depth, turn, MoveEval("",-inf),MoveEval("",inf))
         move  = tuple.move
         print("Move made is: ", move)
         board.push_san(move)
