@@ -52,7 +52,7 @@ class chessGame:
             return 2
         elif x == 3:
             player1 = AI(False,0)
-            AI = AI(False,0)
+            player2 = AI(False,0)
             return 3
         return
         # print('Assists')
@@ -140,12 +140,12 @@ class chessGame:
                     if(x < 2):
                         board = player1.makeFirstMove(board)
                     else:
-                        board = player1.makeMove(board, 1, turn)
+                        board = player1.makeMove(board, 3, turn)
                 else: 
                     if(x < 2):
-                        board = AI.makeFirstMove(board)
+                        board = player2.makeFirstMove(board)
                     else:
-                        board = AI.makeMove(board, 4, turn)
+                        board = player2.makeMove(board, 3, turn)
             
 
             # with open(path+'\\'+'log.txt', 'a') as f:
