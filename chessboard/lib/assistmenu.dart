@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'altgame.dart';
 import 'game.dart';
 import 'Classes/Color.dart';
 import 'homepage.dart';
