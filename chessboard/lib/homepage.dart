@@ -58,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   children: [
                     FloatingActionButton(
+                      heroTag: "SETTINGS",
                       backgroundColor: darkbrown,
                       onPressed: () {
                         Navigator.push(
@@ -72,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     SizedBox(width: 10,),
                     FloatingActionButton(
+                      heroTag: "HISTORY",
                       backgroundColor: darkbrown,
                       onPressed: () {
                         Navigator.push(

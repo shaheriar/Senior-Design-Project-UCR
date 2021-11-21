@@ -101,7 +101,7 @@ class _assistsState extends State<assists> {
               SizedBox(
                 height: 50,
               ),
-              MyButton(context, 'Play', game(assists: Assists(w,b),)),
+              MyButton(context, 'Play', altgame(assists: Assists(w,b),)),
             ],
           ),
         ],
