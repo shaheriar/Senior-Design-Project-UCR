@@ -1,106 +1,191 @@
+from AI import AI
 import chess
-import chess.svg
-from cairosvg import svg2png
-import os
+from Player import Player
+# import os
 from datetime import datetime
+from Points import heuristic, piecePoints
+#------------------------------------------
+# import chess.svg
+# from cairosvg import svg2png
+# from PIL import Image
+# import matplotlib.pyplot as plt
+# from io import BytesIO
+#------------------------------------------
 
-arr = ['\nWHITE\'S TURN\n','\nBLACK\'S TURN\n']
+def symbolprint(board):
+    print(board.unicode(invert_color=True))
 
-def menu():
-    x = 0    
-    print('------------------------------')
-    print('Smart Chess by The Segfaults')
-    print('------------------------------')    
-    print('\nMenu Options')
-    print('\n1. Play\n')
-    x = int(input('Menu option: '))
-    while (x != 1):
-        print('Please enter a valid value')
-        x = input('Menu option: ')
-    print('\nMenu Options')
-    print('\n1. vs Human\n')
-    x = int(input('Menu option: '))
-    while (x != 1):
-        print('Please enter a valid value')
-        x = int(input('Menu option: '))
-    return
-    #print('Assists')
-    #print('1. Recommended Moves (Y/N)')
-    #print('2. vs AI')
-    #x = input('Menu option: ')
-    #while (x != 1 or x != 2):
-    #    print('Please enter a valid value')
-    #    x = input('Menu option: ')
+arr = ['\nWHITE\'S TURN\n', '\nBLACK\'S TURN\n']
+# player1 = None
+# player2 = None
+# AI = None
+class chessGame:
+    #Points = 0
 
-def start():
-    turn = False #WHITE IS 0, BLACK IS 1
-    move = ''
-    x = 0
-    svg = ''
-    board = chess.Board()
-    now = datetime.now()
-    history = []
-    try:
-        os.mkdir('SaveGames')
-    except:
-        print()
-    path = 'SaveGames\\'+now.strftime("%m_%d_%Y__%H_%M_%S")
-    os.mkdir(path)
-    while (not board.is_checkmate() or not board.is_stalemate()):
-        try:
-            svg = chess.svg.board(board=board, lastmove=board.peek())
-        except:
-            svg = chess.svg.board(board=board)
-        abspath = path+'\\'+str(x)+'.png'
-        svg2png(svg, write_to=abspath,scale=2)
-        print('\n')
-        print('-----------')
-        print('Smart Chess')
-        print('-----------')
-        print(board)
-        fd = os.popen(abspath)
-        print('-----------')
-        print(arr[turn])
-        if (board.is_checkmate()):
-            print('GAME ENDED BY CHECKMATE')
-            break
+    #def __init__(self):  
+
+    def menu(self):
+        global player1
+        global player2
+        global AI
+        x = 0
+        mode = 0
+        print('------------------------------')
+        print('Smart Chess by The Segfaults')
+        print('------------------------------')
+
+        print('\nMenu Options\n')
+        print('1. Play\n')
+
         
-        elif (board.is_stalemate()):
-            print('GAME ENDED BY STALEMATE')
-            break
-        print(board.legal_moves)
-        move = input('DESIRED MOVE: ')
-        if (move == 'quit'):
-            print('GAME ENDED')
-            if (turn == 1):
-                print('WHITE WON BY FORFEIT')
-            else:
-                print('BLACK WON BY FORFEIT')
-            choice = input('RESTART? (Y/N): ')
-            if (choice == 'Y' or choice == 'y'):
-                board = chess.Board()
-                continue
-            else:
-                return
-        while(1):
-            try:
-                board.push_san(move)
-                history.append(board.fen())
-                break
-            except:
-                print('INVALID MOVE\n')
-                move = input('DESIRED MOVE: ')
-                
-        with open(path+'\\'+'log.txt', 'a') as f:
-            f.write(board.fen()+'\n')
-        turn = not turn
-        x += 1
+        print('-----------')
+        x = int(input('Menu option: '))
+        print('-----------')
 
-    
+        while (x != 1):
+            print('Please enter a valid value')
+            print('-----------')
+            x = int(input('Menu option: '))
+            print('-----------')
+
+        print('\nMenu Options\n')
+        print('1. vs Human')
+        print('2. vs AI')
+        print('3. AI vs AI\n')
+
+        
+        print('-----------')
+        x = int(input('Menu option: '))
+        print('-----------')
+
+        while (x < 1 or x > 3):
+            print('Please enter a valid value')
+            x = int(input('Menu option: '))
+        if x == 1:
+            player1 = Player(False)
+            player2 = Player(False)
+            return 1
+        elif x == 2:
+            player1 = Player(False)
+            AI = AI(False, 0)
+            return 2
+        elif x == 3:
+            player1 = AI(False,0)
+            player2 = AI(False,0)
+            return 3
+        return
+        # print('Assists')
+        #print('1. Recommended Moves (Y/N)')
+        #print('2. vs AI')
+        #x = input('Menu option: ')
+        # while (x != 1 or x != 2):
+        #    print('Please enter a valid value')
+        #    x = input('Menu option: ')
+
+
+    def start(self, gameMode):
+        turn = False  # WHITE IS 0, BLACK IS 1
+        move = ''
+        x = 0
+        svg = ''
+        board = chess.Board()
+        now = datetime.now()
+        history = []
+        # try:
+        # os.mkdir('SaveGames')
+        # except:
+        # print()
+        #path = 'SaveGames\\'+now.strftime("%m_%d_%Y__%H_%M_%S")
+        # os.mkdir(path)
+        while (not board.is_checkmate() or not board.is_stalemate() or not board.is_fivefold_repetition()):
+            # try:
+            #svg = chess.svg.board(board=board, lastmove=board.peek())
+            # except:
+            #svg = chess.svg.board(board=board)
+            #abspath = path+'\\'+str(x)+'.png'
+            #svg2png(svg, write_to=abspath, scale=2)
+            print('\n')
+            print('-----------')
+            print('Smart Chess')
+            print('-----------')
+
+            symbolprint(board)
+
+            #------------------------------------------------------------------------------------------
+            #try:
+            #    plt.imshow(Image.open(BytesIO(svg2png(chess.svg.board(board, lastmove=board.peek())))))
+            #except:
+            #    plt.imshow(Image.open(BytesIO(svg2png(chess.svg.board(board)))))
+            #plt.show(block=False)
+            #------------------------------------------------------------------------------------------
+
+            #fd = os.popen(abspath)
+            print('-----------')
+            print(arr[turn])
+            print('SCORE: ',heuristic(board,turn))
+            if (board.is_checkmate()):
+                print('GAME ENDED BY CHECKMATE')
+                if turn == 1:
+                    print("White Wins")
+                else:
+                    print("Black Wins")
+                break
+
+            elif (board.is_stalemate()):
+                print('GAME ENDED BY STALEMATE')
+                break
+            elif (board.is_fivefold_repetition()):
+                print('GAME ENDED BY FIVEFOLD REPETITION')
+                break
+            print(board.legal_moves)
+            # if (move == 'quit'):
+            #     print('GAME ENDED')
+            #     if (turn == 1):
+            #         print('WHITE WON BY FORFEIT')
+            #     else:
+            #         print('BLACK WON BY FORFEIT')
+            #     choice = input('RESTART? (Y/N): ')
+            #     if (choice == 'Y' or choice == 'y'):
+            #         board = chess.Board()
+            #         continue
+            #     else:
+            #         return
+            if(gameMode == 1):
+                if turn == 0:
+                    board = player1.makeMove(board, 5, turn)
+                else:
+                    board = player2.makeMove(board, 5, turn)
+            elif(gameMode == 2):
+                if turn == 0:
+                    board = player1.makeMove(board, 5, turn)
+                else: 
+                    if(x < 2):
+                        board = AI.makeFirstMove(board)
+                    else:
+                        board = AI.makeMove(board, 3, turn)
+            elif(gameMode == 3):
+                if turn == 0:
+                    if(x < 2):
+                        board = player1.makeFirstMove(board)
+                    else:
+                        board = player1.makeMove(board, 3, turn)
+                else: 
+                    if(x < 2):
+                        board = player2.makeFirstMove(board)
+                    else:
+                        board = player2.makeMove(board, 3, turn)
+            
+
+            # with open(path+'\\'+'log.txt', 'a') as f:
+            #    f.write(board.fen()+'\n')
+            turn = not turn
+            x += 1
+
 
 def main():
-    menu()
-    start()
+   game = chessGame()
+   gameMode = game.menu()
+   game.start(gameMode) 
 
 if __name__ == "__main__":
     main()
