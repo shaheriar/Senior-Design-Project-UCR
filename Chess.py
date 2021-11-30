@@ -1,11 +1,16 @@
 from AI import AI
 import chess
-# import chess.svg
 from Player import Player
-# from cairosvg import svg2png
 # import os
 from datetime import datetime
 from Points import heuristic, piecePoints
+#------------------------------------------
+# import chess.svg
+# from cairosvg import svg2png
+# from PIL import Image
+# import matplotlib.pyplot as plt
+# from io import BytesIO
+#------------------------------------------
 
 def symbolprint(board):
     print(board.unicode(invert_color=True))
@@ -28,17 +33,31 @@ class chessGame:
         print('------------------------------')
         print('Smart Chess by The Segfaults')
         print('------------------------------')
-        print('\nMenu Options')
-        print('\n1. Play\n')
+
+        print('\nMenu Options\n')
+        print('1. Play\n')
+
+        
+        print('-----------')
         x = int(input('Menu option: '))
+        print('-----------')
+
         while (x != 1):
             print('Please enter a valid value')
+            print('-----------')
             x = int(input('Menu option: '))
-        print('\nMenu Options')
-        print('\n1. vs Human')
-        print('\n2. vs AI')
-        print('\n3. AI vs AI')
+            print('-----------')
+
+        print('\nMenu Options\n')
+        print('1. vs Human')
+        print('2. vs AI')
+        print('3. AI vs AI\n')
+
+        
+        print('-----------')
         x = int(input('Menu option: '))
+        print('-----------')
+
         while (x < 1 or x > 3):
             print('Please enter a valid value')
             x = int(input('Menu option: '))
@@ -90,11 +109,20 @@ class chessGame:
             print('Smart Chess')
             print('-----------')
 
-
             symbolprint(board)
+
+            #------------------------------------------------------------------------------------------
+            #try:
+            #    plt.imshow(Image.open(BytesIO(svg2png(chess.svg.board(board, lastmove=board.peek())))))
+            #except:
+            #    plt.imshow(Image.open(BytesIO(svg2png(chess.svg.board(board)))))
+            #plt.show(block=False)
+            #------------------------------------------------------------------------------------------
+
             #fd = os.popen(abspath)
             print('-----------')
             print(arr[turn])
+            print('SCORE: ',heuristic(board,turn))
             if (board.is_checkmate()):
                 print('GAME ENDED BY CHECKMATE')
                 if turn == 1:
@@ -145,8 +173,7 @@ class chessGame:
                     if(x < 2):
                         board = player2.makeFirstMove(board)
                     else:
-                        board = player2.makeMove(board, 2, turn)
-                print('SCORE: ',heuristic(board))
+                        board = player2.makeMove(board, 3, turn)
             
 
             # with open(path+'\\'+'log.txt', 'a') as f:

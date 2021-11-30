@@ -17,7 +17,7 @@ class AI(Player):
     def minimax(self, board, depth, turn, alpha, beta):
         #boardCopy = copy.deepcopy(board)
         if depth == 0 or board.is_checkmate() or board.is_stalemate():
-            eval = Points.heuristic(board)
+            eval = Points.heuristic(board,turn)
             endEval = MoveEval("empty", eval)
             return endEval
 
@@ -37,7 +37,7 @@ class AI(Player):
                 if (maxValue.evaluation >= alpha.evaluation):
                     alpha = maxValue
                 if (beta.evaluation <= alpha.evaluation):
-                    return maxValue
+                    break
             return maxValue
         else:
             minValue = MoveEval("", inf)
@@ -55,7 +55,7 @@ class AI(Player):
                 if (minValue.evaluation <= beta.evaluation):
                     beta = minValue
                 if (beta.evaluation <= alpha.evaluation):
-                    return minValue
+                    break
             return minValue
             
 
