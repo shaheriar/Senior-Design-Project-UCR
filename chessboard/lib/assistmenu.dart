@@ -1,3 +1,4 @@
+import 'package:chessboard/sync.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'altgame.dart';
@@ -7,15 +8,20 @@ import 'homepage.dart';
 import 'Classes/Assists.dart';
 
 class assists extends StatefulWidget {
-  assists({Key? key}) : super(key: key);
+  int human = 0;
+  assists({Key? key, required this.human}) : super(key: key);
 
   @override
-  _assistsState createState() => _assistsState();
+  _assistsState createState() => _assistsState(human);
 }
 
 class _assistsState extends State<assists> {
-  bool b = false;
-  bool w = false;
+  bool b = false; //black recommended
+  bool w = false; //white recommended
+  int h = 0; //vs human or ai
+  _assistsState(int human) {
+    this.h = human;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +107,7 @@ class _assistsState extends State<assists> {
               SizedBox(
                 height: 50,
               ),
-              MyButton(context, 'Play', altgame(assists: Assists(w,b),)),
+              MyButton(context, 'Play', syncgame(assists: Assists(w,b,h),)),
             ],
           ),
         ],

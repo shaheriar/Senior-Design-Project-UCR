@@ -26,15 +26,15 @@ class _difficultyState extends State<difficulty> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                MyButton(context, 'Easy', assists()),
+                MyButton(context, 'Easy', assists(human: 2,)),
                 SizedBox(
                   height: 20,
                 ),
-                MyButton(context, 'Medium', assists()),
+                MyButton(context, 'Medium', assists(human: 2,)),
                 SizedBox(
                   height: 20,
                 ),
-                MyButton(context, 'Hard', assists())
+                MyButton(context, 'Hard', assists(human: 2,))
               ],
             ),
           ),

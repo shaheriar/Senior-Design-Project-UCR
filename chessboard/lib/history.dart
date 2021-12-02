@@ -29,7 +29,7 @@ class _historyState extends State<history> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               title(),
-              gameList()
+              gameList(context)
             ],
           ),
         ],
@@ -38,10 +38,10 @@ class _historyState extends State<history> {
   }
 }
 
-Widget gameList() {
+Widget gameList(BuildContext context) {
   return
     SizedBox(
-      height: 500,
+      height: MediaQuery.of(context).size.height - 135,
       child: ListView.builder(
         padding: const EdgeInsets.all(8),
         itemCount: 6,
@@ -58,20 +58,28 @@ Widget gameList() {
                 //OPEN GAME VIEW
               },
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(
+                    width: MediaQuery.of(context).size.width/4,
                     child: Text(
                       times[index],
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
-                  Text(
-                    winner[index],
-                    style: TextStyle(fontSize: 35),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width/4,
+                    child: Text(
+                      winner[index],
+                      style: TextStyle(fontSize: 35),
+                    ),
                   ),
-                  Text(
-                    moves[index],
-                    style: TextStyle(fontSize: 35),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width/4,
+                    child: Text(
+                      moves[index],
+                      style: TextStyle(fontSize: 35),
+                    ),
                   ),
                 ],
               ),

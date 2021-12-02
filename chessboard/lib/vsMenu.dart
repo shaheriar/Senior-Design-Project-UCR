@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'difficulty.dart';
 import 'assistmenu.dart';
 import 'Classes/Color.dart';
@@ -28,7 +29,7 @@ class _vsMenuState extends State<vsMenu> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                MyButton(context, 'vs Human', assists()),
+                MyButton(context, 'vs Human', assists(human: 1,)),
                 SizedBox(
                   height: 20,
                 ),

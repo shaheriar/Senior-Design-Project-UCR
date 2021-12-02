@@ -1,9 +1,12 @@
 from AI import AI
 import chess
+import ast
 from Player import Player
+import json
 # import os
 from datetime import datetime
 from Points import heuristic, piecePoints
+import time
 #------------------------------------------
 # import chess.svg
 # from cairosvg import svg2png
@@ -22,68 +25,35 @@ arr = ['\nWHITE\'S TURN\n', '\nBLACK\'S TURN\n']
 class chessGame:
     #Points = 0
 
-    #def __init__(self):  
-
-    def menu(self):
+    async def menu(self, client):
         global player1
         global player2
         global AI
-        x = 0
         mode = 0
         print('------------------------------')
         print('Smart Chess by The Segfaults')
         print('------------------------------')
 
-        print('\nMenu Options\n')
-        print('1. Play\n')
+        data = await client.recv()
+        print(data, "\n")
+        # dataParsed = ast.literal_eval(data)
+        dataParsed = json.loads(data)
+        print(dataParsed, "\n")
 
-        
-        print('-----------')
-        x = int(input('Menu option: '))
-        print('-----------')
-
-        while (x != 1):
-            print('Please enter a valid value')
-            print('-----------')
-            x = int(input('Menu option: '))
-            print('-----------')
-
-        print('\nMenu Options\n')
-        print('1. vs Human')
-        print('2. vs AI')
-        print('3. AI vs AI\n')
-
-        
-        print('-----------')
-        x = int(input('Menu option: '))
-        print('-----------')
-
-        while (x < 1 or x > 3):
-            print('Please enter a valid value')
-            x = int(input('Menu option: '))
-        if x == 1:
-            player1 = Player(False)
-            player2 = Player(False)
+        if(dataParsed["gamemode"] == 1):
+            player1 = Player(dataParsed["white"])
+            player2 = Player(dataParsed["black"])
             return 1
-        elif x == 2:
-            player1 = Player(False)
+        elif(dataParsed["gamemode"] == 2):
+            player1 = Player(dataParsed["white"])
             AI = AI(False, 0)
             return 2
-        elif x == 3:
-            player1 = AI(False,0)
-            player2 = AI(False,0)
-            return 3
+
         return
-        # print('Assists')
-        #print('1. Recommended Moves (Y/N)')
-        #print('2. vs AI')
-        #x = input('Menu option: ')
-        # while (x != 1 or x != 2):
-        #    print('Please enter a valid value')
-        #    x = input('Menu option: ')
+        
 
 
-    def start(self, gameMode):
+    async def start(self, gameMode, client):
         turn = False  # WHITE IS 0, BLACK IS 1
         move = ''
         x = 0
@@ -179,6 +149,15 @@ class chessGame:
             # with open(path+'\\'+'log.txt', 'a') as f:
             #    f.write(board.fen()+'\n')
             turn = not turn
+            moveData = {"move" : board.peek().uci()}
+            await client.send(json.dumps(moveData))
+            time.sleep(1)
+            status = await client.recv()
+            if (status == 'timesup'):
+                print('GAME ENDED BY TIME')
+                break
+            time.sleep(1)
+            print('MESSAGE SENT')
             x += 1
 
 
