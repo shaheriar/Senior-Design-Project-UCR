@@ -57,6 +57,7 @@ class chessGame:
 
     async def start(self, gameMode, client):
         turn = False  # WHITE IS 0, BLACK IS 1
+        isGameOver = None
         move = ''
         x = 0
         svg = ''
@@ -70,13 +71,13 @@ class chessGame:
         #path = 'SaveGames\\'+now.strftime("%m_%d_%Y__%H_%M_%S")
         # os.mkdir(path)
         while (not board.is_checkmate() or not board.is_stalemate() or not board.is_fivefold_repetition()):
-            isGameOver = await client.recv()
+            # isGameOver = await client.recv()
             if (isGameOver == 'Draw'):
                 print('GAME ENDED BY DRAW')
                 # Save game up to here
                 break
             elif isGameOver == 'Resign':
-                print("GAME ENDED BY DRAW")
+                print("GAME ENDED BY RESIGNATION")
                 # Save game up to here
                 break
             # try:
@@ -162,8 +163,8 @@ class chessGame:
             moveData = {"move": board.peek().uci()}
             await client.send(json.dumps(moveData))
             time.sleep(1)
-            status = await client.recv()
-            if (status == 'Time'):
+            isGameOver = await client.recv()
+            if (isGameOver == 'Time'):
                 print('GAME ENDED BY TIME')
                 break
             time.sleep(1)
