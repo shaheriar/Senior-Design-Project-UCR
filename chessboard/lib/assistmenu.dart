@@ -67,16 +67,16 @@ class _assistsState extends State<assists> {
                   SizedBox(width: 20,),
                   Column(
                     children: [
-                      h == 1 ? Text('Player 1',style: TextStyle(color: Colors.white),) : Container(),
+                      h == 1 ? Text('White',style: TextStyle(color: Colors.white),) : Container(),
                       SizedBox(height: 5,),
                       Transform.scale(
                         scale: 2,
                         child: Checkbox(
                           activeColor: darkbrown,
-                          value: w,
+                          value: check ? b : w,
                           onChanged: (bool? value) {
                             setState(() {
-                              w = value!;
+                              check ? b = value! : w = value!;
                             });
                           },
                         ),
@@ -86,7 +86,7 @@ class _assistsState extends State<assists> {
                   SizedBox(width: 20,),
                   h == 1 ? Column(
                     children: [
-                      Text('Player 2',style: TextStyle(color: Colors.white),),
+                      Text('Black',style: TextStyle(color: Colors.white),),
                       SizedBox(height: 5,),
                       Transform.scale(
                         scale: 2,
