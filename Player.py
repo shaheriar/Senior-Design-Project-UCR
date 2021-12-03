@@ -15,7 +15,7 @@ class Player:
 
     def Recommend(self, board, depth, turn):
         boardCopy = board
-        if depth == 0 or board.board.is_checkmate() or board.is_stalemate():
+        if depth == 0 or board.is_checkmate() or board.is_stalemate():
             Points.heuristic(board)
             endEval = MoveEval("empty", eval)
             return endEval

@@ -22,7 +22,7 @@ class _WinSplashState extends State<WinSplash> {
 
 splash(BuildContext context, bool win) {
   return Scaffold(
-    backgroundColor: Colors.black87,
+    backgroundColor: Colors.black,
     body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
