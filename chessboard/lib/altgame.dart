@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'drawsplash.dart';
 import 'game.dart';
 import 'homepage.dart';
 import 'Classes/Color.dart';
@@ -72,7 +71,7 @@ class _altgameState extends State<altgame> {
                     blacktime();
                   }
                   if (bsec == 0 && bmin == 0) {
-                    _channel.sink.add('timesup');
+                    _channel.sink.add('Time');
                     flag = true;
                     winner = flag;
                     Future.delayed(Duration.zero, () async {
@@ -86,7 +85,7 @@ class _altgameState extends State<altgame> {
                       );
                     });
                   } else if (wsec == 0 && wmin == 0) {
-                    _channel.sink.add('timesup');
+                    _channel.sink.add('Time');
                     flag = true;
                     winner = !flag;
                     Future.delayed(Duration.zero, () async {
@@ -192,8 +191,7 @@ class _altgameState extends State<altgame> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [offerdraw(context),
-            altresignbutton(context),],),
+              children: [offerdraw(), altresignbutton(),],),
           )
           ],
         ),
@@ -256,9 +254,8 @@ class _altgameState extends State<altgame> {
       }
     }
   }
-}
-
-Widget altresignbutton(BuildContext context) {
+  
+  Widget altresignbutton() {
   return TextButton(
     style: TextButton.styleFrom(
       fixedSize: Size(MediaQuery.of(context).size.width/3, MediaQuery.of(context).size.height/8),
@@ -266,6 +263,7 @@ Widget altresignbutton(BuildContext context) {
       backgroundColor: primary,
     ),
     onPressed: () {
+      _channel.sink.add('Resign');
       Navigator.push(
         context,
         PageRouteBuilder(
@@ -282,7 +280,7 @@ Widget altresignbutton(BuildContext context) {
   );
 }
 
-Widget offerdraw(BuildContext context) {
+Widget offerdraw() {
   return TextButton(
     style: TextButton.styleFrom(
       fixedSize: Size(MediaQuery.of(context).size.width/3, MediaQuery.of(context).size.height/8),
@@ -294,7 +292,7 @@ Widget offerdraw(BuildContext context) {
         context,
         PageRouteBuilder(
           opaque: false,
-          pageBuilder: (context, animation1, animation2) => drawSplash(),
+          pageBuilder: (context, animation1, animation2) => splash(),
         ),
       );
     },
@@ -303,4 +301,67 @@ Widget offerdraw(BuildContext context) {
       style: TextStyle(fontSize: MediaQuery.of(context).size.width/16),
     ),
   );
+}
+splash() {
+  return Scaffold(
+    backgroundColor: Colors.black87,
+    body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            StyledText('Accept Draw?'),
+            SizedBox(height: 20,),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  style: TextButton.styleFrom(
+                    fixedSize: Size(200, 60),
+                    primary: Colors.white,
+                    backgroundColor: darkbrown,
+                  ),
+                  onPressed: () {
+                    _channel.sink.add('Draw');
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                  },
+                  child: Text(
+                    'Yes',
+                    style: TextStyle(fontSize: 35),
+                  ),
+                ),
+                SizedBox(width: 20,),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    fixedSize: Size(200, 60),
+                    primary: Colors.white,
+                    backgroundColor: darkbrown,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'No',
+                    style: TextStyle(fontSize: 35),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        )
+    ),
+  );
+}
+
+StyledText(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+        fontSize: 50,
+        color: Colors.white,
+        fontWeight: FontWeight.bold
+    ),
+  );
+}
 }

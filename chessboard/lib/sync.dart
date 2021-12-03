@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'altgame.dart';
-import 'drawsplash.dart';
 import 'game.dart';
 import 'homepage.dart';
 import 'Classes/Color.dart';
