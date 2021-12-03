@@ -47,7 +47,7 @@ class chessGame:
 
         if(dataParsed["gamemode"] == 1):
             player1 = Player(dataParsed["player1"])
-            player2 = Player(dataParsed["player1"])
+            player2 = Player(dataParsed["player2"])
             return 1
         elif(dataParsed["gamemode"] == 2):
             player1 = Player(dataParsed["player1"])
@@ -84,7 +84,7 @@ class chessGame:
 
             print('-----------')
             print(arr[turn])
-            print('SCORE: ', heuristic(board, turn))
+            # print('SCORE: ', heuristic(board, turn))
             if (board.is_checkmate()):
                 print('GAME ENDED BY CHECKMATE')
                 if turn == 1:
@@ -103,13 +103,13 @@ class chessGame:
 
             if(gameMode == 1):
                 if turn == 0:
-                    board = player1.makeMove(board, 5, turn)
+                    board = player1.makeMove(board, 3, turn)
                 else:
-                    board = player2.makeMove(board, 5, turn)
+                    board = player2.makeMove(board, 3, turn)
             elif(gameMode == 2):
                 if userColorForAIMode == False:  # The user is white because 0 is white
                     if turn == 0:
-                        board = player1.makeMove(board, 5, turn)
+                        board = player1.makeMove(board, 3, turn)
                     else:
                         if(numberOfMoves < 2):
                             board = AI.makeFirstMove(board)
@@ -122,7 +122,7 @@ class chessGame:
                         else:
                             board = AI.makeMove(board, 3, turn)
                     else:
-                        board = player1.makeMove(board, 5, turn)
+                        board = player1.makeMove(board, 3, turn)
             elif(gameMode == 3):
                 if turn == 0:
                     if(numberOfMoves < 2):
