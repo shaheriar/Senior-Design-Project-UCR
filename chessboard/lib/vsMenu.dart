@@ -28,7 +28,7 @@ class _vsMenuState extends State<vsMenu> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                MyButton(context, 'vs Human', assists(human: 1,check: true,)),
+                MyButton(context, 'vs Human', assists(human: 1,check: false,)),
                 SizedBox(
                   height: 20,
                 ),

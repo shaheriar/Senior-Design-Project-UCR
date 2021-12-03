@@ -43,7 +43,6 @@ class _altgameState extends State<altgame> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     bmin = 30;
     bsec = 0;
