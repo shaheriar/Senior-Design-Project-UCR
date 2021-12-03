@@ -22,13 +22,13 @@ class _WinSplashState extends State<WinSplash> {
 
 splash(BuildContext context, bool win) {
   return Scaffold(
-    backgroundColor: Colors.black87,
+    backgroundColor: Colors.black,
     body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              win ? StyledText('Black Won!') : StyledText('White Won!'),
+              win ? StyledText('White Won!') : StyledText('Black Won!'),
               SizedBox(height: 20,),
               TextButton(
                 style: TextButton.styleFrom(

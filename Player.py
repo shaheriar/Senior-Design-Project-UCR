@@ -3,7 +3,7 @@ from cairosvg import svg2png
 from Points import piecePoints
 import Points
 from MoveEval import MoveEval
-import math
+from math import inf
 
 
 class Player:
@@ -13,45 +13,53 @@ class Player:
     def __init__(self, recommendMoves):
         self.recommendMoves = recommendMoves
 
-    def Recommend(self, board, depth, turn):
-        boardCopy = board
-        if depth == 0 or board.board.is_checkmate() or board.is_stalemate():
-            Points.heuristic(board)
+    def recommend(self, board, depth, turn, alpha, beta):
+        #boardCopy = copy.deepcopy(board)
+        if depth == 0 or board.is_checkmate() or board.is_stalemate():
+            eval = Points.heuristic(board,turn)
             endEval = MoveEval("empty", eval)
             return endEval
 
-        if(turn) : 
-            maxValue = -math.inf
-            moveStr = ""
+        if(not turn): 
+            maxValue = MoveEval("", -inf)
             for i in board.legal_moves:
-                boardCopy = board
-                boardCopy.push_san(i.uci())
-                value = int(self.minimax(boardCopy, depth - 1, False).evaluation)
-                if(value >= maxValue):
+                #boardCopy = copy.deepcopy(board)
+                # print(boardCopy)
+                # print('\n')
+                board.push(i)
+                value = self.recommend(board, depth - 1, True, alpha, beta)
+                board.pop()
+                # print(value)
+                if(value.evaluation >= maxValue.evaluation):
                     maxValue = value
-                    moveStr = i.uci()
-                else: 
-                    continue
-            moveToMake = MoveEval(moveStr, maxValue)
-            return moveToMake
+                    maxValue.move = i.uci()
+                if (maxValue.evaluation >= alpha.evaluation):
+                    alpha = maxValue
+                if (beta.evaluation <= alpha.evaluation):
+                    break
+            return maxValue
         else:
-            minValue = math.inf
-            moveStr = ""
+            minValue = MoveEval("", inf)
             for i in board.legal_moves:
-                boardCopy = board
-                boardCopy.push_san(i.uci())
-                value = int(self.minimax(boardCopy, depth - 1, True).evaluation)
-                if(value <= minValue):
+                #boardCopy = copy.deepcopy(board)
+                # print(boardCopy)
+                # print('\n')
+                board.push(i)
+                value = self.recommend(board, depth - 1, False, alpha, beta)
+                board.pop()
+                # print(value)
+                if(value.evaluation <= minValue.evaluation):
                     minValue = value
-                    moveStr = i.uci()
-                else: 
-                    continue
-            moveToMake = MoveEval(moveStr, minValue)
-            return moveToMake
+                    minValue.move = i.uci()
+                if (minValue.evaluation <= beta.evaluation):
+                    beta = minValue
+                if (beta.evaluation <= alpha.evaluation):
+                    break
+            return minValue
 
     def makeMove(self, board, depth, turn):
         if(self.recommendMoves == True):
-            print(self.Recommend(board, depth, turn).move)
+            print('\nRECOMMENDED MOVE:',self.recommend(board, depth, turn, MoveEval("",-inf),MoveEval("",inf)).move)
         while(1):    
             move = input('DESIRED MOVE: ')
             try:

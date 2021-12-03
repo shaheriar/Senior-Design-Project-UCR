@@ -12,6 +12,7 @@ class difficulty extends StatefulWidget {
 }
 
 class _difficultyState extends State<difficulty> {
+  bool check = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,15 +27,39 @@ class _difficultyState extends State<difficulty> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                MyButton(context, 'Easy', assists()),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      fixedSize: Size(200, 60),
+                      primary: check ? Colors.white : Colors.black,
+                      backgroundColor: check ? Colors.black : Colors.white,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        check = !check;
+                      });
+                    },
+                    child: Text(
+                      'Player Color',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ],
+              ),
                 SizedBox(
                   height: 20,
                 ),
-                MyButton(context, 'Medium', assists()),
+                MyButton(context, 'Easy', assists(human: 2, check: check)),
                 SizedBox(
                   height: 20,
                 ),
-                MyButton(context, 'Hard', assists())
+                MyButton(context, 'Medium', assists(human: 2, check: check)),
+                SizedBox(
+                  height: 20,
+                ),
+                MyButton(context, 'Hard', assists(human: 2, check: check))
               ],
             ),
           ),
