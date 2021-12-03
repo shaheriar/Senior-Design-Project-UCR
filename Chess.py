@@ -33,6 +33,7 @@ class chessGame:
         global player1
         global player2
         global AI
+        global userColorForAIMode
         mode = 0
         print('------------------------------')
         print('Smart Chess by The Segfaults')
@@ -45,30 +46,23 @@ class chessGame:
         print(dataParsed, "\n")
 
         if(dataParsed["gamemode"] == 1):
-            player1 = Player(dataParsed["white"])
-            player2 = Player(dataParsed["black"])
+            player1 = Player(dataParsed["player1"])
+            player2 = Player(dataParsed["player1"])
             return 1
         elif(dataParsed["gamemode"] == 2):
-            player1 = Player(dataParsed["white"])
+            player1 = Player(dataParsed["player1"])
             AI = AI(False, 0)
+            userColorForAIMode = dataParsed["usercolor"]
             return 2
 
         return
 
     async def start(self, gameMode, client):
         turn = False  # WHITE IS 0, BLACK IS 1
-        move = ''
-        x = 0
-        svg = ''
+        numberOfMoves = 0
         board = chess.Board()
-        now = datetime.now()
         history = []
-        # try:
-        # os.mkdir('SaveGames')
-        # except:
-        # print()
-        #path = 'SaveGames\\'+now.strftime("%m_%d_%Y__%H_%M_%S")
-        # os.mkdir(path)
+
         while (not board.is_checkmate() or not board.is_stalemate() or not board.is_fivefold_repetition()):
             isGameOver = await client.recv()
             if (isGameOver == 'Draw'):
@@ -79,12 +73,7 @@ class chessGame:
                 print("GAME ENDED BY DRAW")
                 # Save game up to here
                 break
-            # try:
-            #svg = chess.svg.board(board=board, lastmove=board.peek())
-            # except:
-            #svg = chess.svg.board(board=board)
-            #abspath = path+'\\'+str(x)+'.png'
-            #svg2png(svg, write_to=abspath, scale=2)
+
             print('\n')
             print('-----------')
             print('Smart Chess')
@@ -92,15 +81,6 @@ class chessGame:
 
             symbolprint(board)
 
-            # ------------------------------------------------------------------------------------------
-            # try:
-            #    plt.imshow(Image.open(BytesIO(svg2png(chess.svg.board(board, lastmove=board.peek())))))
-            # except:
-            #    plt.imshow(Image.open(BytesIO(svg2png(chess.svg.board(board)))))
-            # plt.show(block=False)
-            # ------------------------------------------------------------------------------------------
-
-            #fd = os.popen(abspath)
             print('-----------')
             print(arr[turn])
             print('SCORE: ', heuristic(board, turn))
@@ -119,45 +99,41 @@ class chessGame:
                 print('GAME ENDED BY FIVEFOLD REPETITION')
                 break
             print(board.legal_moves)
-            # if (move == 'quit'):
-            #     print('GAME ENDED')
-            #     if (turn == 1):
-            #         print('WHITE WON BY FORFEIT')
-            #     else:
-            #         print('BLACK WON BY FORFEIT')
-            #     choice = input('RESTART? (Y/N): ')
-            #     if (choice == 'Y' or choice == 'y'):
-            #         board = chess.Board()
-            #         continue
-            #     else:
-            #         return
+
             if(gameMode == 1):
                 if turn == 0:
                     board = player1.makeMove(board, 5, turn)
                 else:
                     board = player2.makeMove(board, 5, turn)
             elif(gameMode == 2):
-                if turn == 0:
-                    board = player1.makeMove(board, 5, turn)
-                else:
-                    if(x < 2):
-                        board = AI.makeFirstMove(board)
+                if userColorForAIMode == False:  # The user is white because 0 is white
+                    if turn == 0:
+                        board = player1.makeMove(board, 5, turn)
                     else:
-                        board = AI.makeMove(board, 3, turn)
+                        if(numberOfMoves < 2):
+                            board = AI.makeFirstMove(board)
+                        else:
+                            board = AI.makeMove(board, 3, turn)
+                else:  # The user is black because 1 is black
+                    if turn == 0:
+                        if(numberOfMoves < 2):
+                            board = AI.makeFirstMove(board)
+                        else:
+                            board = AI.makeMove(board, 3, turn)
+                    else:
+                        board = player1.makeMove(board, 5, turn)
             elif(gameMode == 3):
                 if turn == 0:
-                    if(x < 2):
+                    if(numberOfMoves < 2):
                         board = player1.makeFirstMove(board)
                     else:
                         board = player1.makeMove(board, 3, turn)
                 else:
-                    if(x < 2):
+                    if(numberOfMoves < 2):
                         board = player2.makeFirstMove(board)
                     else:
                         board = player2.makeMove(board, 3, turn)
 
-            # with open(path+'\\'+'log.txt', 'a') as f:
-            #    f.write(board.fen()+'\n')
             turn = not turn
             moveData = {"move": board.peek().uci()}
             await client.send(json.dumps(moveData))
@@ -168,7 +144,7 @@ class chessGame:
                 break
             time.sleep(1)
             print('MESSAGE SENT')
-            x += 1
+            numberOfMoves += 1
 
 
 def main():
