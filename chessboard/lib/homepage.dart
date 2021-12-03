@@ -25,69 +25,17 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Expanded(child: Container()),
-                Text(
-                  'Smart Chessboard',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 80,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                title(),
                 SizedBox(height: 20,),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    fixedSize: Size(200, 60),
-                    primary: Colors.white,
-                    backgroundColor: darkbrown,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) =>
-                            vsMenu(title: 'title'),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'Play',
-                    style: TextStyle(fontSize: 35),
-                  ),
-                ),
+                playbutton(),
                 Expanded(child: Container()),
                 Row(
                   children: [
-                    FloatingActionButton(
-                      heroTag: "SETTINGS",
-                      backgroundColor: darkbrown,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation1, animation2) =>
-                                settings(),
-                          ),
-                        );
-                      },
-                      child: Icon(Icons.settings),
-                    ),
+                    settingsbutton(),
                     SizedBox(width: 10,),
-                    FloatingActionButton(
-                      heroTag: "HISTORY",
-                      backgroundColor: darkbrown,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation1, animation2) =>
-                                history(),
-                          ),
-                        );
-                      },
-                      child: Icon(Icons.menu_book),
-                    ),
+                    historybutton(),
                     Expanded(child: Container()),
-                    Text('By: The Segfaults', style: TextStyle(fontSize: 20, color: Colors.white),),
+                    Text('By: The Segfaults',style: TextStyle(fontSize: 20, color: Colors.white),),
                     SizedBox(width: 20,)
                   ],
                 )
@@ -96,6 +44,72 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  title() {
+    return Text(
+      'Smart Chessboard',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 80,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  playbutton() {
+    return TextButton(
+      style: TextButton.styleFrom(
+        fixedSize: Size(200, 60),
+        primary: Colors.white,
+        backgroundColor: darkbrown,
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                vsMenu(title: 'title'),
+          ),
+        );
+      },
+      child: Text(
+        'Play',
+        style: TextStyle(fontSize: 35),
+      ),
+    );
+  }
+
+  settingsbutton() {
+    return FloatingActionButton(
+      heroTag: "SETTINGS",
+      backgroundColor: darkbrown,
+      onPressed: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => settings(),
+          ),
+        );
+      },
+      child: Icon(Icons.settings),
+    );
+  }
+
+  historybutton() {
+    return FloatingActionButton(
+      heroTag: "HISTORY",
+      backgroundColor: darkbrown,
+      onPressed: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => history(),
+          ),
+        );
+      },
+      child: Icon(Icons.menu_book),
     );
   }
 }
