@@ -7,21 +7,25 @@ import json
 from datetime import datetime
 from Points import heuristic, piecePoints
 import time
-#------------------------------------------
+# ------------------------------------------
 # import chess.svg
 # from cairosvg import svg2png
 # from PIL import Image
 # import matplotlib.pyplot as plt
 # from io import BytesIO
-#------------------------------------------
+# ------------------------------------------
+
 
 def symbolprint(board):
     print(board.unicode(invert_color=True))
+
 
 arr = ['\nWHITE\'S TURN\n', '\nBLACK\'S TURN\n']
 # player1 = None
 # player2 = None
 # AI = None
+
+
 class chessGame:
     #Points = 0
 
@@ -50,8 +54,6 @@ class chessGame:
             return 2
 
         return
-        
-
 
     async def start(self, gameMode, client):
         turn = False  # WHITE IS 0, BLACK IS 1
@@ -68,6 +70,15 @@ class chessGame:
         #path = 'SaveGames\\'+now.strftime("%m_%d_%Y__%H_%M_%S")
         # os.mkdir(path)
         while (not board.is_checkmate() or not board.is_stalemate() or not board.is_fivefold_repetition()):
+            isGameOver = await client.recv()
+            if (isGameOver == 'Draw'):
+                print('GAME ENDED BY DRAW')
+                # Save game up to here
+                break
+            elif isGameOver == 'Resign':
+                print("GAME ENDED BY DRAW")
+                # Save game up to here
+                break
             # try:
             #svg = chess.svg.board(board=board, lastmove=board.peek())
             # except:
@@ -81,18 +92,18 @@ class chessGame:
 
             symbolprint(board)
 
-            #------------------------------------------------------------------------------------------
-            #try:
+            # ------------------------------------------------------------------------------------------
+            # try:
             #    plt.imshow(Image.open(BytesIO(svg2png(chess.svg.board(board, lastmove=board.peek())))))
-            #except:
+            # except:
             #    plt.imshow(Image.open(BytesIO(svg2png(chess.svg.board(board)))))
-            #plt.show(block=False)
-            #------------------------------------------------------------------------------------------
+            # plt.show(block=False)
+            # ------------------------------------------------------------------------------------------
 
             #fd = os.popen(abspath)
             print('-----------')
             print(arr[turn])
-            print('SCORE: ',heuristic(board,turn))
+            print('SCORE: ', heuristic(board, turn))
             if (board.is_checkmate()):
                 print('GAME ENDED BY CHECKMATE')
                 if turn == 1:
@@ -128,7 +139,7 @@ class chessGame:
             elif(gameMode == 2):
                 if turn == 0:
                     board = player1.makeMove(board, 5, turn)
-                else: 
+                else:
                     if(x < 2):
                         board = AI.makeFirstMove(board)
                     else:
@@ -139,21 +150,20 @@ class chessGame:
                         board = player1.makeFirstMove(board)
                     else:
                         board = player1.makeMove(board, 3, turn)
-                else: 
+                else:
                     if(x < 2):
                         board = player2.makeFirstMove(board)
                     else:
                         board = player2.makeMove(board, 3, turn)
-            
 
             # with open(path+'\\'+'log.txt', 'a') as f:
             #    f.write(board.fen()+'\n')
             turn = not turn
-            moveData = {"move" : board.peek().uci()}
+            moveData = {"move": board.peek().uci()}
             await client.send(json.dumps(moveData))
             time.sleep(1)
             status = await client.recv()
-            if (status == 'timesup'):
+            if (status == 'Time'):
                 print('GAME ENDED BY TIME')
                 break
             time.sleep(1)
@@ -162,9 +172,10 @@ class chessGame:
 
 
 def main():
-   game = chessGame()
-   gameMode = game.menu()
-   game.start(gameMode) 
+    game = chessGame()
+    gameMode = game.menu()
+    game.start(gameMode)
+
 
 if __name__ == "__main__":
     main()
