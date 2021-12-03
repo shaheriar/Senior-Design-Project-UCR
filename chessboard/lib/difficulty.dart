@@ -19,7 +19,11 @@ class _difficultyState extends State<difficulty> {
       extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFF747474),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
-      floatingActionButton: FloatingActionButton(backgroundColor: darkbrown, onPressed: () => Navigator.pop(context), child: Icon(CupertinoIcons.back),),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: darkbrown,
+        onPressed: () => Navigator.pop(context),
+        child: Icon(CupertinoIcons.back),
+      ),
       body: Stack(
         children: [
           background(),
@@ -27,44 +31,50 @@ class _difficultyState extends State<difficulty> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      fixedSize: Size(200, 60),
-                      primary: check ? Colors.white : Colors.black,
-                      backgroundColor: check ? Colors.black : Colors.white,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        check = !check;
-                      });
-                    },
-                    child: Text(
-                      'Player Color',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ],
-              ),
-                SizedBox(
-                  height: 20,
-                ),
+                colorpicker(),
+                SizedBox(height: 20,),
                 MyButton(context, 'Easy', assists(human: 2, check: check)),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20,),
                 MyButton(context, 'Medium', assists(human: 2, check: check)),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20,),
                 MyButton(context, 'Hard', assists(human: 2, check: check))
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  colorpicker() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Player Color:',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 35, color: Colors.white),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        GestureDetector(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: darkbrown, width: 2),
+              borderRadius: BorderRadius.circular(5),
+              color: check ? Colors.black : Colors.white,
+            ),
+            height: 60,
+            width: 60,
+          ),
+          onTap: () {
+            setState(() {
+              check = !check;
+            });
+          },
+        ),
+      ],
     );
   }
 }
