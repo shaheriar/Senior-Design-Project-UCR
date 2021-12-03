@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 import 'difficulty.dart';
 import 'assistmenu.dart';
 import 'Classes/Color.dart';

@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'vsMenu.dart';
-import 'settings.dart';
-import 'history.dart';
 import 'Classes/Color.dart';
 import 'homepage.dart';
 

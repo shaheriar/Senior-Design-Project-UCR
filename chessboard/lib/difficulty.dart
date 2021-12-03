@@ -30,21 +30,25 @@ class _difficultyState extends State<difficulty> {
                 Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      fixedSize: Size(200, 60),
-                      primary: check ? Colors.white : Colors.black,
-                      backgroundColor: check ? Colors.black : Colors.white,
+                  Text(
+                      'Player Color:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 35, 
+                        color: Colors.white),
                     ),
-                    onPressed: () {
+                    SizedBox(width: 10,),
+                  GestureDetector(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: darkbrown,width: 2),
+                        borderRadius: BorderRadius.circular(5),color: check ? Colors.white : Colors.black,),
+                      height: 60,width: 60,),
+                    onTap: () {
                       setState(() {
                         check = !check;
                       });
                     },
-                    child: Text(
-                      'Player Color',
-                      style: TextStyle(fontSize: 35),
-                    ),
                   ),
                 ],
               ),

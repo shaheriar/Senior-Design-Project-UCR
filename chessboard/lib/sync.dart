@@ -2,12 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'altgame.dart';
-import 'game.dart';
-import 'homepage.dart';
-import 'Classes/Color.dart';
-import 'winsplash.dart';
 import 'Classes/Assists.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 

@@ -1,8 +1,6 @@
 import 'package:chessboard/sync.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'altgame.dart';
-import 'game.dart';
 import 'Classes/Color.dart';
 import 'homepage.dart';
 import 'Classes/Assists.dart';
@@ -55,7 +53,7 @@ class _assistsState extends State<assists> {
                 children: [
                   TextButton(
                     style: TextButton.styleFrom(
-                      fixedSize: Size(350, 60),
+                      fixedSize: Size(360, 60),
                       primary: Colors.white,
                       backgroundColor: darkbrown,
                     ),
@@ -69,12 +67,11 @@ class _assistsState extends State<assists> {
                   SizedBox(width: 20,),
                   Column(
                     children: [
-                      Text('Player 1',style: TextStyle(color: Colors.white),),
+                      h == 1 ? Text('Player 1',style: TextStyle(color: Colors.white),) : Container(),
                       SizedBox(height: 5,),
                       Transform.scale(
                         scale: 2,
                         child: Checkbox(
-
                           activeColor: darkbrown,
                           value: w,
                           onChanged: (bool? value) {
@@ -87,7 +84,7 @@ class _assistsState extends State<assists> {
                     ],
                   ),
                   SizedBox(width: 20,),
-                  Column(
+                  h == 1 ? Column(
                     children: [
                       Text('Player 2',style: TextStyle(color: Colors.white),),
                       SizedBox(height: 5,),
@@ -104,7 +101,7 @@ class _assistsState extends State<assists> {
                         ),
                       ),
                     ],
-                  ),
+                  ) : Container(),
                 ],
               ),
               SizedBox(
