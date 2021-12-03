@@ -9,18 +9,21 @@ import 'Classes/Assists.dart';
 
 class assists extends StatefulWidget {
   int human = 0;
-  assists({Key? key, required this.human}) : super(key: key);
+  bool check = false;
+  assists({Key? key, required this.human, required this.check}) : super(key: key);
 
   @override
-  _assistsState createState() => _assistsState(human);
+  _assistsState createState() => _assistsState(human, check);
 }
 
 class _assistsState extends State<assists> {
   bool b = false; //black recommended
   bool w = false; //white recommended
   int h = 0; //vs human or ai
-  _assistsState(int human) {
+  bool check = false;
+  _assistsState(int human, bool check) {
     this.h = human;
+    this.check = check;
   }
   @override
   Widget build(BuildContext context) {
@@ -107,7 +110,7 @@ class _assistsState extends State<assists> {
               SizedBox(
                 height: 50,
               ),
-              MyButton(context, 'Play', syncgame(assists: Assists(w,b,h),)),
+              MyButton(context, 'Play', syncgame(assists: Assists(w,b,h,check),)),
             ],
           ),
         ],

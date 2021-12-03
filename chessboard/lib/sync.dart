@@ -25,7 +25,7 @@ class _syncgameState extends State<syncgame> {
   );
   var start;
   List<String> moves=[];
-  Assists inf = Assists(false, false, 0);
+  Assists inf = Assists(false, false, 0, false);
 
   _syncgameState(Assists assists) {
     inf = assists;

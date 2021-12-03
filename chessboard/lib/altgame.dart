@@ -32,7 +32,7 @@ class _altgameState extends State<altgame> {
   ScrollController _scrollControllerw = ScrollController();
   ScrollController _scrollControllerb = ScrollController();
   List<String> moves = [];
-  Assists inf = Assists(false, false, 0);
+  Assists inf = Assists(false, false, 0, false);
 
   _altgameState(Assists assists) {
     inf = assists;
