@@ -34,6 +34,7 @@ class _syncgameState extends State<syncgame> {
   Widget build(BuildContext context) {
     String json = jsonEncode(inf.toJson());
     _channel.sink.add(json);
+    print(json);
     return altgame(assists: inf);
   }
 }

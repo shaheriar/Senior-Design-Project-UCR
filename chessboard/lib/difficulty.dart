@@ -63,7 +63,7 @@ class _difficultyState extends State<difficulty> {
             decoration: BoxDecoration(
               border: Border.all(color: darkbrown, width: 2),
               borderRadius: BorderRadius.circular(5),
-              color: check ? Colors.white : Colors.black,
+              color: check ? Colors.black : Colors.white,
             ),
             height: 60,
             width: 60,
