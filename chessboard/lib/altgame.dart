@@ -75,8 +75,10 @@ class _altgameState extends State<altgame> {
         builder: (context, snapshot) {
           if (moves.length % 2 == 0) {
             whitetime();
+            winner = false;
           } else {
             blacktime();
+            winner = true;
           }
           if (bsec == 0 && bmin == 0) {
             _channel.sink.add('Time');
@@ -285,7 +287,7 @@ class _altgameState extends State<altgame> {
           PageRouteBuilder(
             opaque: false,
             pageBuilder: (context, animation1, animation2) =>
-                WinSplash(win: false),
+                WinSplash(win: winner),
           ),
         );
       },
