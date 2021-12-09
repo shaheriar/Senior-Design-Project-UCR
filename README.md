@@ -64,12 +64,7 @@ This will run both the python scripts as well as npm serve and open Google Chrom
 
 ## Diagrams
 
-Sequence Diagram
-
-Frontend Structure
-
-
-Overall System Diagram
+<img src="https://i.imgur.com/9VhzXgU.png" /><br>
 
 ## Dependencies
 ### Flutter 2 (only to build from source) <br>
