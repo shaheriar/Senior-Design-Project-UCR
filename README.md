@@ -25,21 +25,20 @@ For our project we would like to use a mix of AI and embedded systems. A brief s
 ## Usage
 Demo: https://drive.google.com/file/d/1NUwrpwSUZm6x4F9EefskllHDGrh9GksT/view
 
-<Screenshot of application>
-<img src="https://i.imgur.com/TZHJjqC.png"
-     style="float: left; margin-right: 10px;" />
-     <img src="https://i.imgur.com/MeYpJ8G.png"
-     style="float: left; margin-right: 10px;" />
-     <img src="https://i.imgur.com/gdqlrtn.png"
-     style="float: left; margin-right: 10px;" />
-     <img src="https://i.imgur.com/xZqYGsR.png"
-     style="float: left; margin-right: 10px;" />
-     <img src="https://i.imgur.com/eX58mde.png"
-     style="float: left; margin-right: 10px;" />
-       <img src="https://i.imgur.com/MK9v85P.png"
-     style="float: left; margin-right: 10px;" />
+<img src="https://i.imgur.com/TZHJjqC.png" /><br>
+     
+<img src="https://i.imgur.com/MeYpJ8G.png" /><br>
+     
+<img src="https://i.imgur.com/gdqlrtn.png" /><br>
+     
+<img src="https://i.imgur.com/xZqYGsR.png" /><br>
+     
+<img src="https://i.imgur.com/eX58mde.png" /><br>
+     
+<img src="https://i.imgur.com/MK9v85P.png" /><br>
 
-     ## How To Build and Run From Source
+
+## How To Build and Run From Source
 In the project directory, you can run:
 
 ### `cd chessboard`
