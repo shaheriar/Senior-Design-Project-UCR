@@ -38,7 +38,8 @@ Demo: https://drive.google.com/file/d/1NUwrpwSUZm6x4F9EefskllHDGrh9GksT/view
      style="float: left; margin-right: 10px;" />
        <img src="https://i.imgur.com/MK9v85P.png"
      style="float: left; margin-right: 10px;" />
-## How To Build and Run From Source
+
+     ## How To Build and Run From Source
 In the project directory, you can run:
 
 ### `cd chessboard`
