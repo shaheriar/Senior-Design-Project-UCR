@@ -151,7 +151,7 @@ class _altgameState extends State<altgame> {
           if (snapshot.hasData) {
             var data = jsonDecode(snapshot.data.toString());
             if (data["move"] != null) {
-              if (!moves.contains(data["move"])) {
+              if (moves[moves.length-1] != data["move"]) {
                 moves.add(data["move"]);
               }
             }
