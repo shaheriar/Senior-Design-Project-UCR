@@ -7,11 +7,12 @@ import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class syncgame extends StatefulWidget {
-  syncgame({Key? key, required this.assists}) : super(key: key);
+  syncgame({Key? key, required this.assists, required this.time}) : super(key: key);
   Assists assists;
+  int time;
 
   @override
-  _syncgameState createState() => _syncgameState(assists);
+  _syncgameState createState() => _syncgameState(assists, time);
 }
 
 class _syncgameState extends State<syncgame> {
@@ -21,9 +22,11 @@ class _syncgameState extends State<syncgame> {
   var start;
   List<String> moves=[];
   Assists inf = Assists(false, false, 0, false);
+  int time = 0;
 
-  _syncgameState(Assists assists) {
+  _syncgameState(Assists assists, int t) {
     inf = assists;
+    time = t;
   }
   @override
   void initState() {
@@ -35,6 +38,6 @@ class _syncgameState extends State<syncgame> {
     String json = jsonEncode(inf.toJson());
     _channel.sink.add(json);
     print(json);
-    return altgame(assists: inf);
+    return altgame(assists: inf, time: time);
   }
 }

@@ -8,11 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class altgame extends StatefulWidget {
-  altgame({Key? key, required this.assists}) : super(key: key);
+  altgame({Key? key, required this.assists, required this.time}) : super(key: key);
   Assists assists;
+  int time;
 
   @override
-  _altgameState createState() => _altgameState(assists);
+  _altgameState createState() => _altgameState(assists, time);
 }
 
 class _altgameState extends State<altgame> {
@@ -30,8 +31,12 @@ class _altgameState extends State<altgame> {
   List<String> moves = [];
   Assists inf = Assists(false, false, 0, false);
 
-  _altgameState(Assists assists) {
+  _altgameState(Assists assists, int time) {
     inf = assists;
+    bmin = time;
+    wmin = time;
+    bsec = 0;
+    wsec = 0;
   }
   _scrollw() {
     _scrollControllerw.jumpTo(_scrollControllerw.position.maxScrollExtent);
@@ -44,10 +49,6 @@ class _altgameState extends State<altgame> {
   @override
   void initState() {
     super.initState();
-    bmin = 30;
-    bsec = 0;
-    wmin = 30;
-    wsec = 0;
   }
 
   @override
