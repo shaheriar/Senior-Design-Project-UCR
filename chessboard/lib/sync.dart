@@ -2,12 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'altgame.dart';
-import 'game.dart';
-import 'homepage.dart';
-import 'Classes/Color.dart';
-import 'winsplash.dart';
 import 'Classes/Assists.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -25,7 +20,7 @@ class _syncgameState extends State<syncgame> {
   );
   var start;
   List<String> moves=[];
-  Assists inf = Assists(false, false, 0);
+  Assists inf = Assists(false, false, 0, false);
 
   _syncgameState(Assists assists) {
     inf = assists;
@@ -39,6 +34,7 @@ class _syncgameState extends State<syncgame> {
   Widget build(BuildContext context) {
     String json = jsonEncode(inf.toJson());
     _channel.sink.add(json);
+    print(json);
     return altgame(assists: inf);
   }
 }

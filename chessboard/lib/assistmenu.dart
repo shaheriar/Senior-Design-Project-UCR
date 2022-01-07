@@ -1,26 +1,27 @@
 import 'package:chessboard/sync.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'altgame.dart';
-import 'game.dart';
 import 'Classes/Color.dart';
 import 'homepage.dart';
 import 'Classes/Assists.dart';
 
 class assists extends StatefulWidget {
   int human = 0;
-  assists({Key? key, required this.human}) : super(key: key);
+  bool check = false;
+  assists({Key? key, required this.human, required this.check}) : super(key: key);
 
   @override
-  _assistsState createState() => _assistsState(human);
+  _assistsState createState() => _assistsState(human, check);
 }
 
 class _assistsState extends State<assists> {
   bool b = false; //black recommended
   bool w = false; //white recommended
   int h = 0; //vs human or ai
-  _assistsState(int human) {
+  bool check = false;
+  _assistsState(int human, bool check) {
     this.h = human;
+    this.check = check;
   }
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class _assistsState extends State<assists> {
                 children: [
                   TextButton(
                     style: TextButton.styleFrom(
-                      fixedSize: Size(350, 60),
+                      fixedSize: Size(360, 60),
                       primary: Colors.white,
                       backgroundColor: darkbrown,
                     ),
@@ -66,17 +67,16 @@ class _assistsState extends State<assists> {
                   SizedBox(width: 20,),
                   Column(
                     children: [
-                      Text('Player 1',style: TextStyle(color: Colors.white),),
+                      h == 1 ? Text('White',style: TextStyle(color: Colors.white),) : Container(),
                       SizedBox(height: 5,),
                       Transform.scale(
                         scale: 2,
                         child: Checkbox(
-
                           activeColor: darkbrown,
-                          value: w,
+                          value: check ? b : w,
                           onChanged: (bool? value) {
                             setState(() {
-                              w = value!;
+                              check ? b = value! : w = value!;
                             });
                           },
                         ),
@@ -84,9 +84,9 @@ class _assistsState extends State<assists> {
                     ],
                   ),
                   SizedBox(width: 20,),
-                  Column(
+                  h == 1 ? Column(
                     children: [
-                      Text('Player 2',style: TextStyle(color: Colors.white),),
+                      Text('Black',style: TextStyle(color: Colors.white),),
                       SizedBox(height: 5,),
                       Transform.scale(
                         scale: 2,
@@ -101,13 +101,13 @@ class _assistsState extends State<assists> {
                         ),
                       ),
                     ],
-                  ),
+                  ) : Container(),
                 ],
               ),
               SizedBox(
                 height: 50,
               ),
-              MyButton(context, 'Play', syncgame(assists: Assists(w,b,h),)),
+              MyButton(context, 'Play', syncgame(assists: Assists(w,b,h,check),)),
             ],
           ),
         ],

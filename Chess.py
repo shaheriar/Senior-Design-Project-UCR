@@ -48,7 +48,7 @@ class chessGame:
 
         if(dataParsed["gamemode"] == 1):
             player1 = Player(dataParsed["player1"])
-            player2 = Player(dataParsed["player1"])
+            player2 = Player(dataParsed["player2"])
             return 1
 
         elif(dataParsed["gamemode"] == 2):
@@ -65,11 +65,11 @@ class chessGame:
         isGameOver = None
         board = chess.Board()
 
-        moveHistory = pd.DataFrame(columns='Moves')
+        moveHistory = pd. DataFrame(columns=["Moves"])
         now = datetime.now()
-        # dd/mm/YY H:M:S
+        # Where the path of the game history is vvvv
         dt_string = "Game History/"
-        dt_string += now.strftime("%d/%m/%Y %H:%M:%S")
+        dt_string += now.strftime("%d-%m-%Y %H:%M:%S")
         dt_string += ".csv"
         moveHistory.to_csv(dt_string, index=False)
 
@@ -94,7 +94,7 @@ class chessGame:
 
             print('-----------')
             print(arr[turn])
-            print('SCORE: ', heuristic(board, turn))
+            # print('SCORE: ', heuristic(board, turn))
             if (board.is_checkmate()):
                 print('GAME ENDED BY CHECKMATE')
                 if turn == 1:
