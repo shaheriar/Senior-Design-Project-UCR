@@ -157,9 +157,9 @@ class _altgameState extends State<altgame> {
                 }
               } else {
                 moves.add(data["move"]);
+                turn = !turn;
               }
             }
-          }
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -4,6 +4,7 @@ from Points import piecePoints
 import Points
 from MoveEval import MoveEval
 from math import inf
+import pandas as pd
 
 
 class Player:
@@ -57,15 +58,33 @@ class Player:
                     break
             return minValue
 
-    def makeMove(self, board, depth, turn):
+    def makeMove(self, board, depth, turn, historyFile):
         if(self.recommendMoves == True):
             print('\nRECOMMENDED MOVE:',self.recommend(board, depth, turn, MoveEval("",-inf),MoveEval("",inf)).move)
         while(1):    
             move = input('DESIRED MOVE: ')
             try:
                 board.push_san(move)
+                #string form of the board
+                boardlist = ""
+                columns = chess.FILE_NAMES
+                for j in reversed(range(1,9)):
+                    for i in columns:
+                        sqr = board.piece_at(chess.parse_square(i+str(j)))
+                        if (sqr != None):
+                            boardlist += sqr.symbol()
+                        else:
+                            boardlist += '.' 
+                        # print(boardlist)
+                #adding the string to the csv
+                #df = pd.read_csv(historyFile)
+                data = {'Moves' : [boardlist]}
+                df2 = pd.DataFrame(data)
+                df2.to_csv(historyFile, mode='a', index=False, header=False)
+
                 return (board)
-                # history.append(board.fen())
-            except:
+            except Exception as e:
                 print('INVALID MOVE\n')
+                print(e)
+            
             
