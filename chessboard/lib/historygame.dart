@@ -7,6 +7,11 @@ import 'winsplash.dart';
 import 'Classes/Assists.dart';
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
 
 class historygame extends StatefulWidget {
   historygame({Key? key}) : super(key: key);
@@ -16,24 +21,479 @@ class historygame extends StatefulWidget {
 }
 
 class _historygameState extends State<historygame> {
-  final _channel = WebSocketChannel.connect(
-    Uri.parse('ws://localhost:8765'),
-  );
   List<dynamic> boardlist = [];
   int index = -1;
   List<dynamic> gamestates = [
-['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'P', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'P', 'P', 'P', 'P', '.', 'P', 'P', 'P', 'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
-['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', '.', 'p', 'p', 'p', 'p', 'p', 'p', 'p', '.', '.', '.', '.', '.', '.', '.', '.', 'p', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'P', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'P', 'P', 'P', 'P', '.', 'P', 'P', 'P', 'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
-['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', '.', 'p', 'p', 'p', 'p', 'p', 'p', 'p', '.', '.', '.', '.', '.', '.', '.', '.', 'p', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B', '.', 'P', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'P', 'P', 'P', 'P', '.', 'P', 'P', 'P', 'R', 'N', 'B', 'Q', 'K', '.', 'N', 'R'],
-['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', '.', 'p', 'p', 'p', 'p', 'p', 'p', 'p', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'p', '.', 'B', '.', 'P', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'P', 'P', 'P', 'P', '.', 'P', 'P', 'P', 'R', 'N', 'B', 'Q', 'K', '.', 'N', 'R'],
-['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', '.', 'p', 'p', 'p', 'p', 'p', 'p', 'p', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'Q', 'p', '.', 'B', '.', 'P', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'P', 'P', 'P', 'P', '.', 'P', 'P', 'P', 'R', 'N', 'B', '.', 'K', '.', 'N', 'R'],
-['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', '.', 'p', 'p', 'p', 'p', 'p', 'p', 'p', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'Q', '.', '.', 'B', '.', 'P', '.', '.', '.', 'p', '.', '.', '.', '.', '.', '.', '.', 'P', 'P', 'P', 'P', '.', 'P', 'P', 'P', 'R', 'N', 'B', '.', 'K', '.', 'N', 'R'],
-['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', '.', 'p', 'p', 'p', 'p', 'Q', 'p', 'p', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'B', '.', 'P', '.', '.', '.', 'p', '.', '.', '.', '.', '.', '.', '.', 'P', 'P', 'P', 'P', '.', 'P', 'P', 'P', 'R', 'N', 'B', '.', 'K', '.', 'N', 'R']
-];
+    [
+      'r',
+      'n',
+      'b',
+      'q',
+      'k',
+      'b',
+      'n',
+      'r',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'P',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'P',
+      'P',
+      'P',
+      'P',
+      '.',
+      'P',
+      'P',
+      'P',
+      'R',
+      'N',
+      'B',
+      'Q',
+      'K',
+      'B',
+      'N',
+      'R'
+    ],
+    [
+      'r',
+      'n',
+      'b',
+      'q',
+      'k',
+      'b',
+      'n',
+      'r',
+      '.',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'P',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'P',
+      'P',
+      'P',
+      'P',
+      '.',
+      'P',
+      'P',
+      'P',
+      'R',
+      'N',
+      'B',
+      'Q',
+      'K',
+      'B',
+      'N',
+      'R'
+    ],
+    [
+      'r',
+      'n',
+      'b',
+      'q',
+      'k',
+      'b',
+      'n',
+      'r',
+      '.',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'B',
+      '.',
+      'P',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'P',
+      'P',
+      'P',
+      'P',
+      '.',
+      'P',
+      'P',
+      'P',
+      'R',
+      'N',
+      'B',
+      'Q',
+      'K',
+      '.',
+      'N',
+      'R'
+    ],
+    [
+      'r',
+      'n',
+      'b',
+      'q',
+      'k',
+      'b',
+      'n',
+      'r',
+      '.',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'p',
+      '.',
+      'B',
+      '.',
+      'P',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'P',
+      'P',
+      'P',
+      'P',
+      '.',
+      'P',
+      'P',
+      'P',
+      'R',
+      'N',
+      'B',
+      'Q',
+      'K',
+      '.',
+      'N',
+      'R'
+    ],
+    [
+      'r',
+      'n',
+      'b',
+      'q',
+      'k',
+      'b',
+      'n',
+      'r',
+      '.',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'Q',
+      'p',
+      '.',
+      'B',
+      '.',
+      'P',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'P',
+      'P',
+      'P',
+      'P',
+      '.',
+      'P',
+      'P',
+      'P',
+      'R',
+      'N',
+      'B',
+      '.',
+      'K',
+      '.',
+      'N',
+      'R'
+    ],
+    [
+      'r',
+      'n',
+      'b',
+      'q',
+      'k',
+      'b',
+      'n',
+      'r',
+      '.',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'Q',
+      '.',
+      '.',
+      'B',
+      '.',
+      'P',
+      '.',
+      '.',
+      '.',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'P',
+      'P',
+      'P',
+      'P',
+      '.',
+      'P',
+      'P',
+      'P',
+      'R',
+      'N',
+      'B',
+      '.',
+      'K',
+      '.',
+      'N',
+      'R'
+    ],
+    [
+      'r',
+      'n',
+      'b',
+      'q',
+      'k',
+      'b',
+      'n',
+      'r',
+      '.',
+      'p',
+      'p',
+      'p',
+      'p',
+      'Q',
+      'p',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'B',
+      '.',
+      'P',
+      '.',
+      '.',
+      '.',
+      'p',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      '.',
+      'P',
+      'P',
+      'P',
+      'P',
+      '.',
+      'P',
+      'P',
+      'P',
+      'R',
+      'N',
+      'B',
+      '.',
+      'K',
+      '.',
+      'N',
+      'R'
+    ]
+  ];
+
+
 
   @override
   void initState() {
     super.initState();
+    _getAllCsvFiles();
     boardlist = List.from(defaultboard.reversed);
   }
 
@@ -50,13 +510,46 @@ class _historygameState extends State<historygame> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  leftbutton(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      chessboard(),
+                      exit(),
+                    ],
+                  ),
+                  rightbutton()
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      onWillPop: () async => false,
+    );
+  }
+
+  Future<List<FileSystemEntity>> _getAllCsvFiles() async {
+  final String directory = '../Game History';
+  final path = "$directory/";
+  print(path);
+  final myDir = Directory(path);
+  List<FileSystemEntity> _csvFiles;
+  _csvFiles = myDir.listSync(recursive: true, followLinks: false);
+  _csvFiles.sort((a, b) {
+    return b.path.compareTo(a.path);
+  });
+  return _csvFiles;
+}
+
+  leftbutton() {
+    return 
                   GestureDetector(
                     onTap: () {
                       if (index > 0) {
                         setState(() {
-                          
-                        index--;
-                        boardlist = gamestates[index];
+                          index--;
+                          boardlist = gamestates[index];
                         });
                       } else {
                         setState(() {
@@ -66,53 +559,41 @@ class _historygameState extends State<historygame> {
                       }
                       print('PREVIOUS STATE');
                     },
-                child: Container(
-                  color: lightbrown,
-                  
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width / 5 ,
-                  child: Center(
-                    child: Icon(
-                      Icons.arrow_back_ios,size: 100,)
+                    child: Container(
+                      color: lightbrown,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width / 5,
+                      child: Center(
+                          child: Icon(
+                        Icons.arrow_back_ios,
+                        size: 100,
+                      )),
                     ),
-                  ),
-              ),
-              
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  chessboard(),
-                  
-              exit(),
-                ],
-              ),
-              GestureDetector(
-                onTap: () {
+                  );
+  }
+
+  rightbutton() {
+    return GestureDetector(
+                    onTap: () {
                       if (index < gamestates.length) {
                         setState(() {
-                          
-                        index++;
-                        boardlist = gamestates[index];
+                          index++;
+                          boardlist = gamestates[index];
                         });
                       }
                       print('NEXT STATE');
                     },
-                child: Container(
-                  color: darkbrown,
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width / 5,
-                  child: Center(
-                    child: Icon(Icons.arrow_forward_ios,size: 100,)
-                  ),
-                ),
-              ),
-              ],),
-            ],
-          ),
-        ),
-      ),
-      onWillPop: () async => false,
-    );
+                    child: Container(
+                      color: darkbrown,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width / 5,
+                      child: Center(
+                          child: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 100,
+                      )),
+                    ),
+                  );
   }
 
   Widget chessboard() {
@@ -261,13 +742,6 @@ class _historygameState extends State<historygame> {
     );
   }
 
-  StyledText(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-          fontSize: 50, color: Colors.white, fontWeight: FontWeight.bold),
-    );
-  }
 }
 
 List<String> defaultboard = [

@@ -24,6 +24,10 @@ dependencies:
   web_socket_channel: ^2.1.0
   http:
   intl: ^0.17.0
+  csv: ^5.0.1
+  path_provider: ^2.0.8
+  file_picker: ^4.3.0
+  random_string: ^2.3.1
   flutter:
     sdk: flutter
 

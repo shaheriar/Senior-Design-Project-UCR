@@ -69,7 +69,7 @@ class chessGame:
         now = datetime.now()
         # Where the path of the game history is vvvv
         dt_string = "Game History/"
-        dt_string += now.strftime("%d-%m-%Y %H:%M:%S")
+        dt_string += now.strftime("%d-%m-%Y %H-%M-%S")
         dt_string += ".csv"
         moveHistory.to_csv(dt_string, index=False)
 

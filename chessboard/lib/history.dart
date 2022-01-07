@@ -1,6 +1,7 @@
 import 'package:chessboard/historygame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'Classes/Color.dart';
 import 'homepage.dart';
 
@@ -12,6 +13,16 @@ class history extends StatefulWidget {
 }
 
 class _historyState extends State<history> {
+ final _channel = WebSocketChannel.connect(
+    Uri.parse('ws://localhost:8765'),
+  );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _channel.sink.add('History');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -16,8 +16,12 @@ class SimpleEcho(WebSocket):
     def handleMessage(self):
         if self.data is None:
             self.data = ''
-        for ws in self.wss:
-            ws.sendMessage(str(self.data))
+        
+        if self.data == 'History':
+            self.wss[-1].sendMessage(str('Requesting History'))
+        else:
+            for ws in self.wss:
+                ws.sendMessage(str(self.data))
         print(self.data)
 
     def handleConnected(self):
