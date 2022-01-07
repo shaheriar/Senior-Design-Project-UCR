@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(child: Container()),
                 Row(
                   children: [
-                    settingsbutton(),
+                    //settingsbutton(),
                     SizedBox(width: 10,),
                     historybutton(),
                     Expanded(child: Container()),

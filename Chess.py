@@ -7,6 +7,8 @@ import json
 from datetime import datetime
 from Points import heuristic, piecePoints
 import time
+import pandas as pd
+from datetime import datetime  
 # ------------------------------------------
 # import chess.svg
 # from cairosvg import svg2png
@@ -34,7 +36,6 @@ class chessGame:
         global player2
         global AI
         global userColorForAIMode
-        mode = 0
         print('------------------------------')
         print('Smart Chess by The Segfaults')
         print('------------------------------')
@@ -49,6 +50,7 @@ class chessGame:
             player1 = Player(dataParsed["player1"])
             player2 = Player(dataParsed["player2"])
             return 1
+
         elif(dataParsed["gamemode"] == 2):
             player1 = Player(dataParsed["player1"])
             AI = AI(False, 0)
@@ -62,7 +64,15 @@ class chessGame:
         numberOfMoves = 0
         isGameOver = None
         board = chess.Board()
-        history = []
+
+        moveHistory = pd. DataFrame(columns=["Moves"])
+        now = datetime.now()
+        # Where the path of the game history is vvvv
+        dt_string = "Game History/"
+        dt_string += now.strftime("%d-%m-%Y %H-%M-%S")
+        dt_string += ".csv"
+        moveHistory.to_csv(dt_string, index=False)
+
 
         while (not board.is_checkmate() or not board.is_stalemate() or not board.is_fivefold_repetition()):
             # isGameOver = await client.recv()
@@ -103,37 +113,37 @@ class chessGame:
 
             if(gameMode == 1):
                 if turn == 0:
-                    board = player1.makeMove(board, 3, turn)
+                    board = player1.makeMove(board, 5, turn, dt_string)
                 else:
-                    board = player2.makeMove(board, 3, turn)
+                    board = player2.makeMove(board, 5, turn, dt_string)
             elif(gameMode == 2):
                 if userColorForAIMode == False:  # The user is white because 0 is white
                     if turn == 0:
-                        board = player1.makeMove(board, 3, turn)
+                        board = player1.makeMove(board, 5, turn, dt_string)
                     else:
                         if(numberOfMoves < 2):
-                            board = AI.makeFirstMove(board)
+                            board = AI.makeFirstMove(board, dt_string)
                         else:
-                            board = AI.makeMove(board, 3, turn)
+                            board = AI.makeMove(board, 3, turn, dt_string)
                 else:  # The user is black because 1 is black
                     if turn == 0:
                         if(numberOfMoves < 2):
-                            board = AI.makeFirstMove(board)
+                            board = AI.makeFirstMove(board, dt_string)
                         else:
-                            board = AI.makeMove(board, 3, turn)
+                            board = AI.makeMove(board, 3, turn, dt_string)
                     else:
-                        board = player1.makeMove(board, 3, turn)
+                        board = player1.makeMove(board, 5, turn, dt_string)
             elif(gameMode == 3):
                 if turn == 0:
                     if(numberOfMoves < 2):
-                        board = player1.makeFirstMove(board)
+                        board = player1.makeFirstMove(board, dt_string)
                     else:
-                        board = player1.makeMove(board, 3, turn)
+                        board = player1.makeMove(board, 3, turn, dt_string)
                 else:
                     if(numberOfMoves < 2):
-                        board = player2.makeFirstMove(board)
+                        board = player2.makeFirstMove(board, dt_string)
                     else:
-                        board = player2.makeMove(board, 3, turn)
+                        board = player2.makeMove(board, 3, turn, dt_string)
 
             turn = not turn
             moveData = {"move": board.peek().uci()}
