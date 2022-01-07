@@ -1,500 +1,35 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Classes/Color.dart';
 import 'game.dart';
-import 'winsplash.dart';
-import 'Classes/Assists.dart';
-import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'dart:convert';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:csv/csv.dart';
-import 'package:flutter/material.dart';
 
 class historygame extends StatefulWidget {
-  historygame({Key? key}) : super(key: key);
+  historygame({Key? key, required String this.name}) : super(key: key);
+  String name;
 
   @override
-  _historygameState createState() => _historygameState();
+  _historygameState createState() => _historygameState(name);
 }
 
 class _historygameState extends State<historygame> {
-  List<dynamic> boardlist = [];
+  String boardlist = '';
   int index = -1;
-  List<dynamic> gamestates = [
-    [
-      'r',
-      'n',
-      'b',
-      'q',
-      'k',
-      'b',
-      'n',
-      'r',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'P',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'P',
-      'P',
-      'P',
-      'P',
-      '.',
-      'P',
-      'P',
-      'P',
-      'R',
-      'N',
-      'B',
-      'Q',
-      'K',
-      'B',
-      'N',
-      'R'
-    ],
-    [
-      'r',
-      'n',
-      'b',
-      'q',
-      'k',
-      'b',
-      'n',
-      'r',
-      '.',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'P',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'P',
-      'P',
-      'P',
-      'P',
-      '.',
-      'P',
-      'P',
-      'P',
-      'R',
-      'N',
-      'B',
-      'Q',
-      'K',
-      'B',
-      'N',
-      'R'
-    ],
-    [
-      'r',
-      'n',
-      'b',
-      'q',
-      'k',
-      'b',
-      'n',
-      'r',
-      '.',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'B',
-      '.',
-      'P',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'P',
-      'P',
-      'P',
-      'P',
-      '.',
-      'P',
-      'P',
-      'P',
-      'R',
-      'N',
-      'B',
-      'Q',
-      'K',
-      '.',
-      'N',
-      'R'
-    ],
-    [
-      'r',
-      'n',
-      'b',
-      'q',
-      'k',
-      'b',
-      'n',
-      'r',
-      '.',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'p',
-      '.',
-      'B',
-      '.',
-      'P',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'P',
-      'P',
-      'P',
-      'P',
-      '.',
-      'P',
-      'P',
-      'P',
-      'R',
-      'N',
-      'B',
-      'Q',
-      'K',
-      '.',
-      'N',
-      'R'
-    ],
-    [
-      'r',
-      'n',
-      'b',
-      'q',
-      'k',
-      'b',
-      'n',
-      'r',
-      '.',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'Q',
-      'p',
-      '.',
-      'B',
-      '.',
-      'P',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'P',
-      'P',
-      'P',
-      'P',
-      '.',
-      'P',
-      'P',
-      'P',
-      'R',
-      'N',
-      'B',
-      '.',
-      'K',
-      '.',
-      'N',
-      'R'
-    ],
-    [
-      'r',
-      'n',
-      'b',
-      'q',
-      'k',
-      'b',
-      'n',
-      'r',
-      '.',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'Q',
-      '.',
-      '.',
-      'B',
-      '.',
-      'P',
-      '.',
-      '.',
-      '.',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'P',
-      'P',
-      'P',
-      'P',
-      '.',
-      'P',
-      'P',
-      'P',
-      'R',
-      'N',
-      'B',
-      '.',
-      'K',
-      '.',
-      'N',
-      'R'
-    ],
-    [
-      'r',
-      'n',
-      'b',
-      'q',
-      'k',
-      'b',
-      'n',
-      'r',
-      '.',
-      'p',
-      'p',
-      'p',
-      'p',
-      'Q',
-      'p',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'B',
-      '.',
-      'P',
-      '.',
-      '.',
-      '.',
-      'p',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      '.',
-      'P',
-      'P',
-      'P',
-      'P',
-      '.',
-      'P',
-      'P',
-      'P',
-      'R',
-      'N',
-      'B',
-      '.',
-      'K',
-      '.',
-      'N',
-      'R'
-    ]
-  ];
+  var gamestates;
+  String name = '';
+  final _channel = WebSocketChannel.connect(
+    Uri.parse('ws://localhost:8765'),
+  );
 
-
+  _historygameState(String name) {
+    this.name = name;
+  }
 
   @override
   void initState() {
     super.initState();
-    _getAllCsvFiles();
-    boardlist = List.from(defaultboard.reversed);
+    _channel.sink.add(name);
+    boardlist = List.from(defaultboard.reversed).join("");
   }
 
   @override
@@ -503,97 +38,101 @@ class _historygameState extends State<historygame> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: primary,
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  leftbutton(),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      chessboard(),
-                      exit(),
-                    ],
-                  ),
-                  rightbutton()
-                ],
-              ),
-            ],
-          ),
-        ),
+        body: StreamBuilder(
+            stream: _channel.stream,
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return loadingview();
+              }
+              gamestates = json.decode(snapshot.data.toString());
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    leftbutton(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        chessboard(),
+                        exit(),
+                      ],
+                    ),
+                    rightbutton()
+                  ],
+                ),
+              );
+            }),
       ),
       onWillPop: () async => false,
     );
   }
 
-  Future<List<FileSystemEntity>> _getAllCsvFiles() async {
-  final String directory = '../Game History';
-  final path = "$directory/";
-  print(path);
-  final myDir = Directory(path);
-  List<FileSystemEntity> _csvFiles;
-  _csvFiles = myDir.listSync(recursive: true, followLinks: false);
-  _csvFiles.sort((a, b) {
-    return b.path.compareTo(a.path);
-  });
-  return _csvFiles;
-}
+  loadingview() {
+    return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 20,),
+                      exit()
+                    ],
+                  ),
+                );
+  }
 
   leftbutton() {
-    return 
-                  GestureDetector(
-                    onTap: () {
-                      if (index > 0) {
-                        setState(() {
-                          index--;
-                          boardlist = gamestates[index];
-                        });
-                      } else {
-                        setState(() {
-                          index = -1;
-                          boardlist = List.from(defaultboard.reversed);
-                        });
-                      }
-                      print('PREVIOUS STATE');
-                    },
-                    child: Container(
-                      color: lightbrown,
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width / 5,
-                      child: Center(
-                          child: Icon(
-                        Icons.arrow_back_ios,
-                        size: 100,
-                      )),
-                    ),
-                  );
+    return GestureDetector(
+      onTap: () {
+        if (index > 0) {
+          setState(() {
+            index--;
+            boardlist = gamestates[index];
+          });
+        } else {
+          setState(() {
+            index = -1;
+            boardlist = List.from(defaultboard.reversed).join("");
+          });
+        }
+        print('PREVIOUS STATE');
+      },
+      child: Container(
+        color: lightbrown,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width / 5,
+        child: Center(
+            child: Icon(
+          Icons.arrow_back_ios,
+          size: 100,
+        )),
+      ),
+    );
   }
 
   rightbutton() {
     return GestureDetector(
-                    onTap: () {
-                      if (index < gamestates.length) {
-                        setState(() {
-                          index++;
-                          boardlist = gamestates[index];
-                        });
-                      }
-                      print('NEXT STATE');
-                    },
-                    child: Container(
-                      color: darkbrown,
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width / 5,
-                      child: Center(
-                          child: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 100,
-                      )),
-                    ),
-                  );
+      onTap: () {
+        if (index < gamestates.length - 1) {
+          setState(() {
+            index++;
+            boardlist = gamestates[index];
+          });
+        }
+        print('NEXT STATE');
+      },
+      child: Container(
+        color: darkbrown,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width / 5,
+        child: Center(
+            child: Icon(
+          Icons.arrow_forward_ios,
+          size: 100,
+        )),
+      ),
+    );
   }
 
   Widget chessboard() {
@@ -741,7 +280,6 @@ class _historygameState extends State<historygame> {
       ),
     );
   }
-
 }
 
 List<String> defaultboard = [
@@ -809,71 +347,4 @@ List<String> defaultboard = [
   'b',
   'n',
   'r'
-];
-
-List<String> squares = [
-  'a1',
-  'b1',
-  'c1',
-  'd1',
-  'e1',
-  'f1',
-  'g1',
-  'h1',
-  'a2',
-  'b2',
-  'c2',
-  'd2',
-  'e2',
-  'f2',
-  'g2',
-  'h2',
-  'a3',
-  'b3',
-  'c3',
-  'd3',
-  'e3',
-  'f3',
-  'g3',
-  'h3',
-  'a4',
-  'b4',
-  'c4',
-  'd4',
-  'e4',
-  'f4',
-  'g4',
-  'h4',
-  'a5',
-  'b5',
-  'c5',
-  'd5',
-  'e5',
-  'f5',
-  'g5',
-  'h5',
-  'a6',
-  'b6',
-  'c6',
-  'd6',
-  'e6',
-  'f6',
-  'g6',
-  'h6',
-  'a7',
-  'b7',
-  'c7',
-  'd7',
-  'e7',
-  'f7',
-  'g7',
-  'h7',
-  'a8',
-  'b8',
-  'c8',
-  'd8',
-  'e8',
-  'f8',
-  'g8',
-  'h8',
 ];
