@@ -1,3 +1,4 @@
+import 'package:chessboard/historygame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Classes/Color.dart';
@@ -72,7 +73,12 @@ class _historyState extends State<history> {
                 backgroundColor: darkbrown,
               ),
               onPressed: () {
-                //OPEN GAME VIEW
+                Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => historygame(),
+          ),
+        );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

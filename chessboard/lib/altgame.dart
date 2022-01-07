@@ -154,7 +154,6 @@ class _altgameState extends State<altgame> {
               if (moves.length > 0) {
                 if (moves[moves.length - 1] != data["move"]) {
                   moves.add(data["move"]);
-                  turn = !turn;
                 }
               } else {
                 moves.add(data["move"]);

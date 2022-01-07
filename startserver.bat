@@ -1,3 +1,3 @@
 cd chessboard\build\web
-npm serve .
+npx serve .
 
