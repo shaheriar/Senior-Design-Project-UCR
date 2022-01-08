@@ -182,7 +182,7 @@ class _altgameState extends State<altgame> {
                 child: Container(
                   color: lightbrown,
                   width: MediaQuery.of(context).size.width / 2 - 5,
-                  //height: MediaQuery.of(context).size.height - 190,
+                  height: MediaQuery.of(context).size.height - 190,
                   child: ListView.builder(
                     controller: _scrollControllerw,
                     reverse: true,
@@ -203,7 +203,7 @@ class _altgameState extends State<altgame> {
                 child: Container(
                   color: darkbrown,
                   width: MediaQuery.of(context).size.width / 2 - 5,
-                  //height: MediaQuery.of(context).size.height - 190,
+                  height: MediaQuery.of(context).size.height - 190,
                   child: ListView.builder(
                     controller: _scrollControllerb,
                     reverse: true,
