@@ -57,13 +57,27 @@ class _altgameState extends State<altgame> {
       extendBodyBehindAppBar: true,
       backgroundColor: primary,
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
+        child: Stack(
           children: [
-            times(),
-            Container(height: 10, color: primary),
-            moveslist(),
-            buttons(),
+            Row(
+              children: [
+                Container(width: MediaQuery.of(context).size.width/2 - 5,color: lightbrown,),
+                Container(
+                width: 10,
+                color: primary,
+              ),
+                Container(width: MediaQuery.of(context).size.width/2 - 5,color: darkbrown,)
+              ],
+            ),
+            Column(
+              children: [
+                times(),
+                Container(height: 10, color: primary),
+                moveslist(),
+                Expanded(child: Container(),),
+                buttons(),
+              ],
+            ),
           ],
         ),
       ),
@@ -91,7 +105,7 @@ class _altgameState extends State<altgame> {
                 PageRouteBuilder(
                   opaque: false,
                   pageBuilder: (context, animation1, animation2) =>
-                      WinSplash(win: false),
+                      WinSplash(win: true),
                 ),
               );
             });
@@ -105,7 +119,7 @@ class _altgameState extends State<altgame> {
                 PageRouteBuilder(
                   opaque: false,
                   pageBuilder: (context, animation1, animation2) =>
-                      WinSplash(win: true),
+                      WinSplash(win: false),
                 ),
               );
             });
@@ -168,7 +182,7 @@ class _altgameState extends State<altgame> {
                 child: Container(
                   color: lightbrown,
                   width: MediaQuery.of(context).size.width / 2 - 5,
-                  height: MediaQuery.of(context).size.height - 190,
+                  //height: MediaQuery.of(context).size.height - 190,
                   child: ListView.builder(
                     controller: _scrollControllerw,
                     reverse: true,
@@ -189,7 +203,7 @@ class _altgameState extends State<altgame> {
                 child: Container(
                   color: darkbrown,
                   width: MediaQuery.of(context).size.width / 2 - 5,
-                  height: MediaQuery.of(context).size.height - 190,
+                  //height: MediaQuery.of(context).size.height - 190,
                   child: ListView.builder(
                     controller: _scrollControllerb,
                     reverse: true,

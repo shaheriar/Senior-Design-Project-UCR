@@ -120,7 +120,7 @@ Widget background() {
       crossAxisCount: 11,
     ),
     itemBuilder: buildGridItems,
-    itemCount: 77,
+    itemCount: 88,
   );
 }
 
