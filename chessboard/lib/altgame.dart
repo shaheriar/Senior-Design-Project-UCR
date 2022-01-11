@@ -35,6 +35,7 @@ class _altgameState extends State<altgame> {
     inf = assists;
     bmin = time;
     wmin = time;
+    flag = (time == -1);
     bsec = 0;
     wsec = 0;
   }
@@ -256,6 +257,9 @@ class _altgameState extends State<altgame> {
   }
 
   formattime(int min, int sec) {
+    if (flag) {
+      return "∞:∞";
+    }
     if (sec < 10) {
       if (min < 10) {
         return "0$min:0$sec";

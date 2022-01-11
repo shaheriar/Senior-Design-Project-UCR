@@ -14,7 +14,7 @@ class vsMenu extends StatefulWidget {
 }
 
 class _vsMenuState extends State<vsMenu> {
-  List<int> time = [5,10,15,20,30];
+  List<int> time = [-1,5,10,15,20,30];
   int index = 0;
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _vsMenuState extends State<vsMenu> {
       });
     },
     child: Text(
-      '${time[index]} minutes',
+      index == 0 ? '∞ minutes' : '${time[index]} minutes',
       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
     ),
   );
