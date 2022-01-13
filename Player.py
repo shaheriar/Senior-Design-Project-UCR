@@ -1,5 +1,4 @@
 import chess
-from cairosvg import svg2png
 from Points import piecePoints
 import Points
 from MoveEval import MoveEval
