@@ -34,7 +34,7 @@ class chessGame:
     async def menu(self, client):
         global player1
         global player2
-        global AI
+        global AIPlayer
         global userColorForAIMode
         print('------------------------------')
         print('Smart Chess by The Segfaults')
@@ -54,7 +54,7 @@ class chessGame:
 
         elif(dataParsed["gamemode"] == 2):
             player1 = Player(dataParsed["player1"])
-            AI = AI(False, dataParsed["difficulty"])
+            AIPlayer = AI(False, dataParsed["difficulty"])
             print('DIFFICULTY', dataParsed["difficulty"])
             userColorForAIMode = dataParsed["usercolor"]
             return 2
@@ -131,15 +131,15 @@ class chessGame:
                         board = player1.makeMove(board, 5, turn, dt_string)
                     else:
                         if(numberOfMoves < 2):
-                            board = AI.makeFirstMove(board, dt_string)
+                            board = AIPlayer.makeFirstMove(board, dt_string)
                         else:
-                            board = AI.makeMove(board, 3, turn, dt_string)
+                            board = AIPlayer.makeMove(board, 3, turn, dt_string)
                 else:  # The user is black because 1 is black
                     if turn == 0:
                         if(numberOfMoves < 2):
-                            board = AI.makeFirstMove(board, dt_string)
+                            board = AIPlayer.makeFirstMove(board, dt_string)
                         else:
-                            board = AI.makeMove(board, 3, turn, dt_string)
+                            board = AIPlayer.makeMove(board, 3, turn, dt_string)
                     else:
                         board = player1.makeMove(board, 5, turn, dt_string)
             elif(gameMode == 3):
@@ -157,12 +157,12 @@ class chessGame:
             turn = not turn
             moveData = {"move": board.peek().uci()}
             await client.send(json.dumps(moveData))
-            time.sleep(1)
+            #time.sleep(1)
             isGameOver = await client.recv()
             if (isGameOver == 'Time'):
                 print('GAME ENDED BY TIME')
                 break
-            time.sleep(1)
+            #time.sleep(1)
             print('MESSAGE SENT')
             numberOfMoves += 1
 
