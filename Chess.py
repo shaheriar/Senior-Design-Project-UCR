@@ -8,7 +8,7 @@ from datetime import datetime
 from Points import heuristic, piecePoints
 import time
 import pandas as pd
-from datetime import datetime  
+from datetime import datetime
 # ------------------------------------------
 # import chess.svg
 # from cairosvg import svg2png
@@ -53,7 +53,7 @@ class chessGame:
 
         elif(dataParsed["gamemode"] == 2):
             player1 = Player(dataParsed["player1"])
-            AI = AI(False, 0)
+            AI = AI(False, dataParsed["difficulty"])
             userColorForAIMode = dataParsed["usercolor"]
             return 2
 
@@ -72,7 +72,6 @@ class chessGame:
         dt_string += now.strftime("%d-%m-%Y %H-%M-%S")
         dt_string += ".csv"
         moveHistory.to_csv(dt_string, index=False)
-
 
         while (not board.is_checkmate() or not board.is_stalemate() or not board.is_fivefold_repetition()):
             # isGameOver = await client.recv()
