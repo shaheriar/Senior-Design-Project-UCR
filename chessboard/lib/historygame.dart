@@ -54,6 +54,7 @@ class _historygameState extends State<historygame> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Container(),
                         chessboard(),
                         exit(),
                       ],
@@ -99,7 +100,7 @@ class _historygameState extends State<historygame> {
         print('PREVIOUS STATE');
       },
       child: Container(
-        color: lightbrown,
+        color: darkbrown,
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width / 5,
         child: Center(
