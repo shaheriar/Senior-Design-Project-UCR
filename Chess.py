@@ -48,12 +48,14 @@ class chessGame:
 
         if(dataParsed["gamemode"] == 1):
             player1 = Player(dataParsed["player1"])
+            print('DIFFICULTY', dataParsed["gamemode"])
             player2 = Player(dataParsed["player2"])
             return 1
 
         elif(dataParsed["gamemode"] == 2):
             player1 = Player(dataParsed["player1"])
             AI = AI(False, dataParsed["difficulty"])
+            print('DIFFICULTY', dataParsed["difficulty"])
             userColorForAIMode = dataParsed["usercolor"]
             return 2
 
