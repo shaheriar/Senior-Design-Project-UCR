@@ -100,15 +100,23 @@ class chessGame:
                 print('GAME ENDED BY CHECKMATE')
                 if turn == 1:
                     print("White Wins")
+                    moveData = {"move": board.peek().uci(), "status": "checkmate", "winner": "white"}
+                    await client.send(json.dumps(moveData))
                 else:
+                    moveData = {"move": board.peek().uci(), "status": "checkmate", "winner": "black"}
+                    await client.send(json.dumps(moveData))
                     print("Black Wins")
                 break
 
             elif (board.is_stalemate()):
                 print('GAME ENDED BY STALEMATE')
+                moveData = {"move": board.peek().uci(), "status": "stalemate"}
+                await client.send(json.dumps(moveData))
                 break
             elif (board.is_fivefold_repetition()):
                 print('GAME ENDED BY FIVEFOLD REPETITION')
+                moveData = {"move": board.peek().uci(), "status": "repetition"}
+                await client.send(json.dumps(moveData))
                 break
             print(board.legal_moves)
 

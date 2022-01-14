@@ -65,9 +65,9 @@ def incheck(board, turn):
 
 def heuristic(board, turn, difficulty):
     if difficulty == 2:
-        return material(board, turn)
+        return incheck(board, turn)
     if difficulty == 3:
-        return material(board, turn) + incheck(board, turn)
+        return material(board) + incheck(board, turn)
     if difficulty == 4:
         return material(board) + piece_moves(board, turn) + incheck(board, turn)
     else:

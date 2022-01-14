@@ -15,7 +15,7 @@ class AI(Player):
         super().__init__(recommendMoves)
         self.difficulty = difficulty
 
-    def minimax(self, board, depth, turn, alpha, beta,):
+    def minimax(self, board, depth, turn, alpha, beta):
         #boardCopy = copy.deepcopy(board)
         if depth == 0 or board.is_checkmate() or board.is_stalemate():
             eval = Points.heuristic(board, turn, self.difficulty)
@@ -30,7 +30,7 @@ class AI(Player):
                 # print('\n')
                 board.push(i)
                 value = self.minimax(board, depth - 1, True,
-                                     alpha, beta, self.difficulty)
+                                     alpha, beta)
                 board.pop()
                 # print(value)
                 if(value.evaluation >= maxValue.evaluation):
@@ -49,7 +49,7 @@ class AI(Player):
                 # print('\n')
                 board.push(i)
                 value = self.minimax(
-                    board, depth - 1, False, alpha, beta, self.difficulty)
+                    board, depth - 1, False, alpha, beta)
                 board.pop()
                 # print(value)
                 if(value.evaluation <= minValue.evaluation):
@@ -64,7 +64,7 @@ class AI(Player):
     def makeMove(self, board, depth, turn, historyFile):
         print('\n'+'\U0001F914'+"...Thinking..."+'\U0001F914'+'\n')
         tuple = self.minimax(board, depth, turn, MoveEval(
-            "", -inf), MoveEval("", inf), self.difficulty)
+            "", -inf), MoveEval("", inf))
         move = tuple.move
         print("Move made is: ", move)
         board.push_san(move)
