@@ -5,14 +5,21 @@ import 'Classes/Color.dart';
 import 'homepage.dart';
 
 class difficulty extends StatefulWidget {
-  difficulty({Key? key}) : super(key: key);
+  difficulty({Key? key, required int this.time}) : super(key: key);
+  int time;
 
   @override
-  _difficultyState createState() => _difficultyState();
+  _difficultyState createState() => _difficultyState(time);
 }
 
 class _difficultyState extends State<difficulty> {
   bool check = false;
+  int time = 0;
+
+  _difficultyState(int t) {
+    time = t;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +40,11 @@ class _difficultyState extends State<difficulty> {
               children: <Widget>[
                 colorpicker(),
                 SizedBox(height: 20,),
-                MyButton(context, 'Easy', assists(human: 2, check: check)),
+                MyButton(context, 'Easy', assists(human: 2, check: check, time: time)),
                 SizedBox(height: 20,),
-                MyButton(context, 'Medium', assists(human: 2, check: check)),
+                MyButton(context, 'Medium', assists(human: 3, check: check, time: time)),
                 SizedBox(height: 20,),
-                MyButton(context, 'Hard', assists(human: 2, check: check))
+                MyButton(context, 'Hard', assists(human: 4, check: check, time: time))
               ],
             ),
           ),

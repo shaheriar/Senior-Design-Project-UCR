@@ -2,17 +2,19 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Classes/Color.dart';
+import 'drawsplash.dart';
 import 'winsplash.dart';
 import 'Classes/Assists.dart';
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class altgame extends StatefulWidget {
-  altgame({Key? key, required this.assists}) : super(key: key);
+  altgame({Key? key, required this.assists, required this.time}) : super(key: key);
   Assists assists;
+  int time;
 
   @override
-  _altgameState createState() => _altgameState(assists);
+  _altgameState createState() => _altgameState(assists, time);
 }
 
 class _altgameState extends State<altgame> {
@@ -30,8 +32,13 @@ class _altgameState extends State<altgame> {
   List<String> moves = [];
   Assists inf = Assists(false, false, 0, false);
 
-  _altgameState(Assists assists) {
+  _altgameState(Assists assists, int time) {
     inf = assists;
+    bmin = time;
+    wmin = time;
+    flag = (time == -1);
+    bsec = 0;
+    wsec = 0;
   }
   _scrollw() {
     _scrollControllerw.jumpTo(_scrollControllerw.position.maxScrollExtent);
@@ -44,10 +51,6 @@ class _altgameState extends State<altgame> {
   @override
   void initState() {
     super.initState();
-    bmin = 30;
-    bsec = 0;
-    wmin = 30;
-    wsec = 0;
   }
 
   @override
@@ -56,13 +59,27 @@ class _altgameState extends State<altgame> {
       extendBodyBehindAppBar: true,
       backgroundColor: primary,
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
+        child: Stack(
           children: [
-            times(),
-            Container(height: 10, color: primary),
-            moveslist(),
-            buttons(),
+            Row(
+              children: [
+                Container(width: MediaQuery.of(context).size.width/2 - 5,color: lightbrown,),
+                Container(
+                width: 10,
+                color: primary,
+              ),
+                Container(width: MediaQuery.of(context).size.width/2 - 5,color: darkbrown,)
+              ],
+            ),
+            Column(
+              children: [
+                times(),
+                Container(height: 10, color: primary),
+                moveslist(),
+                Expanded(child: Container(),),
+                buttons(),
+              ],
+            ),
           ],
         ),
       ),
@@ -75,8 +92,10 @@ class _altgameState extends State<altgame> {
         builder: (context, snapshot) {
           if (moves.length % 2 == 0) {
             whitetime();
+            winner = false;
           } else {
             blacktime();
+            winner = true;
           }
           if (bsec == 0 && bmin == 0) {
             _channel.sink.add('Time');
@@ -88,7 +107,7 @@ class _altgameState extends State<altgame> {
                 PageRouteBuilder(
                   opaque: false,
                   pageBuilder: (context, animation1, animation2) =>
-                      WinSplash(win: false),
+                      WinSplash(win: true),
                 ),
               );
             });
@@ -102,7 +121,7 @@ class _altgameState extends State<altgame> {
                 PageRouteBuilder(
                   opaque: false,
                   pageBuilder: (context, animation1, animation2) =>
-                      WinSplash(win: true),
+                      WinSplash(win: false),
                 ),
               );
             });
@@ -149,8 +168,43 @@ class _altgameState extends State<altgame> {
           if (snapshot.hasData) {
             var data = jsonDecode(snapshot.data.toString());
             if (data["move"] != null) {
-              if (!moves.contains(data["move"])) {
+              if (moves.length > 0) {
+                if (moves[moves.length - 1] != data["move"]) {
+                  moves.add(data["move"]);
+                }
+              } else {
                 moves.add(data["move"]);
+              }
+            }
+            if (data["status"] != null) {
+              String status = data["status"];
+              if (status == "checkmate" ||
+                  status == "stalemate" ||
+                  status == "repetition") {
+                flag = true;
+                if (status == "checkmate") {
+                  WidgetsBinding.instance!.addPostFrameCallback(
+                    (_) => Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (context, animation1, animation2) =>
+                            WinSplash(win: moves.length % 2 != 0),
+                      ),
+                    ),
+                  );
+                } else {
+                  WidgetsBinding.instance!.addPostFrameCallback(
+                    (_) => Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (context, animation1, animation2) =>
+                            DrawSplash(status: status),
+                      ),
+                    ),
+                  );
+                }
               }
             }
           }
@@ -235,6 +289,9 @@ class _altgameState extends State<altgame> {
   }
 
   formattime(int min, int sec) {
+    if (flag) {
+      return "∞:∞";
+    }
     if (sec < 10) {
       if (min < 10) {
         return "0$min:0$sec";
@@ -285,7 +342,7 @@ class _altgameState extends State<altgame> {
           PageRouteBuilder(
             opaque: false,
             pageBuilder: (context, animation1, animation2) =>
-                WinSplash(win: false),
+                WinSplash(win: winner),
           ),
         );
       },

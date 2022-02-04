@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(child: Container()),
                 Row(
                   children: [
-                    settingsbutton(),
+                    //settingsbutton(),
                     SizedBox(width: 10,),
                     historybutton(),
                     Expanded(child: Container()),
@@ -120,7 +120,7 @@ Widget background() {
       crossAxisCount: 11,
     ),
     itemBuilder: buildGridItems,
-    itemCount: 77,
+    itemCount: 88,
   );
 }
 

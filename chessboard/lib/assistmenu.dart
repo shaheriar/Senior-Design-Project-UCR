@@ -8,10 +8,11 @@ import 'Classes/Assists.dart';
 class assists extends StatefulWidget {
   int human = 0;
   bool check = false;
-  assists({Key? key, required this.human, required this.check}) : super(key: key);
+  int time;
+  assists({Key? key, required this.human, required this.check, required this.time}) : super(key: key);
 
   @override
-  _assistsState createState() => _assistsState(human, check);
+  _assistsState createState() => _assistsState(human, check, time);
 }
 
 class _assistsState extends State<assists> {
@@ -19,9 +20,11 @@ class _assistsState extends State<assists> {
   bool w = false; //white recommended
   int h = 0; //vs human or ai
   bool check = false;
-  _assistsState(int human, bool check) {
+  int time = 0;
+  _assistsState(int human, bool check, int t) {
     this.h = human;
     this.check = check;
+    this.time = t;
   }
   @override
   Widget build(BuildContext context) {
@@ -107,7 +110,7 @@ class _assistsState extends State<assists> {
               SizedBox(
                 height: 50,
               ),
-              MyButton(context, 'Play', syncgame(assists: Assists(w,b,h,check),)),
+              MyButton(context, 'Play', syncgame(assists: Assists(w,b,h,check),time: time)),
             ],
           ),
         ],

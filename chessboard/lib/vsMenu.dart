@@ -14,6 +14,8 @@ class vsMenu extends StatefulWidget {
 }
 
 class _vsMenuState extends State<vsMenu> {
+  List<int> time = [-1,5,10,15,20,30];
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,11 +30,11 @@ class _vsMenuState extends State<vsMenu> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                MyButton(context, 'vs Human', assists(human: 1,check: false,)),
-                SizedBox(
-                  height: 20,
-                ),
-                MyButton(context, 'vs AI', difficulty())
+                TimeButton(),
+                SizedBox(height: 20,),
+                MyButton(context, 'vs Human', assists(human: 1,check: false,time: time[index])),
+                SizedBox(height: 20,),
+                MyButton(context, 'vs AI', difficulty(time: time[index])),
               ],
             ),
           ),
@@ -40,4 +42,22 @@ class _vsMenuState extends State<vsMenu> {
       ),
     );
   }
+  Widget TimeButton() {
+  return TextButton(
+    style: TextButton.styleFrom(
+      fixedSize: Size(170, 50),
+      primary: primary,
+      backgroundColor: lightbrown,
+    ),
+    onPressed: () {
+      setState(() {
+        index = (index + 1) % time.length;
+      });
+    },
+    child: Text(
+      index == 0 ? '∞ minutes' : '${time[index]} minutes',
+      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+    ),
+  );
+}
 }

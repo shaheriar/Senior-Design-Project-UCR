@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'package:chessboard/historygame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'Classes/Color.dart';
 import 'homepage.dart';
 
@@ -11,6 +14,16 @@ class history extends StatefulWidget {
 }
 
 class _historyState extends State<history> {
+ final _channel = WebSocketChannel.connect(
+    Uri.parse('ws://localhost:8765'),
+  );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _channel.sink.add('History');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,78 +70,75 @@ class _historyState extends State<history> {
   }
 
   gameList() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 135,
-      child: ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: 6,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                fixedSize: Size(300, 100),
-                primary: Colors.white,
-                backgroundColor: darkbrown,
+    return StreamBuilder(
+      stream: _channel.stream,
+      builder: (context, snapshot) {
+        if (snapshot.data == null) {
+          return Center(child: CircularProgressIndicator(),);
+        }
+        print(snapshot.data);
+        var data = jsonDecode(snapshot.data.toString());
+        List<dynamic> gameslist = data["history"];
+        gameslist = List.from(gameslist.reversed);
+        return SizedBox(
+          height: MediaQuery.of(context).size.height - 135,
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(8),
+            itemCount: gameslist.length,
+            itemBuilder: (BuildContext context, int index) {
+              String date = gameslist[index].toString().substring(0,10);
+              String time = gameslist[index].toString().substring(11,19);
+              time = time.replaceAll('-',':');
+              date = date.replaceAll('-','/');
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    fixedSize: Size(300, 100),
+                    primary: Colors.white,
+                    backgroundColor: darkbrown,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation1, animation2) => historygame(name: gameslist[index]),
               ),
-              onPressed: () {
-                //OPEN GAME VIEW
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 4,
-                    child: Text(
-                      times[index],
-                      style: TextStyle(fontSize: 35),
-                    ),
+            );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 4,
+                        child: Text(
+                          '${index+1}',
+                          style: TextStyle(fontSize: 35),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 4,
+                        child: Text(
+                          date,
+                          style: TextStyle(fontSize: 35),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 4,
+                        child: Text(
+                          time,
+                          style: TextStyle(fontSize: 35),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 4,
-                    child: Text(
-                      winner[index],
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 4,
-                    child: Text(
-                      moves[index],
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+                ),
+              );
+            },
+          ),
+        );
+      }
     );
   }
 }
-
-List<String> times = [
-  '5:00AM',
-  '1:00AM',
-  '10:00PM',
-  '8:00PM',
-  '12:00PM',
-  '3:00PM'
-];
-List<String> winner = [
-  'Black Won',
-  'White Won',
-  'White Won',
-  'Black Won',
-  'Black Won',
-  'Black Won'
-];
-List<String> moves = [
-  '30 Moves',
-  '15 Moves',
-  '23 Moves',
-  '5 Moves',
-  '50 Moves',
-  '13 Moves'
-];
