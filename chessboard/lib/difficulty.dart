@@ -42,9 +42,9 @@ class _difficultyState extends State<difficulty> {
                 SizedBox(height: 20,),
                 MyButton(context, 'Easy', assists(human: 2, check: check, time: time)),
                 SizedBox(height: 20,),
-                MyButton(context, 'Medium', assists(human: 2, check: check, time: time)),
+                MyButton(context, 'Medium', assists(human: 3, check: check, time: time)),
                 SizedBox(height: 20,),
-                MyButton(context, 'Hard', assists(human: 2, check: check, time: time))
+                MyButton(context, 'Hard', assists(human: 4, check: check, time: time))
               ],
             ),
           ),

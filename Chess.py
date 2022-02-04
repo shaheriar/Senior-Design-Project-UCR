@@ -8,7 +8,7 @@ from datetime import datetime
 from Points import heuristic, piecePoints
 import time
 import pandas as pd
-from datetime import datetime  
+from datetime import datetime
 # ------------------------------------------
 # import chess.svg
 # from cairosvg import svg2png
@@ -34,7 +34,7 @@ class chessGame:
     async def menu(self, client):
         global player1
         global player2
-        global AI
+        global AIPlayer
         global userColorForAIMode
         print('------------------------------')
         print('Smart Chess by The Segfaults')
@@ -48,12 +48,14 @@ class chessGame:
 
         if(dataParsed["gamemode"] == 1):
             player1 = Player(dataParsed["player1"])
+            print('DIFFICULTY', dataParsed["gamemode"])
             player2 = Player(dataParsed["player2"])
             return 1
 
         elif(dataParsed["gamemode"] == 2):
             player1 = Player(dataParsed["player1"])
-            AI = AI(False, 0)
+            AIPlayer = AI(False, dataParsed["difficulty"])
+            print('DIFFICULTY', dataParsed["difficulty"])
             userColorForAIMode = dataParsed["usercolor"]
             return 2
 
@@ -72,7 +74,6 @@ class chessGame:
         dt_string += now.strftime("%d-%m-%Y %H-%M-%S")
         dt_string += ".csv"
         moveHistory.to_csv(dt_string, index=False)
-
 
         while (not board.is_checkmate() or not board.is_stalemate() or not board.is_fivefold_repetition()):
             # isGameOver = await client.recv()
@@ -99,15 +100,23 @@ class chessGame:
                 print('GAME ENDED BY CHECKMATE')
                 if turn == 1:
                     print("White Wins")
+                    moveData = {"move": board.peek().uci(), "status": "checkmate", "winner": "white"}
+                    await client.send(json.dumps(moveData))
                 else:
+                    moveData = {"move": board.peek().uci(), "status": "checkmate", "winner": "black"}
+                    await client.send(json.dumps(moveData))
                     print("Black Wins")
                 break
 
             elif (board.is_stalemate()):
                 print('GAME ENDED BY STALEMATE')
+                moveData = {"move": board.peek().uci(), "status": "stalemate"}
+                await client.send(json.dumps(moveData))
                 break
             elif (board.is_fivefold_repetition()):
                 print('GAME ENDED BY FIVEFOLD REPETITION')
+                moveData = {"move": board.peek().uci(), "status": "repetition"}
+                await client.send(json.dumps(moveData))
                 break
             print(board.legal_moves)
 
@@ -122,15 +131,15 @@ class chessGame:
                         board = player1.makeMove(board, 5, turn, dt_string)
                     else:
                         if(numberOfMoves < 2):
-                            board = AI.makeFirstMove(board, dt_string)
+                            board = AIPlayer.makeFirstMove(board, dt_string)
                         else:
-                            board = AI.makeMove(board, 3, turn, dt_string)
+                            board = AIPlayer.makeMove(board, 3, turn, dt_string)
                 else:  # The user is black because 1 is black
                     if turn == 0:
                         if(numberOfMoves < 2):
-                            board = AI.makeFirstMove(board, dt_string)
+                            board = AIPlayer.makeFirstMove(board, dt_string)
                         else:
-                            board = AI.makeMove(board, 3, turn, dt_string)
+                            board = AIPlayer.makeMove(board, 3, turn, dt_string)
                     else:
                         board = player1.makeMove(board, 5, turn, dt_string)
             elif(gameMode == 3):
@@ -148,12 +157,12 @@ class chessGame:
             turn = not turn
             moveData = {"move": board.peek().uci()}
             await client.send(json.dumps(moveData))
-            time.sleep(1)
+            #time.sleep(1)
             isGameOver = await client.recv()
             if (isGameOver == 'Time'):
                 print('GAME ENDED BY TIME')
                 break
-            time.sleep(1)
+            #time.sleep(1)
             print('MESSAGE SENT')
             numberOfMoves += 1
 

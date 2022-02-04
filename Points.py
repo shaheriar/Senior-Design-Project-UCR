@@ -10,10 +10,11 @@ piecePoints = {
     chess.KING: 200
 }
 
+
 def piece_moves(board, turn):
     score = 0
     square_values = {"e4": 1, "e5": 1, "d4": 1, "d5": 1, "c6": 0.5, "d6": 0.5, "e6": 0.5, "f6": 0.5,
-                    "c3": 0.5, "d3": 0.5, "e3": 0.5, "f3": 0.5, "c4": 0.5, "c5": 0.5, "f4": 0.5, "f5": 0.5}
+                     "c3": 0.5, "d3": 0.5, "e3": 0.5, "f3": 0.5, "c4": 0.5, "c5": 0.5, "f4": 0.5, "f5": 0.5}
     possible_moves = list(board.legal_moves)
     for move in possible_moves:
         if turn == False:
@@ -27,6 +28,7 @@ def piece_moves(board, turn):
     else:
         return score + 6
 
+
 def material(board):
     # board.
     score = 0
@@ -37,6 +39,7 @@ def material(board):
             else:
                 score -= piecePoints[board.piece_type_at(i)]
     return score
+
 
 def incheck(board, turn):
     score = 0
@@ -59,5 +62,13 @@ def incheck(board, turn):
                 return -inf
     return score
 
-def heuristic(board, turn):
-    return material(board) + piece_moves(board,turn) + incheck(board,turn)
+
+def heuristic(board, turn, difficulty):
+    if difficulty == 2:
+        return incheck(board, turn)
+    if difficulty == 3:
+        return material(board) + incheck(board, turn)
+    if difficulty == 4:
+        return material(board) + piece_moves(board, turn) + incheck(board, turn)
+    else:
+        return material(board) + piece_moves(board, turn) + incheck(board, turn)

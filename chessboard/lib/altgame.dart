@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Classes/Color.dart';
+import 'drawsplash.dart';
 import 'winsplash.dart';
 import 'Classes/Assists.dart';
 import 'package:flutter/foundation.dart';
@@ -173,6 +174,37 @@ class _altgameState extends State<altgame> {
                 }
               } else {
                 moves.add(data["move"]);
+              }
+            }
+            if (data["status"] != null) {
+              String status = data["status"];
+              if (status == "checkmate" ||
+                  status == "stalemate" ||
+                  status == "repetition") {
+                flag = true;
+                if (status == "checkmate") {
+                  WidgetsBinding.instance!.addPostFrameCallback(
+                    (_) => Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (context, animation1, animation2) =>
+                            WinSplash(win: moves.length % 2 != 0),
+                      ),
+                    ),
+                  );
+                } else {
+                  WidgetsBinding.instance!.addPostFrameCallback(
+                    (_) => Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (context, animation1, animation2) =>
+                            DrawSplash(status: status),
+                      ),
+                    ),
+                  );
+                }
               }
             }
           }

@@ -12,24 +12,25 @@ class AI(Player):
     difficulty = 0
 
     def __init__(self, recommendMoves, difficulty):
-        super().__init__( recommendMoves)
+        super().__init__(recommendMoves)
         self.difficulty = difficulty
-    
+
     def minimax(self, board, depth, turn, alpha, beta):
         #boardCopy = copy.deepcopy(board)
         if depth == 0 or board.is_checkmate() or board.is_stalemate():
-            eval = Points.heuristic(board,turn)
+            eval = Points.heuristic(board, turn, self.difficulty)
             endEval = MoveEval("empty", eval)
             return endEval
 
-        if(not turn): 
+        if(not turn):
             maxValue = MoveEval("", -inf)
             for i in board.legal_moves:
                 #boardCopy = copy.deepcopy(board)
                 # print(boardCopy)
                 # print('\n')
                 board.push(i)
-                value = self.minimax(board, depth - 1, True, alpha, beta)
+                value = self.minimax(board, depth - 1, True,
+                                     alpha, beta)
                 board.pop()
                 # print(value)
                 if(value.evaluation >= maxValue.evaluation):
@@ -47,7 +48,8 @@ class AI(Player):
                 # print(boardCopy)
                 # print('\n')
                 board.push(i)
-                value = self.minimax(board, depth - 1, False, alpha, beta)
+                value = self.minimax(
+                    board, depth - 1, False, alpha, beta)
                 board.pop()
                 # print(value)
                 if(value.evaluation <= minValue.evaluation):
@@ -58,52 +60,52 @@ class AI(Player):
                 if (beta.evaluation <= alpha.evaluation):
                     break
             return minValue
-            
 
     def makeMove(self, board, depth, turn, historyFile):
         print('\n'+'\U0001F914'+"...Thinking..."+'\U0001F914'+'\n')
-        tuple = self.minimax(board, depth, turn, MoveEval("",-inf),MoveEval("",inf))
-        move  = tuple.move
+        tuple = self.minimax(board, depth, turn, MoveEval(
+            "", -inf), MoveEval("", inf))
+        move = tuple.move
         print("Move made is: ", move)
         board.push_san(move)
 
-        #string form of the board
+        # string form of the board
         boardlist = list()
         columns = chess.FILE_NAMES
-        for j in reversed(range(1,9)):
+        for j in reversed(range(1, 9)):
             for i in columns:
                 sqr = board.piece_at(chess.parse_square(i+str(j)))
                 if (sqr != None):
                     boardlist.append(sqr.symbol())
                 else:
-                    boardlist.append('.') 
-        #adding the string to the csv
+                    boardlist.append('.')
+        # adding the string to the csv
         df = pd.read_csv(historyFile)
         df.loc[len(df.index)] = [boardlist]
         df.to_csv(historyFile, mode='a', index=False, header=False)
 
         return (board)
         # history.append(board.fen())
-    
+
     def makeFirstMove(self, board, historyFile):
         firstmoves = []
         for i in board.legal_moves:
             firstmoves.append(i.uci())
-        rnd = random.randint(0,len(firstmoves)-1)
+        rnd = random.randint(0, len(firstmoves)-1)
         move = firstmoves[rnd]
         board.push_san(move)
 
-        #string form of the board
+        # string form of the board
         boardlist = list()
         columns = chess.FILE_NAMES
-        for j in reversed(range(1,9)):
+        for j in reversed(range(1, 9)):
             for i in columns:
                 sqr = board.piece_at(chess.parse_square(i+str(j)))
                 if (sqr != None):
                     boardlist.append(sqr.symbol())
                 else:
-                    boardlist.append('.') 
-        #adding the string to the csv
+                    boardlist.append('.')
+        # adding the string to the csv
         df = pd.read_csv(historyFile)
         df.loc[len(df.index)] = [boardlist]
         df.to_csv(historyFile, mode='a', index=False, header=False)
