@@ -1,6 +1,7 @@
 from MoveEval import MoveEval
 import chess
 from Player import Player
+from hardware import *
 import Points
 import random
 from math import inf
@@ -66,6 +67,8 @@ class AI(Player):
         tuple = self.minimax(board, depth, turn, MoveEval(
             "", -inf), MoveEval("", inf))
         move = tuple.move
+        # Light up board for AI move: BLUE
+        setLEDS([move[-2:], BLUE])
         print("Move made is: ", move)
         board.push_san(move)
 
@@ -93,6 +96,7 @@ class AI(Player):
             firstmoves.append(i.uci())
         rnd = random.randint(0, len(firstmoves)-1)
         move = firstmoves[rnd]
+        setLEDS([move[-2:], BLUE])
         board.push_san(move)
 
         # string form of the board

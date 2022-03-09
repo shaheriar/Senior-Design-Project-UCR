@@ -1,4 +1,5 @@
 import chess
+from hardware import *
 from Points import piecePoints
 import Points
 from MoveEval import MoveEval
@@ -59,6 +60,9 @@ class Player:
 
     def makeMove(self, board, depth, turn, historyFile):
         if(self.recommendMoves == True):
+            # Light up board for AI recommended move: BLUE
+            setLEDS([self.recommend(board, depth, turn, MoveEval(
+                "", -inf), MoveEval("", inf)).move[-2:], BLUE])
             print('\nRECOMMENDED MOVE:', self.recommend(board, depth,
                   turn, MoveEval("", -inf), MoveEval("", inf)).move)
         while(1):
@@ -84,5 +88,7 @@ class Player:
 
                 return (board)
             except Exception as e:
+                setLEDS([self.recommend(board, depth, turn, MoveEval(
+                    "", -inf), MoveEval("", inf)).move[-2:], RED])
                 print('INVALID MOVE\n')
                 print(e)
