@@ -1,62 +1,135 @@
-# from gpiozero import *
+#!/usr/bin/env python
 
-class Hardware:
-    def getSquare():
-        # get what piece is on a square
-        pass
+import RPi.GPIO as GPIO
+import time
+GPIO.setmode(GPIO.BCM)
+# GPIO.setwarnings(False)
 
-    def getBoard():
-        # get all the pieces on the board
-        pass
 
-    def setLED(x,y,color):
-        # sets a square to a color
-        pass
+################# GET MOVE FUNCTIONS #####################
 
-    def setLEDs(squares, legalMoves, color):    
-        # squares is a list of all the squares we want lit up
-        # legalMoves is a list of all the legal moves
-        # color is the color we want the squares to be
-        pass
-    
-    def compareBoard(prev, curr):
-        # returns nothing or a move
-        pass
+# The Mapping of binary bits to pin numbers
+BIT0PIN = 17
+BIT1PIN = 27
+BIT2PIN = 22
+BIT3PIN = 5
+BIT4PIN = 6
+BIT5PIN = 26
 
-    def getMove():
-        # move = None
-        # while(move == None):
-        #    move = compareBoard(prev, curr)
-        # return move
-        pass
+# setting the correct pins for output
+GPIO.setup((BIT0PIN, BIT1PIN, BIT2PIN, BIT3PIN, BIT4PIN, BIT5PIN), GPIO.OUT)
 
-"""
-Square = 'a2'
-allAvailableMoves = ['a2a4', …]
+# setting the pin for input
+READPIN = 23
+GPIO.setup(READPIN, GPIO.IN)
 
-//make comparison
-//light up corresponding squares
-For a in allavailablemoves:
-	If first two chars of a == square:
-		setLED(
-		Light up led of a's last two chars square
+# how long to wait before reading if a piece is present after setting the GPIO
+DELAY = 0.01
 
-getMove() :
-Move = nothing
-while(move) != nothing){
-Move = compareboard(prev, curr)
-}
-Return move
+# The array that maps the square number(index) to the chess tile (value) eg:"a4"
+squareMap = ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8" ]
 
-// how to send piece picked up?
+# Converts select (0-63 int) to 6 bit Binary number
+# Sets Corresponding GPIO representing these bits to high/low
+def setGPIO(select):
+	if(select & 0b000001):
+			GPIO.output(BIT0PIN, GPIO.HIGH)
+	else:
+		GPIO.output(BIT0PIN, GPIO.LOW)
 
-Software side:
-Change to make:
-makeMove(self, board, depth, turn, historyFile):
-	Move = Hardware.getMove()
+	if(select & 0b000010):
+		GPIO.output(BIT1PIN, GPIO.HIGH)
+	else:
+		GPIO.output(BIT1PIN, GPIO.LOW)
+	
+	if(select & 0b000100):
+		GPIO.output(BIT2PIN, GPIO.HIGH)
+	else:
+		GPIO.output(BIT2PIN, GPIO.LOW)
+	
+	if(select & 0b001000):
+		GPIO.output(BIT3PIN, GPIO.HIGH)
+	else:
+		GPIO.output(BIT3PIN, GPIO.LOW)
+	
+	if(select & 0b010000):
+		GPIO.output(BIT4PIN, GPIO.HIGH)
+	else:
+		GPIO.output(BIT4PIN, GPIO.LOW)
+	
+	if(select & 0b100000):
+		GPIO.output(BIT5PIN, GPIO.HIGH)
+	else:
+		GPIO.output(BIT5PIN, GPIO.LOW)
 
-convertAvailableMoves(listOfMoves):
-	listOfMoves -> string of possible moves
-"""
+# returns whether a piece is present at square number select
+def getSquare(select):
+	setGPIO(select)
+	time.sleep(DELAY)
+	return GPIO.input(READPIN)
 
-    
+# returns an array of 64 boolean values representing the entire board state
+def getBoard():
+	boardState = [0] * 64
+	select = 0
+	while select < 64:
+		piecePresent = getSquare(select)
+		boardState[select] = piecePresent
+		select+=1
+	return boardState
+
+
+################# SHIFT REGISTER FUNCTIONS #####################
+
+#define PINs according to cabling
+dataPIN = 2
+latchPIN = 3
+clockPIN = 4
+
+GPIO.setup((dataPIN,latchPIN,clockPIN),GPIO.OUT)
+
+# LED order
+RED = 0
+GREEN = 1
+BLUE = 2
+
+# converts from this: [('a1', RED), ('h6', BLUE), ('h8', BLUE)]
+# to this: [1, ... 1, 0, 0, 0, 0, 0, 1]
+# used by setLEDS
+def convertToBinary(LEDs, size):
+  ret = [0] * size
+  for led in LEDs:
+    ret[3*int( squareMap.index(led[0]) ) + led[1]] = 1
+  return ret
+
+# ALL LEDS WILL BE SAME COLOR
+# converts from this: ['a1', 'h6', 'h8'], BLUE
+# to this: [0, 0, 1, ... 1, 0, 0, 0, 0, 0, 1]
+def convertToBinary2(LEDs, color, size):
+  ret = [0] * size
+  for led in LEDs:
+    ret[3*int(squareMap.index(led)) + color] = 1
+  return ret
+
+#turns the array of LEDs on 
+def setLEDS(LEDs, size=192):
+
+  LEDs = convertToBinary(LEDs, size)
+
+  #put latch down to start data sending
+  GPIO.output(clockPIN,0)
+  GPIO.output(latchPIN,0)
+  GPIO.output(clockPIN,1)
+  
+  #load data in reverse order
+  for i in range(size-1, -1, -1):
+    GPIO.output(clockPIN,0)
+    GPIO.output(dataPIN, LEDs[i])
+    GPIO.output(clockPIN,1)
+
+  
+  #put latch up to store data on register
+  GPIO.output(clockPIN,0)
+  GPIO.output(latchPIN,1)
+  GPIO.output(clockPIN,1)
+
