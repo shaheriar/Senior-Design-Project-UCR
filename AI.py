@@ -70,18 +70,18 @@ class AI(Player):
         board.push_san(move)
 
         # string form of the board
-        boardlist = list()
+        boardlist = ""  # list()
         columns = chess.FILE_NAMES
         for j in reversed(range(1, 9)):
             for i in columns:
                 sqr = board.piece_at(chess.parse_square(i+str(j)))
                 if (sqr != None):
-                    boardlist.append(sqr.symbol())
+                    boardlist += sqr.symbol()
                 else:
-                    boardlist.append('.')
+                    boardlist += '.'
         # adding the string to the csv
-        df = pd.read_csv(historyFile)
-        df.loc[len(df.index)] = [boardlist]
+        data = {'Moves': [boardlist]}
+        df = pd.DataFrame(data)
         df.to_csv(historyFile, mode='a', index=False, header=False)
 
         return (board)
@@ -96,18 +96,18 @@ class AI(Player):
         board.push_san(move)
 
         # string form of the board
-        boardlist = list()
+        boardlist = ""
         columns = chess.FILE_NAMES
         for j in reversed(range(1, 9)):
             for i in columns:
                 sqr = board.piece_at(chess.parse_square(i+str(j)))
                 if (sqr != None):
-                    boardlist.append(sqr.symbol())
+                    boardlist += sqr.symbol()
                 else:
-                    boardlist.append('.')
+                    boardlist += '.'
         # adding the string to the csv
-        df = pd.read_csv(historyFile)
-        df.loc[len(df.index)] = [boardlist]
+        data = {'Moves': [boardlist]}
+        df = pd.DataFrame(data)
         df.to_csv(historyFile, mode='a', index=False, header=False)
 
         return (board)
