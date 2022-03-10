@@ -24,7 +24,9 @@ READPIN = 23
 GPIO.setup(READPIN, GPIO.IN)
 
 # how long to wait before reading if a piece is present after setting the GPIO
-DELAY = 0.01
+DELAY = 0.001
+
+SHIFTDELAY = 1/100000
 
 # The array that maps the square number(index) to the chess tile (value) eg:"a4"
 squareMap = ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8" ]
@@ -118,18 +120,26 @@ def setLEDS(LEDs, size=192):
 
   #put latch down to start data sending
   GPIO.output(clockPIN,0)
+  time.sleep(SHIFTDELAY)
   GPIO.output(latchPIN,0)
+  time.sleep(SHIFTDELAY)
   GPIO.output(clockPIN,1)
+  time.sleep(SHIFTDELAY)
   
   #load data in reverse order
   for i in range(size-1, -1, -1):
     GPIO.output(clockPIN,0)
+    time.sleep(SHIFTDELAY)
     GPIO.output(dataPIN, LEDs[i])
+    time.sleep(SHIFTDELAY)
     GPIO.output(clockPIN,1)
+    time.sleep(SHIFTDELAY)
 
   
   #put latch up to store data on register
   GPIO.output(clockPIN,0)
+  time.sleep(SHIFTDELAY)
   GPIO.output(latchPIN,1)
+  time.sleep(SHIFTDELAY)
   GPIO.output(clockPIN,1)
-
+  time.sleep(SHIFTDELAY)
