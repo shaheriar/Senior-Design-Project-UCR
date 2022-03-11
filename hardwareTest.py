@@ -75,8 +75,8 @@ def snake_led_rgb():
 
 
 def test_func():
-    arr = ["a2a4", "a2a3"]
-    get_move(arr)
+  arr = ["a2a4", "a2a3", "b2b4", "b2b3", "c2c4", "c2c3", "d2d4", "d2d3", "e2e4", "e2e3", "f2f4", "f2f3", "g2g4", "g2g3", "h2h4", "h2h3", "b1a3", "b1c3", "g1f3", "g1h3"]
+  print(get_move(arr))
 
     #led_rave_test()
     #all_leds_green()
