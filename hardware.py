@@ -34,52 +34,91 @@ squareMap = ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "b1", "b2", "b3", "
 # Converts select (0-63 int) to 6 bit Binary number
 # Sets Corresponding GPIO representing these bits to high/low
 def setGPIO(select):
-	if(select & 0b000001):
-			GPIO.output(BIT0PIN, GPIO.HIGH)
-	else:
-		GPIO.output(BIT0PIN, GPIO.LOW)
+    if(select & 0b000001):
+            GPIO.output(BIT0PIN, GPIO.HIGH)
+    else:
+        GPIO.output(BIT0PIN, GPIO.LOW)
 
-	if(select & 0b000010):
-		GPIO.output(BIT1PIN, GPIO.HIGH)
-	else:
-		GPIO.output(BIT1PIN, GPIO.LOW)
-	
-	if(select & 0b000100):
-		GPIO.output(BIT2PIN, GPIO.HIGH)
-	else:
-		GPIO.output(BIT2PIN, GPIO.LOW)
-	
-	if(select & 0b001000):
-		GPIO.output(BIT3PIN, GPIO.HIGH)
-	else:
-		GPIO.output(BIT3PIN, GPIO.LOW)
-	
-	if(select & 0b010000):
-		GPIO.output(BIT4PIN, GPIO.HIGH)
-	else:
-		GPIO.output(BIT4PIN, GPIO.LOW)
-	
-	if(select & 0b100000):
-		GPIO.output(BIT5PIN, GPIO.HIGH)
-	else:
-		GPIO.output(BIT5PIN, GPIO.LOW)
+    if(select & 0b000010):
+        GPIO.output(BIT1PIN, GPIO.HIGH)
+    else:
+        GPIO.output(BIT1PIN, GPIO.LOW)
+    
+    if(select & 0b000100):
+        GPIO.output(BIT2PIN, GPIO.HIGH)
+    else:
+        GPIO.output(BIT2PIN, GPIO.LOW)
+    
+    if(select & 0b001000):
+        GPIO.output(BIT3PIN, GPIO.HIGH)
+    else:
+        GPIO.output(BIT3PIN, GPIO.LOW)
+    
+    if(select & 0b010000):
+        GPIO.output(BIT4PIN, GPIO.HIGH)
+    else:
+        GPIO.output(BIT4PIN, GPIO.LOW)
+    
+    if(select & 0b100000):
+        GPIO.output(BIT5PIN, GPIO.HIGH)
+    else:
+        GPIO.output(BIT5PIN, GPIO.LOW)
 
 # returns whether a piece is present at square number select
 def getSquare(select):
-	setGPIO(select)
-	time.sleep(DELAY)
-	return GPIO.input(READPIN)
+    setGPIO(select)
+    time.sleep(DELAY)
+    return GPIO.input(READPIN)
 
 # returns an array of 64 boolean values representing the entire board state
 def getBoard():
-	boardState = [0] * 64
-	select = 0
-	while select < 64:
-		piecePresent = getSquare(select)
-		boardState[select] = piecePresent
-		select+=1
-	return boardState
+    boardState = [0] * 64
+    select = 0
+    while select < 64:
+        piecePresent = getSquare(select)
+        boardState[select] = piecePresent
+        select+=1
+    return boardState
 
+## LIGHTS UP SQUARE GREEN WHEN A PIECE IS PLACED 
+# LIGHTS UP RED WHEN REMOVED
+# ONLY WORKS WITH 1 SQUARE
+# ################# GET MOVE EXAMPLE #####################
+def get_move(legal_moves):
+    try:
+        prev = getBoard()
+        current = []
+        picked_up_piece = ""
+        while(True):
+            # setGPIO(51)  #for testing voltage
+            current = getBoard()
+            for i in range(64):
+                if current[i] != prev[i]:
+                    if current[i] == 0: #currently off the board
+                        #compare legal moves arr 
+                        picked_up_piece = squareMap[i]
+                        legal_moves_arr = compare_pieces(legal_moves, picked_up_piece)
+                        #print(legal_moves_arr)
+                        setLEDS(legal_moves_arr) #highlight legal moves green
+                    
+                    if current[i] == 1 and picked_up_piece != "": #currently on the board
+                        if picked_up_piece == squareMap[i]:
+                            picked_up_piece = ""
+                            setLEDS([])
+                        else:
+                            return picked_up_piece + squareMap[i]
+            prev = current
+    except:
+        pass
+    GPIO.cleanup()
+
+def compare_pieces(legal_moves, given_piece):
+    #return arr of legal moves for given piece
+    final_arr = []
+    for move in legal_moves:
+        if move[:2] == given_piece:
+            final_arr.append((move[-2:], GREEN)) #available moves
+    return final_arr
 
 ################# SHIFT REGISTER FUNCTIONS #####################
 
