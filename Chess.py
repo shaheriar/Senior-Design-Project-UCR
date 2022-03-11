@@ -122,7 +122,7 @@ class chessGame:
                 break
             legal = []
             for x in list(board.legal_moves):
-                legal.append(x.uci()[-2:])
+                legal.append(x.uci())
 
             print(legal)
 
