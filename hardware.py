@@ -106,6 +106,7 @@ def get_move(legal_moves):
                             picked_up_piece = ""
                             setLEDS([])
                         else:
+                            setLEDS([])
                             return picked_up_piece + squareMap[i]
             prev = current
     except:
