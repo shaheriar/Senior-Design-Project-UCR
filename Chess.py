@@ -120,17 +120,17 @@ class chessGame:
                 moveData = {"move": board.peek().uci(), "status": "repetition"}
                 await client.send(json.dumps(moveData))
                 break
-            # legal = [] ##############################################################################
-            # for x in list(board.legal_moves):
-            #     legal.append(x.uci()[-2:])
+            legal = []
+            for x in list(board.legal_moves):
+                legal.append(x.uci()[-2:])
 
-            print(board.legal_moves)
+            print(legal)
 
             if(gameMode == 1):
                 if turn == 0:
-                    board = player1.makeMove(board, 3, turn, dt_string)
+                    board = player1.makeMove(board, 3, turn, dt_string, legal)
                 else:
-                    board = player2.makeMove(board, 3, turn, dt_string)
+                    board = player2.makeMove(board, 3, turn, dt_string, legal)
             elif(gameMode == 2):
                 if userColorForAIMode == False:  # The user is white because 0 is white
                     if turn == 0:

@@ -58,15 +58,16 @@ class Player:
                     break
             return minValue
 
-    def makeMove(self, board, depth, turn, historyFile):
+    def makeMove(self, board, depth, turn, historyFile, legalMoves):
         if(self.recommendMoves == True):
             # Light up board for AI recommended move: BLUE
-            setLEDS([self.recommend(board, depth, turn, MoveEval(
-                "", -inf), MoveEval("", inf)).move[-2:], BLUE])
+            setLEDS([(self.recommend(board, depth, turn, MoveEval(
+                "", -inf), MoveEval("", inf)).move[-2:], BLUE), (self.recommend(board, depth, turn, MoveEval(
+                    "", -inf), MoveEval("", inf)).move[0:2], BLUE)])
             print('\nRECOMMENDED MOVE:', self.recommend(board, depth,
                   turn, MoveEval("", -inf), MoveEval("", inf)).move)
         while(1):
-            move = input('DESIRED MOVE: ')
+            move = get_move(legalMoves)
             try:
                 board.push_san(move)
                 # string form of the board
@@ -88,7 +89,5 @@ class Player:
 
                 return (board)
             except Exception as e:
-                setLEDS([self.recommend(board, depth, turn, MoveEval(
-                    "", -inf), MoveEval("", inf)).move[-2:], RED])
                 print('INVALID MOVE\n')
                 print(e)
