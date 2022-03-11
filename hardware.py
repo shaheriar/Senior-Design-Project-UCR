@@ -84,30 +84,59 @@ def getBoard():
 # LIGHTS UP RED WHEN REMOVED
 # ONLY WORKS WITH 1 SQUARE
 # ################# GET MOVE EXAMPLE #####################
+
+# handles captures and illegal 
+
+
+# get optional second move as starting position 
 def get_move(legal_moves):
     try:
         prev = getBoard()
         current = []
         picked_up_piece = ""
+        lastMove = ""
         while(True):
-            # setGPIO(51)  #for testing voltage
             current = getBoard()
+
             for i in range(64):
+
+                # if something changed 
                 if current[i] != prev[i]:
-                    if current[i] == 0: #currently off the board
-                        #compare legal moves arr 
+
+                    # a piece was picked up at i
+                    if current[i] == 0:
+
+                        #find legal moves starting at square i
                         picked_up_piece = squareMap[i]
                         legal_moves_arr = compare_pieces(legal_moves, picked_up_piece)
-                        #print(legal_moves_arr)
+
+                        if len(legal_moves_arr) == 0:
+                            picked_up_piece = lastMove[0:2]
+
+                        legal_moves_arr = compare_pieces(legal_moves, picked_up_piece)
+
+
+                        print(legal_moves_arr)
                         setLEDS(legal_moves_arr) #highlight legal moves green
-                    
-                    if current[i] == 1 and picked_up_piece != "": #currently on the board
+
+                    #piece was placed at i
+                    if current[i] == 1 and picked_up_piece != "":
+
+                    # if piece was placed back down turn everything off
                         if picked_up_piece == squareMap[i]:
                             picked_up_piece = ""
                             setLEDS([])
+
+                    # if a move is made from 1 square to another
                         else:
-                            setLEDS([])
-                            return picked_up_piece + squareMap[i]
+                            moveMade = picked_up_piece + squareMap[i]
+                            lastMove = moveMade
+                            # print(picked_up_piece + squareMap[i])
+                            if moveMade in legal_moves:
+                                setLEDS([])
+                                return picked_up_piece + squareMap[i]
+                            else:
+                                setLEDS([(picked_up_piece, RED), (squareMap[i], RED)])
             prev = current
     except:
         pass
