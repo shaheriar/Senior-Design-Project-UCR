@@ -122,7 +122,7 @@ class chessGame:
                 break
             legal = []
             for x in list(board.legal_moves):
-                legal.append(x.uci()[-2:])
+                legal.append(x.uci())
 
             print(legal)
 
@@ -134,10 +134,10 @@ class chessGame:
             elif(gameMode == 2):
                 if userColorForAIMode == False:  # The user is white because 0 is white
                     if turn == 0:
-                        board = player1.makeMove(board, 5, turn, dt_string)
+                        board = player1.makeMove(board, 5, turn, dt_string, legal)
                     else:
                         if(numberOfMoves < 2):
-                            board = AIPlayer.makeFirstMove(board, dt_string)
+                            board = AIPlayer.makeFirstMove(board, dt_string, legal)
                         else:
                             board = AIPlayer.makeMove(
                                 board, 3, turn, dt_string)

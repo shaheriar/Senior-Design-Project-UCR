@@ -1,4 +1,4 @@
-CairoSVG==2.5.2
+RPi.GPIO==0.7.1
 chess==1.7.0
 pandas==1.3.5
 SimpleWebSocketServer==0.1.1

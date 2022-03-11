@@ -13,8 +13,8 @@ piecePoints = {
 
 def piece_moves(board, turn):
     score = 0
-    square_values = {"e4": 1, "e5": 1, "d4": 1, "d5": 1, "c6": 0.5, "d6": 0.5, "e6": 0.5, "f6": 0.5,
-                     "c3": 0.5, "d3": 0.5, "e3": 0.5, "f3": 0.5, "c4": 0.5, "c5": 0.5, "f4": 0.5, "f5": 0.5}
+    square_values = {"e4": 0.3, "e5": 0.3, "d4": 0.3, "d5": 0.3, "c6": 0.1, "d6": 0.1, "e6": 0.1, "f6": 0.1,
+                     "c3": 0.1, "d3": 0.1, "e3": 0.1, "f3": 0.1, "c4": 0.1, "c5": 0.1, "f4": 0.1, "f5": 0.1}
     possible_moves = list(board.legal_moves)
     for move in possible_moves:
         if turn == False:
