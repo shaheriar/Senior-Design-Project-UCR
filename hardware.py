@@ -89,8 +89,9 @@ def getBoard():
 
 
 # get optional second move as starting position 
-def get_move(legal_moves):
+def get_move(legal_moves, recMove, inCheck):
     try:
+        recMoveLEDS = [(recMove[0:2], BLUE), (recMove[-2:], BLUE) ]
         prev = getBoard()
         current = []
         picked_up_piece = ""
@@ -125,7 +126,7 @@ def get_move(legal_moves):
                     # if piece was placed back down turn everything off
                         if picked_up_piece == squareMap[i]:
                             picked_up_piece = ""
-                            setLEDS([])
+                            setLEDS(recMoveLEDS)
 
                     # if a move is made from 1 square to another
                         else:
@@ -133,7 +134,7 @@ def get_move(legal_moves):
                             lastMove = moveMade
                             # print(picked_up_piece + squareMap[i])
                             if moveMade in legal_moves:
-                                setLEDS([])
+                                setLEDS(recMoveLEDS)
                                 return picked_up_piece + squareMap[i]
                             else:
                                 setLEDS([(picked_up_piece, RED), (squareMap[i], RED)])
