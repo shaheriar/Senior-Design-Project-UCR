@@ -61,10 +61,10 @@ class Player:
     def makeMove(self, board, depth, turn, historyFile, legalMoves):
         if(self.recommendMoves == True):
             recMove = self.recommend(board, depth, turn, MoveEval(
-                "", -inf), MoveEval("", inf)).move
+                "", -inf), MoveEval("", inf))
             # Light up board for AI recommended move: BLUE
             setLEDS([(recMove.move[-2:], BLUE), (recMove.move[0:2], BLUE)])
-            print('\nRECOMMENDED MOVE:', recMove)
+            print('\nRECOMMENDED MOVE:', recMove.move)
         while(1):
             move = get_move(legalMoves)
             try:
