@@ -66,10 +66,10 @@ def incheck(board, turn):
 def pawn_struct(board, turn):
     score = 0
     for j in reversed(range(1, 9)):
-        for i in range(chess.FILE_NAMES):
+        for i in range(len(chess.FILE_NAMES)):
             sqr = board.piece_at(chess.parse_square(
                 chess.FILE_NAMES[i]+str(j)))
-            if board.piece_at(chess.parse_square(sqr)) == chess.PAWN:
+            if sqr == chess.PAWN:
                 tl = i-1, j-1
                 tr = i-1, j+1
                 if tl[0] >= 0 and tl[0] <= 7 and tl[1] >= 0 and tl[1] <= 7:
