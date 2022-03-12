@@ -98,7 +98,7 @@ class AI(Player):
         rnd = random.randint(0, len(firstmoves)-1)
         move = firstmoves[rnd]
         setLEDS([(move[-2:], BLUE), (move[0:2], BLUE)])
-        get_move([move])
+        move = get_move([move])
         board.push_san(move)
 
         # string form of the board

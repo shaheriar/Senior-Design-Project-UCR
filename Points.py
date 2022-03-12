@@ -63,12 +63,36 @@ def incheck(board, turn):
     return score
 
 
+def pawn_struct(board, turn):
+    score = 0
+    for j in reversed(range(1, 9)):
+        for i in range(chess.FILE_NAMES):
+            sqr = board.piece_at(chess.parse_square(
+                chess.FILE_NAMES[i]+str(j)))
+            if board.piece_at(chess.parse_square(sqr)) == chess.PAWN:
+                tl = i-1, j-1
+                tr = i-1, j+1
+                if tl[0] >= 0 and tl[0] <= 7 and tl[1] >= 0 and tl[1] <= 7:
+                    if board.piece_at(chess.parse_square(chess.FILE_NAMES[tl[0]]+str(tl[1]))) == chess.PAWN:
+                        if(turn == 0):
+                            score += .5
+                        else:
+                            score -= .5
+                if tr[0] >= 0 and tr[0] <= 7 and tr[1] >= 0 and tr[1] <= 7:
+                    if board.piece_at(chess.parse_square(chess.FILE_NAMES[tr[0]]+str(tr[1]))) == chess.PAWN:
+                        if(turn == 0):
+                            score += .5
+                        else:
+                            score -= .5
+    return score
+
+
 def heuristic(board, turn, difficulty):
     if difficulty == 2:
         return incheck(board, turn)
     if difficulty == 3:
         return material(board) + incheck(board, turn)
     if difficulty == 4:
-        return material(board) + piece_moves(board, turn) + incheck(board, turn)
+        return material(board) + piece_moves(board, turn) + incheck(board, turn) + pawn_struct(board, turn)
     else:
-        return material(board) + piece_moves(board, turn) + incheck(board, turn)
+        return material(board) + piece_moves(board, turn) + incheck(board, turn) + pawn_struct(board, turn)
