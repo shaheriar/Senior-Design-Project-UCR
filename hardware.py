@@ -134,7 +134,7 @@ def get_move(legal_moves, recMove, inCheck):
                             lastMove = moveMade
                             # print(picked_up_piece + squareMap[i])
                             if moveMade in legal_moves:
-                                setLEDS(recMoveLEDS)
+                                setLEDS([])
                                 return picked_up_piece + squareMap[i]
                             else:
                                 setLEDS([(picked_up_piece, RED), (squareMap[i], RED)])
