@@ -134,13 +134,12 @@ class chessGame:
             elif(gameMode == 2):
                 if userColorForAIMode == False:  # The user is white because 0 is white
                     if turn == 0:
-                        board = player1.makeMove(board, 5, turn, dt_string, legal)
+                        board = player1.makeMove(board, 3, turn, dt_string, legal)
                     else:
                         if(numberOfMoves < 2):
-                            board = AIPlayer.makeFirstMove(board, dt_string, legal)
+                            board = AIPlayer.makeFirstMove(board, dt_string)
                         else:
-                            board = AIPlayer.makeMove(
-                                board, 3, turn, dt_string)
+                            board = AIPlayer.makeMove(board, 3, turn, dt_string)
                 else:  # The user is black because 1 is black
                     if turn == 0:
                         if(numberOfMoves < 2):
@@ -149,7 +148,7 @@ class chessGame:
                             board = AIPlayer.makeMove(
                                 board, 3, turn, dt_string)
                     else:
-                        board = player1.makeMove(board, 3, turn, dt_string)
+                        board = player1.makeMove(board, 3, turn, dt_string,legal)
             elif(gameMode == 3):
                 if turn == 0:
                     if(numberOfMoves < 2):

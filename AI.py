@@ -70,7 +70,7 @@ class AI(Player):
         # Light up board for AI move: BLUE
         setLEDS([(move[-2:], BLUE), (move[0:2], BLUE)])
         print("Move made is: ", move)
-        get_move([move])
+        get_move([move],recMove=move,inCheck=board.is_check())
         board.push_san(move)
 
         # string form of the board
@@ -98,7 +98,7 @@ class AI(Player):
         rnd = random.randint(0, len(firstmoves)-1)
         move = firstmoves[rnd]
         setLEDS([(move[-2:], BLUE), (move[0:2], BLUE)])
-        move = get_move([move])
+        get_move([move],recMove=move,inCheck=board.is_check())
         board.push_san(move)
 
         # string form of the board

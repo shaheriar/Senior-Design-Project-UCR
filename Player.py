@@ -59,6 +59,7 @@ class Player:
             return minValue
 
     def makeMove(self, board, depth, turn, historyFile, legalMoves):
+        recMove=MoveEval("",0)
         if(self.recommendMoves == True):
             recMove = self.recommend(board, depth, turn, MoveEval(
                 "", -inf), MoveEval("", inf))
@@ -66,7 +67,7 @@ class Player:
             setLEDS([(recMove.move[-2:], BLUE), (recMove.move[0:2], BLUE)])
             print('\nRECOMMENDED MOVE:', recMove.move)
         while(1):
-            move = get_move(legalMoves)
+            move = get_move(legalMoves,recMove=recMove.move,inCheck=board.is_check())
             try:
                 board.push_san(move)
                 # string form of the board

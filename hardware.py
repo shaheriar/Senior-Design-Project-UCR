@@ -90,10 +90,12 @@ def getBoard():
 
 # get optional second move as starting position 
 def get_move(legal_moves, recMove = "", inCheck=False):
+    #print(recMove)
     try:
         recMoveLEDS=[]
         if len(recMove) > 0:
-            recMoveLEDS = [(recMove[0:2], BLUE), (recMove[-2:], BLUE) ]
+            recMoveLEDS = [(recMove[0:2], BLUE), (recMove[-2:], BLUE)]
+        print(recMoveLEDS)
         prev = getBoard()
         current = []
         picked_up_piece = ""
