@@ -1,4 +1,5 @@
 import chess
+from hardware import *
 from Points import piecePoints
 import Points
 from MoveEval import MoveEval
@@ -57,12 +58,16 @@ class Player:
                     break
             return minValue
 
-    def makeMove(self, board, depth, turn, historyFile):
+    def makeMove(self, board, depth, turn, historyFile, legalMoves):
+        recMove=MoveEval("",0)
         if(self.recommendMoves == True):
-            print('\nRECOMMENDED MOVE:', self.recommend(board, depth,
-                  turn, MoveEval("", -inf), MoveEval("", inf)).move)
+            recMove = self.recommend(board, depth, turn, MoveEval(
+                "", -inf), MoveEval("", inf))
+            # Light up board for AI recommended move: BLUE
+            setLEDS([(recMove.move[-2:], BLUE), (recMove.move[0:2], BLUE)])
+            print('\nRECOMMENDED MOVE:', recMove.move)
         while(1):
-            move = input('DESIRED MOVE: ')
+            move = get_move(legalMoves,recMove=recMove.move,inCheck=board.is_check())
             try:
                 board.push_san(move)
                 # string form of the board
