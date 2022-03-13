@@ -100,10 +100,12 @@ class chessGame:
                 print('GAME ENDED BY CHECKMATE')
                 if turn == 1:
                     print("White Wins")
-                    moveData = {"move": board.peek().uci(), "status": "checkmate", "winner": "white"}
+                    moveData = {"move": board.peek().uci(
+                    ), "status": "checkmate", "winner": "white"}
                     await client.send(json.dumps(moveData))
                 else:
-                    moveData = {"move": board.peek().uci(), "status": "checkmate", "winner": "black"}
+                    moveData = {"move": board.peek().uci(
+                    ), "status": "checkmate", "winner": "black"}
                     await client.send(json.dumps(moveData))
                     print("Black Wins")
                 break
@@ -118,17 +120,21 @@ class chessGame:
                 moveData = {"move": board.peek().uci(), "status": "repetition"}
                 await client.send(json.dumps(moveData))
                 break
-            print(board.legal_moves)
+            legal = []
+            for x in list(board.legal_moves):
+                legal.append(x.uci())
+
+            print(legal)
 
             if(gameMode == 1):
                 if turn == 0:
-                    board = player1.makeMove(board, 5, turn, dt_string)
+                    board = player1.makeMove(board, 3, turn, dt_string, legal)
                 else:
-                    board = player2.makeMove(board, 5, turn, dt_string)
+                    board = player2.makeMove(board, 3, turn, dt_string, legal)
             elif(gameMode == 2):
                 if userColorForAIMode == False:  # The user is white because 0 is white
                     if turn == 0:
-                        board = player1.makeMove(board, 5, turn, dt_string)
+                        board = player1.makeMove(board, 3, turn, dt_string, legal)
                     else:
                         if(numberOfMoves < 2):
                             board = AIPlayer.makeFirstMove(board, dt_string)
@@ -139,9 +145,10 @@ class chessGame:
                         if(numberOfMoves < 2):
                             board = AIPlayer.makeFirstMove(board, dt_string)
                         else:
-                            board = AIPlayer.makeMove(board, 3, turn, dt_string)
+                            board = AIPlayer.makeMove(
+                                board, 3, turn, dt_string)
                     else:
-                        board = player1.makeMove(board, 5, turn, dt_string)
+                        board = player1.makeMove(board, 3, turn, dt_string,legal)
             elif(gameMode == 3):
                 if turn == 0:
                     if(numberOfMoves < 2):
@@ -157,12 +164,12 @@ class chessGame:
             turn = not turn
             moveData = {"move": board.peek().uci()}
             await client.send(json.dumps(moveData))
-            #time.sleep(1)
+            # time.sleep(1)
             isGameOver = await client.recv()
             if (isGameOver == 'Time'):
                 print('GAME ENDED BY TIME')
                 break
-            #time.sleep(1)
+            # time.sleep(1)
             print('MESSAGE SENT')
             numberOfMoves += 1
 

@@ -13,8 +13,8 @@ piecePoints = {
 
 def piece_moves(board, turn):
     score = 0
-    square_values = {"e4": 1, "e5": 1, "d4": 1, "d5": 1, "c6": 0.5, "d6": 0.5, "e6": 0.5, "f6": 0.5,
-                     "c3": 0.5, "d3": 0.5, "e3": 0.5, "f3": 0.5, "c4": 0.5, "c5": 0.5, "f4": 0.5, "f5": 0.5}
+    square_values = {"e4": 0.05, "e5": 0.05, "d4": 0.05, "d5": 0.05, "c6": 0.05, "d6": 0.05, "e6": 0.05, "f6": 0.05,
+                     "c3": 0.05, "d3": 0.05, "e3": 0.05, "f3": 0.05, "c4": 0.05, "c5": 0.05, "f4": 0.05, "f5": 0.05}
     possible_moves = list(board.legal_moves)
     for move in possible_moves:
         if turn == False:
@@ -23,10 +23,7 @@ def piece_moves(board, turn):
         else:
             if move.uci()[2:4] in square_values:
                 score -= square_values[move.uci()[2:4]]
-    if (score > 0):
-        return score - 6
-    else:
-        return score + 6
+    return score
 
 
 def material(board):
@@ -45,9 +42,9 @@ def incheck(board, turn):
     score = 0
     if (board.is_check()):
         if (turn == True):
-            score += 1
+            score += 5
         else:
-            score -= 1
+            score -= 5
 
     outcome = board.outcome()
     if (outcome != None):
@@ -63,12 +60,52 @@ def incheck(board, turn):
     return score
 
 
+def pawn_struct(board, turn):
+    score = 0
+    for j in reversed(range(1, 9)):
+        for i in range(len(chess.FILE_NAMES)):
+            sqr = board.piece_at(chess.parse_square(
+                chess.FILE_NAMES[i]+str(j)))
+            if sqr == chess.PAWN and sqr.color == chess.COLORS[0]:
+                    tl = i-1, j-1
+                    tr = i-1, j+1
+                    if tl[0] >= 0 and tl[0] <= 7 and tl[1] >= 0 and tl[1] <= 7:
+                        piece = board.piece_at(chess.parse_square(chess.FILE_NAMES[tl[0]]+str(tl[1])))
+                        if piece == chess.PAWN and piece.color == chess.COLORS[0]:
+                            score += .5
+                    if tr[0] >= 0 and tr[0] <= 7 and tr[1] >= 0 and tr[1] <= 7:
+                        piece = board.piece_at(chess.parse_square(chess.FILE_NAMES[tr[0]]+str(tr[1])))
+                        if piece == chess.PAWN and piece.color == chess.COLORS[0]:
+                            score += .5
+            elif sqr == chess.PAWN and sqr.color == chess.COLORS[1]:
+                    tl = i+1, j-1
+                    tr = i+1, j+1
+                    if tl[0] >= 0 and tl[0] <= 7 and tl[1] >= 0 and tl[1] <= 7:
+                        piece = board.piece_at(chess.parse_square(chess.FILE_NAMES[tl[0]]+str(tl[1])))
+                        if piece == chess.PAWN and piece.color == chess.COLORS[1]:
+                            score -= .5
+                    if tr[0] >= 0 and tr[0] <= 7 and tr[1] >= 0 and tr[1] <= 7:
+                        piece = board.piece_at(chess.parse_square(chess.FILE_NAMES[tr[0]]+str(tr[1])))
+                        if piece == chess.PAWN and piece.color == chess.COLORS[1]:
+                            score -= .5
+    return score
+
+
 def heuristic(board, turn, difficulty):
     if difficulty == 2:
-        return incheck(board, turn)
+        ic = incheck(board,turn)
+        ps = pawn_struct(board,turn)
+        # print('IN CHECK SCORE: ', ic)
+        # print('PAWN STRUCT SCORE: ', ps)
+        return ic + ps
     if difficulty == 3:
         return material(board) + incheck(board, turn)
     if difficulty == 4:
-        return material(board) + piece_moves(board, turn) + incheck(board, turn)
+        mat = material(board)
+        pm = piece_moves(board,turn)
+        ic = incheck(board,turn)
+        ps = pawn_struct(board,turn)
+        # print('MATERIAL:', mat, 'CENTER CONTROL:', pm, 'IN CHECK:', ic, 'PAWN STRUCTURE:', ps)
+        return mat+pm+ic+ps
     else:
-        return material(board) + piece_moves(board, turn) + incheck(board, turn)
+        return material(board) + piece_moves(board, turn) + incheck(board, turn) + pawn_struct(board, turn)
