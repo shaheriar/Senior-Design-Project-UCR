@@ -56,7 +56,7 @@ class _assistsState extends State<assists> {
                 children: [
                   TextButton(
                     style: TextButton.styleFrom(
-                      fixedSize: Size(360, 60),
+                      fixedSize: Size(370, 60),
                       primary: Colors.white,
                       backgroundColor: darkbrown,
                     ),
