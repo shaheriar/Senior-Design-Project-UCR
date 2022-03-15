@@ -64,7 +64,6 @@ This will run both the python scripts as well as npm serve and open Google Chrom
 
 ## Diagrams
 
-<img src="https://drive.google.com/file/d/13_z3a2kHaLjZYJcyIFsHfxFIn9PuD9h1/view?usp=sharing" /><br>
 <img src="https://i.imgur.com/9VhzXgU.png" /><br>
 
 ## Dependencies
