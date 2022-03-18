@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 from Points import heuristic, piecePoints
 import time
+from hardware import *
 import pandas as pd
 from datetime import datetime
 # ------------------------------------------
@@ -39,7 +40,7 @@ class chessGame:
         print('------------------------------')
         print('Smart Chess by The Segfaults')
         print('------------------------------')
-
+        setLEDS([])
         data = await client.recv()
         print(data, "\n")
         # dataParsed = ast.literal_eval(data)
@@ -125,41 +126,42 @@ class chessGame:
                 legal.append(x.uci())
 
             print(legal)
+            depth=3#depth = 2
 
             if(gameMode == 1):
                 if turn == 0:
-                    board = player1.makeMove(board, 3, turn, dt_string, legal)
+                    board = player1.makeMove(board, depth, turn, dt_string, legal)
                 else:
-                    board = player2.makeMove(board, 3, turn, dt_string, legal)
+                    board = player2.makeMove(board, depth, turn, dt_string, legal)
             elif(gameMode == 2):
                 if userColorForAIMode == False:  # The user is white because 0 is white
                     if turn == 0:
-                        board = player1.makeMove(board, 3, turn, dt_string, legal)
+                        board = player1.makeMove(board, depth, turn, dt_string, legal)
                     else:
                         if(numberOfMoves < 2):
                             board = AIPlayer.makeFirstMove(board, dt_string)
                         else:
-                            board = AIPlayer.makeMove(board, 3, turn, dt_string)
+                            board = AIPlayer.makeMove(board, depth, turn, dt_string)
                 else:  # The user is black because 1 is black
                     if turn == 0:
                         if(numberOfMoves < 2):
                             board = AIPlayer.makeFirstMove(board, dt_string)
                         else:
                             board = AIPlayer.makeMove(
-                                board, 3, turn, dt_string)
+                                board, depth, turn, dt_string)
                     else:
-                        board = player1.makeMove(board, 3, turn, dt_string,legal)
+                        board = player1.makeMove(board, depth, turn, dt_string,legal)
             elif(gameMode == 3):
                 if turn == 0:
                     if(numberOfMoves < 2):
                         board = player1.makeFirstMove(board, dt_string)
                     else:
-                        board = player1.makeMove(board, 3, turn, dt_string)
+                        board = player1.makeMove(board, depth, turn, dt_string)
                 else:
                     if(numberOfMoves < 2):
                         board = player2.makeFirstMove(board, dt_string)
                     else:
-                        board = player2.makeMove(board, 3, turn, dt_string)
+                        board = player2.makeMove(board, depth, turn, dt_string)
 
             turn = not turn
             moveData = {"move": board.peek().uci()}

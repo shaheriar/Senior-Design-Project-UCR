@@ -46,7 +46,7 @@ def led_rave_test():
               LEDs.append((letter + str(i), color))
               # time.sleep(0.05)
           setLEDS(LEDs)
-          time.sleep(0.05)
+          #time.sleep(0.05)
       # while(True):
       #   pass
     except:
@@ -65,13 +65,31 @@ def snake_led_rgb():
           for i in range(1, 9):
             print((letter + str(i), color))
             setLEDS([(letter + str(i), color)])
-            time.sleep(0.01)
+            time.sleep(0.1)
   # while(True):
   #   pass
   except:
     pass
   #PINs final cleaning
   GPIO.cleanup()
+
+def ripple():
+  #ripple effect with LEDs
+  #start with center 4 squares
+  #then move to the next
+
+  LEDS = []
+  for i in range(4):
+    LEDS.append((squareMap[i], BLUE))
+  setLEDS(LEDS)
+  time.sleep(0.01)
+  while(True):  
+    for i in range(4, 64):
+      LEDS.append((squareMap[i], BLUE))
+      LEDS.pop(0)
+      setLEDS(LEDS)
+      time.sleep(0.01)
+
 
 
 def test_func():
@@ -81,4 +99,8 @@ def test_func():
     #led_rave_test()
     #all_leds_green()
 
-test_func()
+# test_func()
+all_leds_green()
+# snake_led_rgb()
+#led_rave_test()
+# ripple()

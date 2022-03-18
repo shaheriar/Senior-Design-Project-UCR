@@ -20,6 +20,7 @@ class AI(Player):
         #boardCopy = copy.deepcopy(board)
         if depth == 0 or board.is_checkmate() or board.is_stalemate():
             eval = Points.heuristic(board, turn, self.difficulty)
+            # print('BOARD:',board,'RETURNED EVALUATION OF:',eval)
             endEval = MoveEval("empty", eval)
             return endEval
 
@@ -34,10 +35,10 @@ class AI(Player):
                                      alpha, beta)
                 board.pop()
                 # print(value)
-                if(value.evaluation >= maxValue.evaluation):
+                if(value.evaluation > maxValue.evaluation):
                     maxValue = value
                     maxValue.move = i.uci()
-                if (maxValue.evaluation >= alpha.evaluation):
+                if (maxValue.evaluation > alpha.evaluation):
                     alpha = maxValue
                 if (beta.evaluation <= alpha.evaluation):
                     break
@@ -53,10 +54,10 @@ class AI(Player):
                     board, depth - 1, False, alpha, beta)
                 board.pop()
                 # print(value)
-                if(value.evaluation <= minValue.evaluation):
+                if(value.evaluation < minValue.evaluation):
                     minValue = value
                     minValue.move = i.uci()
-                if (minValue.evaluation <= beta.evaluation):
+                if (minValue.evaluation < beta.evaluation):
                     beta = minValue
                 if (beta.evaluation <= alpha.evaluation):
                     break
@@ -66,6 +67,7 @@ class AI(Player):
         print('\n'+'\U0001F914'+"...Thinking..."+'\U0001F914'+'\n')
         tuple = self.minimax(board, depth, turn, MoveEval(
             "", -inf), MoveEval("", inf))
+        print('MAKING A MOVE OF EVALUATION:', tuple.evaluation)
         move = tuple.move
         # Light up board for AI move: BLUE
         setLEDS([(move[-2:], BLUE), (move[0:2], BLUE)])

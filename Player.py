@@ -31,10 +31,10 @@ class Player:
                 value = self.recommend(board, depth - 1, True, alpha, beta)
                 board.pop()
                 # print(value)
-                if(value.evaluation >= maxValue.evaluation):
+                if(value.evaluation > maxValue.evaluation):
                     maxValue = value
                     maxValue.move = i.uci()
-                if (maxValue.evaluation >= alpha.evaluation):
+                if (maxValue.evaluation > alpha.evaluation):
                     alpha = maxValue
                 if (beta.evaluation <= alpha.evaluation):
                     break
@@ -49,10 +49,10 @@ class Player:
                 value = self.recommend(board, depth - 1, False, alpha, beta)
                 board.pop()
                 # print(value)
-                if(value.evaluation <= minValue.evaluation):
+                if(value.evaluation < minValue.evaluation):
                     minValue = value
                     minValue.move = i.uci()
-                if (minValue.evaluation <= beta.evaluation):
+                if (minValue.evaluation < beta.evaluation):
                     beta = minValue
                 if (beta.evaluation <= alpha.evaluation):
                     break
@@ -66,8 +66,14 @@ class Player:
             # Light up board for AI recommended move: BLUE
             setLEDS([(recMove.move[-2:], BLUE), (recMove.move[0:2], BLUE)])
             print('\nRECOMMENDED MOVE:', recMove.move)
+        flag = False
+        for x in range(len(legalMoves)):
+            if (len(legalMoves[x]) == 5):
+                flag = True
+                legalMoves[x] = legalMoves[x][:-1]
+        move = get_move(legalMoves,recMove=recMove.move,inCheck=board.is_check())
         while(1):
-            move = get_move(legalMoves,recMove=recMove.move,inCheck=board.is_check())
+            print('TRIED TO PUSH:',move)
             try:
                 board.push_san(move)
                 # string form of the board
@@ -90,4 +96,7 @@ class Player:
                 return (board)
             except Exception as e:
                 print('INVALID MOVE\n')
+                if (flag):
+                    move += 'q'
+                    print('PROMOTING TO QUEEN', move)
                 print(e)
