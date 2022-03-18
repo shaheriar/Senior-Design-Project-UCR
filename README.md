@@ -27,7 +27,7 @@ For our project we would like to use a mix of AI and embedded systems. A brief s
 
 
 ## Usage
-Demo: https://drive.google.com/file/d/1NUwrpwSUZm6x4F9EefskllHDGrh9GksT/view
+Presentation & Demo: https://drive.google.com/file/d/1-gDAlHooiEgJDuP0PUZRHVe0r1-B_3Xb/view?usp=sharing
 
 <img src="https://i.imgur.com/TZHJjqC.png" /><br>
      
