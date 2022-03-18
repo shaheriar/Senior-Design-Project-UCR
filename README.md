@@ -62,7 +62,7 @@ open http://localhost:3000 in Google Chrome
 ## How To Run
 Because the build and run process can be tedious we have made a batch file to automate the commands to make it run
 
-### `start.bat`
+### `script.sh`
 
 This will run both the python scripts as well as npm serve and open Google Chrome.<br />
 
@@ -74,7 +74,6 @@ This will run both the python scripts as well as npm serve and open Google Chrom
 ## Dependencies
 ### Flutter 2 (only to build from source) <br>
 ### Python 3 <br>
-#### - CairoSVG==2.5.2 <br>
 #### - chess==1.7.0 <br>
 #### - SimpleWebSocketServer==0.1.1 <br>
 #### - websockets==10.1 <br>
